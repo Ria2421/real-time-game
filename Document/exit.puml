@@ -1,0 +1,24 @@
+@startuml
+'https://plantuml.com/sequence-diagram
+
+participant Client1
+participant Client2
+participant Client3
+participant MagickOnion
+
+autonumber
+
+Client1 -[#red]> MagickOnion : 退出処理
+rnote over MagickOnion : リストから消去
+Client2 <- MagickOnion : 退出者ID
+Client3 <- MagickOnion : 退出者ID
+
+Client2 -[#red]> MagickOnion : 退出処理
+rnote over MagickOnion : リストから消去
+Client3 <- MagickOnion : 退出者ID
+
+Client3 -[#red]> MagickOnion : 退出処理
+rnote over MagickOnion : リストから消去
+rnote over MagickOnion : 部屋の削除
+
+@enduml
