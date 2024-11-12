@@ -1,0 +1,15 @@
+@startuml
+'https://plantuml.com/sequence-diagram
+
+participant Client1
+participant Client2
+participant Client3
+participant Client4
+participant Server
+
+autonumber
+
+Client1 -> Server : 質問
+Client1 <- Server : 回答
+
+@enduml
