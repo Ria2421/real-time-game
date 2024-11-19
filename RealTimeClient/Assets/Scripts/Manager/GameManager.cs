@@ -110,6 +110,7 @@ public class GameManager : MonoBehaviour
             Destroy(child.gameObject);
         }
 
+        isGame = false;
         Debug.Log("退出");
     }
 
@@ -134,6 +135,9 @@ public class GameManager : MonoBehaviour
     // 退出したときの処理
     private void OnExitedUser(Guid connectionId)
     {
+        // 位置情報の更新
+        if (!characterList.ContainsKey(connectionId)) return;
+
         Destroy(characterList[connectionId]);   // オブジェクトの破棄
         characterList.Remove(connectionId);     // リストから削除
     }
@@ -142,6 +146,8 @@ public class GameManager : MonoBehaviour
     private void OnMovedUser(MoveData moveData)
     {
         // 位置情報の更新
+        if (!characterList.ContainsKey(moveData.ConnectionId)) return;
+
         characterList[moveData.ConnectionId].gameObject.transform.position = moveData.Position;
         characterList[moveData.ConnectionId].gameObject.transform.eulerAngles = moveData.Rotation; 
     }
