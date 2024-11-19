@@ -1,4 +1,5 @@
 ﻿using MagicOnion;
+using System;
 using System.Threading.Tasks;
 
 namespace Shared.Interfaces.StreamingHubs
@@ -14,5 +15,17 @@ namespace Shared.Interfaces.StreamingHubs
         /// <param name="UserId">  参加するUserID</param>
         /// <returns></returns>
         Task<JoinedUser[]> JoinAsync(string roomName, int UserId);
+
+        /// <summary>
+        /// ユーザー退出処理
+        /// </summary>
+        /// <returns></returns>
+        Task ExitAsync();
+
+        /// <summary>
+        /// 位置同期処理
+        /// </summary>
+        /// <returns></returns>
+        Task MoveAsync(MoveData moveData);
     }
 }

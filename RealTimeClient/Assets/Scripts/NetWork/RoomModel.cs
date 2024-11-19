@@ -35,6 +35,16 @@ public class RoomModel : BaseModel,IRoomHubReceiver
     /// </summary>
     public Action<JoinedUser> OnJoinedUser {  get; set; }
 
+    /// <summary>
+    /// ユーザー退出通知
+    /// </summary>
+    public Action<Guid> OnExitedUser { get; set; }
+
+    /// <summary>
+    /// ユーザー移動通知
+    /// </summary>
+    public Action<MoveData> OnMovedUser { get; set; }
+
     //-------------------------------------------------------
     // メソッド
 
@@ -49,7 +59,11 @@ public class RoomModel : BaseModel,IRoomHubReceiver
     // 切断処理
     public async UniTask DisconnectionAsync()
     {
-        if(roomHub != null) await roomHub.DisposeAsync();
+        if (roomHub != null)
+        {
+            await roomHub.ExitAsync();
+            await roomHub.DisposeAsync();
+        }
         if(channel != null) await channel.ShutdownAsync();
         roomHub = null; channel = null;
     }
@@ -58,7 +72,7 @@ public class RoomModel : BaseModel,IRoomHubReceiver
     async void OnDestroy()
     {
         // 切断
-        DisconnectionAsync();
+        await DisconnectionAsync();
     }
 
     // 入室処理
@@ -72,9 +86,33 @@ public class RoomModel : BaseModel,IRoomHubReceiver
         }
     }
 
+    // 退出処理
+    public async Task ExitAsync()
+    {
+        await roomHub.ExitAsync();
+    }
+
+    // 移動処理
+    public async Task MoveAsync(MoveData moveData)
+    {
+        await roomHub.MoveAsync(moveData);
+    }
+
     // 入室通知 (IRoomHubReceiverインターフェースの実装)
     public void OnJoin(JoinedUser user)
     {
         OnJoinedUser(user);
+    }
+
+    // 退出通知 (IRoomHubReceiverインターフェースの実装)
+    public void OnExit(Guid exitId)
+    {
+        OnExitedUser(exitId);
+    }
+
+    // 移動通知 (IRoomHubReceiverインターフェースの実装)
+    public void OnMove(MoveData moveData)
+    {
+        OnMovedUser(moveData);
     }
 }

@@ -1,0 +1,27 @@
+@startuml
+'https://plantuml.com/sequence-diagram
+
+participant Client1
+participant Client2
+participant Client3
+participant MagickOnion
+
+autonumber
+
+Client1 -[#blue]> MagickOnion : 位置情報
+Client2 <- MagickOnion : [1]の位置情報
+Client3 <- MagickOnion : [1]の位置情報
+rnote over Client2,Client3 : 情報反映
+
+Client2 -[#blue]> MagickOnion : 位置情報
+Client1 <- MagickOnion : [2]の位置情報
+Client3 <- MagickOnion : [2]の位置情報
+rnote over Client1: 情報反映
+rnote over Client3: 情報反映
+
+Client3 -[#blue]> MagickOnion : 位置情報
+Client1 <- MagickOnion : [3]の位置情報
+Client2 <- MagickOnion : [3]の位置情報
+rnote over Client1,Client2 : 情報反映
+
+@enduml
