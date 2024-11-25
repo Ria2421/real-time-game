@@ -12,6 +12,7 @@ using UnityEditor.Rendering;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Windows;
+using DG.Tweening;
 
 public class GameManager : MonoBehaviour
 {
@@ -53,6 +54,11 @@ public class GameManager : MonoBehaviour
     /// </summary>
     private bool isGame = false;
 
+    /// <summary>
+    /// 通信速度
+    /// </summary>
+    private float internetSpeed;
+
     //-------------------------------------------------------
     // メソッド
 
@@ -65,6 +71,8 @@ public class GameManager : MonoBehaviour
         roomModel.OnExitedUser += OnExitedUser;
         // ユーザーが退出したときにOnMoveUserメソッドを実行するよう、モデルに登録する。
         roomModel.OnMovedUser += OnMovedUser;
+
+        internetSpeed = 0.1f;
     }
 
     // Update is called once per frame
@@ -73,13 +81,17 @@ public class GameManager : MonoBehaviour
         
     }
 
-    private async void FixedUpdate()
+    // 移動データ送信処理
+    private async void SendMoveData()
     {
-        if (!isGame) return; 
+        if (!isGame) return;
 
-        var moveData = new MoveData() { ConnectionId = roomModel.ConnectionId,
-                                        Position = characterList[roomModel.ConnectionId].transform.position,
-                                        Rotation = characterList[roomModel.ConnectionId].transform.eulerAngles  };
+        var moveData = new MoveData()
+        {
+            ConnectionId = roomModel.ConnectionId,
+            Position = characterList[roomModel.ConnectionId].transform.position,
+            Rotation = characterList[roomModel.ConnectionId].transform.eulerAngles
+        };
 
         await roomModel.MoveAsync(moveData);
     }
@@ -100,6 +112,8 @@ public class GameManager : MonoBehaviour
     // 切断処理
     public async void OnDisconnect()
     {
+        CancelInvoke();
+
         // 退出
         await roomModel.ExitAsync();
         // 切断
@@ -129,6 +143,7 @@ public class GameManager : MonoBehaviour
         {
             characterList[roomModel.ConnectionId].gameObject.AddComponent<PlayerManager>();
             isGame = true;
+            InvokeRepeating("SendMoveData", 0, internetSpeed);
         }
     }
 
@@ -148,7 +163,7 @@ public class GameManager : MonoBehaviour
         // 位置情報の更新
         if (!characterList.ContainsKey(moveData.ConnectionId)) return;
 
-        characterList[moveData.ConnectionId].gameObject.transform.position = moveData.Position;
-        characterList[moveData.ConnectionId].gameObject.transform.eulerAngles = moveData.Rotation; 
+        characterList[moveData.ConnectionId].gameObject.transform.DOMove(moveData.Position, internetSpeed);
+        characterList[moveData.ConnectionId].gameObject.transform.DORotate(moveData.Rotation, internetSpeed);
     }
 }
