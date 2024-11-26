@@ -1,0 +1,39 @@
+@startuml
+'https://plantuml.com/sequence-diagram
+
+'1番最初の入室者(Client1)をマスターとする「マスタークライアント方式」を採用
+
+participant Client1
+participant Client2
+participant Client3
+participant MagickOnion
+
+autonumber
+
+note over Client1 : マスター
+
+rnote over Client1,Client3 : ゲームスタート
+
+loop インゲーム中
+Client1 -[#blue]> MagickOnion : 残り時間
+Client1 <- MagickOnion : 残リ時間
+Client2 <- MagickOnion : 残り時間
+Client3 <- MagickOnion : 残り時間
+rnote over Client1,Client3 : 時間反映
+
+alt タイムアップ
+
+rnote over MagickOnion : 終了判定
+Client1 <- MagickOnion : リザルト通知
+Client2 <- MagickOnion : リザルト通知
+Client3 <- MagickOnion : リザルト通知
+
+rnote over Client1,Client3 : リザルト表示
+
+end
+
+end
+
+rnote over Client1,MagickOnion : 退室処理
+
+@enduml

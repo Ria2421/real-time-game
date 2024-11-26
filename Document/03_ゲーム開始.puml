@@ -1,0 +1,52 @@
+@startuml
+'https://plantuml.com/sequence-diagram
+
+participant Client1
+participant Client2
+participant Client3
+participant MagickOnion
+
+autonumber
+
+rnote over MagickOnion : 全員入室状態
+
+Client1 -> MagickOnion : 準備完了通知
+Client2 <- MagickOnion : [1]準備完了
+Client3 <- MagickOnion : [1]準備完了
+rnote over Client1,Client3 : 画面反映
+rnote over MagickOnion : 全員準備OKか判定
+
+Client2 -> MagickOnion : 準備完了通知
+Client1 <- MagickOnion : [2]準備完了
+Client3 <- MagickOnion : [2]準備完了
+rnote over Client1,Client3 : 画面反映
+rnote over MagickOnion : 全員準備OKか判定
+
+Client3 -> MagickOnion : 準備完了通知
+Client1 <- MagickOnion : [3]準備完了
+Client2 <- MagickOnion : [3]準備完了
+rnote over Client1,Client3 : 画面反映
+rnote over MagickOnion : 全員準備OKか判定
+
+rnote over MagickOnion : 全員準備OK！
+
+Client1 <- MagickOnion : ゲームスタート通知
+Client2 <- MagickOnion : ゲームスタート通知
+Client3 <- MagickOnion : ゲームスタート通知
+
+rnote over Client1,Client3 : インゲーム & 開始前演出
+
+Client1 -> MagickOnion : 開始通知
+rnote over MagickOnion : 全員開始されたか判定
+Client2 -> MagickOnion : 開始通知
+rnote over MagickOnion : 全員開始されたか判定
+Client3 -> MagickOnion : 開始通知
+rnote over MagickOnion : 全員開始されたか判定
+rnote over MagickOnion : 全員開始状態を確認
+
+Client1 <- MagickOnion : ゲームスタート通知
+Client2 <- MagickOnion : ゲームスタート通知
+Client3 <- MagickOnion : ゲームスタート通知
+rnote over Client1,Client3 : ゲームスタート
+
+@enduml

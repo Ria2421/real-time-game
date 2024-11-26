@@ -36,6 +36,16 @@ public class RoomModel : BaseModel,IRoomHubReceiver
     public Action<JoinedUser> OnJoinedUser {  get; set; }
 
     /// <summary>
+    /// ユーザー準備完了通知
+    /// </summary>
+    public Action<JoinedUser> OnReadyUser { get; set; }
+
+    /// <summary>
+    /// ユーザー準備キャンセル通知
+    /// </summary>
+    public Action<JoinedUser> OnNonReadyUser { get; set; }
+
+    /// <summary>
     /// ユーザー退出通知
     /// </summary>
     public Action<Guid> OnExitedUser { get; set; }
@@ -86,6 +96,18 @@ public class RoomModel : BaseModel,IRoomHubReceiver
         }
     }
 
+    // 準備処理
+    public async Task ReadyAsync()
+    {
+        await roomHub.ReadyAsync();
+    }
+
+    // 準備キャンセル処理
+    public async Task NonReadyAsync()
+    {
+        await roomHub.NonReadyAsync();
+    }
+
     // 退出処理
     public async Task ExitAsync()
     {
@@ -98,19 +120,34 @@ public class RoomModel : BaseModel,IRoomHubReceiver
         await roomHub.MoveAsync(moveData);
     }
 
-    // 入室通知 (IRoomHubReceiverインターフェースの実装)
+    //==================================================================
+    // IRoomHubReceiverインターフェースの実装
+
+    // 入室通知
     public void OnJoin(JoinedUser user)
     {
         OnJoinedUser(user);
     }
 
-    // 退出通知 (IRoomHubReceiverインターフェースの実装)
+    // 準備完了通知
+    public void OnReady(JoinedUser user)
+    {
+        OnReadyUser(user);
+    }
+
+    // 準備キャンセル通知
+    public void OnNonReady(JoinedUser user)
+    {
+        OnNonReadyUser(user);
+    }
+
+    // 退出通知
     public void OnExit(Guid exitId)
     {
         OnExitedUser(exitId);
     }
 
-    // 移動通知 (IRoomHubReceiverインターフェースの実装)
+    // 移動通知
     public void OnMove(MoveData moveData)
     {
         OnMovedUser(moveData);

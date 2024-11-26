@@ -20,6 +20,11 @@ public class RoomHub:StreamingHubBase<IRoomHub,IRoomHubReceiver>,IRoomHub
     /// </summary>
     private int[] noList = { 1, 2, 3, 4 };
 
+    /// <summary>
+    /// プレイヤー最大数
+    /// </summary>
+    private const int MAX_PLAYER = 4;
+
     //------------------------------------------------------
     // メソッド
 
@@ -65,7 +70,7 @@ public class RoomHub:StreamingHubBase<IRoomHub,IRoomHubReceiver>,IRoomHub
             joinedUser = new JoinedUser() { ConnectionId = this.ConnectionId, UserData = user, JoinOrder = result.Min() };
         }
         
-        var roomData = new RoomData() { JoinedUser = joinedUser };
+        var roomData = new RoomData() { JoinedUser = joinedUser, GameState = 0 };
         roomStrage.Set(this.ConnectionId, roomData);  // 接続IDをキーにデータを格納
 
         // ルーム参加者全員に、ユーザーの入室通知を送信
@@ -79,6 +84,36 @@ public class RoomHub:StreamingHubBase<IRoomHub,IRoomHubReceiver>,IRoomHub
             joinedUserList[i] = roomDataList[i].JoinedUser;
         }
         return joinedUserList;
+    }
+
+    /// <summary>
+    /// 準備完了処理
+    /// </summary>
+    /// <returns></returns>
+    public async Task ReadyAsync()
+    {
+        // 呼び出した接続IDのルームデータに準備状態を保存
+        var roomStrage = this.room.GetInMemoryStorage<RoomData>();
+        var roomData = roomStrage.Get(this.ConnectionId);
+        roomData.GameState = 1;
+
+        // 他のユーザーにReady通知を送信
+        this.Broadcast(room).OnReady(roomData.JoinedUser);
+    }
+
+    /// <summary>
+    /// 準備キャンセル処理
+    /// </summary>
+    /// <returns></returns>
+    public async Task NonReadyAsync()
+    {
+        // 呼び出した接続IDのルームデータに準備状態を保存
+        var roomStrage = this.room.GetInMemoryStorage<RoomData>();
+        var roomData = roomStrage.Get(this.ConnectionId);
+        roomData.GameState = 0;
+
+        // 他のユーザーにNonReady通知を送信
+        this.Broadcast(room).OnNonReady(roomData.JoinedUser);
     }
 
     /// <summary>
@@ -98,11 +133,31 @@ public class RoomHub:StreamingHubBase<IRoomHub,IRoomHubReceiver>,IRoomHub
     }
 
     /// <summary>
+    /// 切断時の退室処理
+    /// </summary>
+    /// <returns></returns>
+    protected override ValueTask OnDisconnected()
+    {
+        // ルームデータを削除
+        this.room.GetInMemoryStorage<RoomData>().Remove(this.ConnectionId);
+        // 退室したことを全メンバーに通知
+        this.Broadcast(room).OnExit(this.ConnectionId);
+        // ルーム内のメンバーから削除
+        room.RemoveAsync(this.Context);
+        return CompletedTask;
+    }
+
+    /// <summary>
     /// 位置同期処理
     /// </summary>
     /// <returns></returns>
     public async Task MoveAsync(MoveData moveData)
     {
+        // 呼び出した接続IDのルームデータに動作情報を保存
+        var roomStrage = this.room.GetInMemoryStorage<RoomData>();
+        var roomData = roomStrage.Get(this.ConnectionId);
+        roomData.MoveData = moveData;
+
         // ルーム参加者全員に、ユーザーの移動情報を送信
         this.BroadcastExceptSelf(room).OnMove(moveData);
     }
