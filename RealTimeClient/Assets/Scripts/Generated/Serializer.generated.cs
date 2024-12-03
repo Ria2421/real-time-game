@@ -289,10 +289,11 @@ namespace MessagePack.Formatters.Shared.Interfaces.StreamingHubs
             }
 
             global::MessagePack.IFormatterResolver formatterResolver = options.Resolver;
-            writer.WriteArrayHeader(3);
+            writer.WriteArrayHeader(4);
             global::MessagePack.FormatterResolverExtensions.GetFormatterWithVerify<global::System.Guid>(formatterResolver).Serialize(ref writer, value.ConnectionId, options);
             global::MessagePack.FormatterResolverExtensions.GetFormatterWithVerify<global::RealTimeServer.Model.Entity.User>(formatterResolver).Serialize(ref writer, value.UserData, options);
             writer.Write(value.JoinOrder);
+            writer.Write(value.GameState);
         }
 
         public global::Shared.Interfaces.StreamingHubs.JoinedUser Deserialize(ref global::MessagePack.MessagePackReader reader, global::MessagePack.MessagePackSerializerOptions options)
@@ -320,6 +321,9 @@ namespace MessagePack.Formatters.Shared.Interfaces.StreamingHubs
                     case 2:
                         ____result.JoinOrder = reader.ReadInt32();
                         break;
+                    case 3:
+                        ____result.GameState = reader.ReadInt32();
+                        break;
                     default:
                         reader.Skip();
                         break;
@@ -343,10 +347,11 @@ namespace MessagePack.Formatters.Shared.Interfaces.StreamingHubs
             }
 
             global::MessagePack.IFormatterResolver formatterResolver = options.Resolver;
-            writer.WriteArrayHeader(3);
+            writer.WriteArrayHeader(4);
             global::MessagePack.FormatterResolverExtensions.GetFormatterWithVerify<global::System.Guid>(formatterResolver).Serialize(ref writer, value.ConnectionId, options);
             global::MessagePack.FormatterResolverExtensions.GetFormatterWithVerify<global::UnityEngine.Vector3>(formatterResolver).Serialize(ref writer, value.Position, options);
             global::MessagePack.FormatterResolverExtensions.GetFormatterWithVerify<global::UnityEngine.Vector3>(formatterResolver).Serialize(ref writer, value.Rotation, options);
+            writer.Write(value.WheelAngle);
         }
 
         public global::Shared.Interfaces.StreamingHubs.MoveData Deserialize(ref global::MessagePack.MessagePackReader reader, global::MessagePack.MessagePackSerializerOptions options)
@@ -373,6 +378,9 @@ namespace MessagePack.Formatters.Shared.Interfaces.StreamingHubs
                         break;
                     case 2:
                         ____result.Rotation = global::MessagePack.FormatterResolverExtensions.GetFormatterWithVerify<global::UnityEngine.Vector3>(formatterResolver).Deserialize(ref reader, options);
+                        break;
+                    case 3:
+                        ____result.WheelAngle = reader.ReadSingle();
                         break;
                     default:
                         reader.Skip();

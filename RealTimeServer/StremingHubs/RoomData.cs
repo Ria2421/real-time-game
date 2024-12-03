@@ -16,7 +16,7 @@ namespace RealTimeServer.StremingHubs
         public MoveData MoveData { get; set; }
 
         /// <summary>
-        /// ゲーム状態 [0.入室 1.準備完了 2.インゲーム]
+        /// ゲーム状態 [0.None 1.入室 2.インゲーム]
         /// </summary>
         public int GameState { get; set; }
     }

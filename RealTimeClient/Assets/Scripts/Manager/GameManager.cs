@@ -13,6 +13,8 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Windows;
 using DG.Tweening;
+using RealTimeServer.Model.Entity;
+using DavidJalbert;
 
 public class GameManager : MonoBehaviour
 {
@@ -26,7 +28,7 @@ public class GameManager : MonoBehaviour
     {
         None = 0,
         Join,
-        Ready,
+        InGame
     }
 
     /// <summary>
@@ -39,6 +41,26 @@ public class GameManager : MonoBehaviour
     /// </summary>
     private GameState gameState = GameState.None;
 
+    /// <summary>
+    /// 補正pos
+    /// </summary>
+    private Vector3 posCorrection = new Vector3(0.0f,-0.9f,0.0f);
+
+    /// <summary>
+    /// プレイヤーコントローラー
+    /// </summary>
+    private GameObject playerController;
+
+    /// <summary>
+    /// 操作コントローラー
+    /// </summary>
+    private GameObject inputController;
+
+    /// <summary>
+    /// ホイールの角度取得用
+    /// </summary>
+    private Transform wheelAngle;
+
     [Header("各種Objectをアタッチ")]
 
     /// <summary>
@@ -47,9 +69,19 @@ public class GameManager : MonoBehaviour
     [SerializeField] private RoomModel roomModel;
 
     /// <summary>
-    /// 生成するキャラクタープレハブ
+    /// 生成するプレイヤーのキャラクタープレハブ
     /// </summary>
-    [SerializeField] private GameObject characterPrefab;
+    [SerializeField] private GameObject playerPrefab;
+
+    /// <summary>
+    /// 生成する他プレイヤーのキャラクタープレハブ
+    /// </summary>
+    [SerializeField] private GameObject otherPrefab;
+
+    /// <summary>
+    /// 入力処理プレハブ
+    /// </summary>
+    [SerializeField] private GameObject inputPrefab;
 
     /// <summary>
     /// プレイヤーを格納する親オブジェクト
@@ -66,6 +98,11 @@ public class GameManager : MonoBehaviour
     /// </summary>
     [SerializeField] private float internetSpeed = 0.1f;
 
+    /// <summary>
+    /// 制限時間
+    /// </summary>
+    [SerializeField] private float timeLimit = 3.0f;
+
     [Space (40)]
     [Header("===== UI関連 =====")]
 
@@ -78,9 +115,9 @@ public class GameManager : MonoBehaviour
     [SerializeField] private Text idText;
 
     /// <summary>
-    /// 準備状態表示テキスト
+    /// タイマー
     /// </summary>
-    [SerializeField] private Text[] readyStateTexts;
+    [SerializeField] private Text timerText;
 
     [Space(10)]
     [Header("---- InputField ----")]
@@ -103,16 +140,6 @@ public class GameManager : MonoBehaviour
     /// </summary>
     [SerializeField] private Button exitButton;
 
-    /// <summary>
-    /// 準備完了ボタン
-    /// </summary>
-    [SerializeField] private Button readyButton;
-
-    /// <summary>
-    /// 準備キャンセルボタン
-    /// </summary>
-    [SerializeField] private Button nonReadyButton;
-
     //=====================================
     // メソッド
 
@@ -120,11 +147,11 @@ public class GameManager : MonoBehaviour
     void Start()
     {
         // 各通知が届いた際に行う処理をモデルに登録する
-        roomModel.OnJoinedUser += OnJoinedUser;     // 入室
-        roomModel.OnReadyUser += OnReadyUser;       // 準備完了
-        roomModel.OnNonReadyUser += OnNonReadyUser; // 準備キャンセル
-        roomModel.OnExitedUser += OnExitedUser;     // 退室
-        roomModel.OnMovedUser += OnMovedUser;       // 移動
+        roomModel.OnJoinedUser += OnJoinedUser;         // 入室
+        roomModel.OnExitedUser += OnExitedUser;         // 退室
+        roomModel.OnMovedUser += OnMovedUser;           // 移動
+        roomModel.OnInGameUser += OnInGameUser;         // インゲーム
+        roomModel.OnStartGameUser += OnStartGameUser;   // ゲームスタート
 
         ChangeUI(gameState);
     }
@@ -140,11 +167,13 @@ public class GameManager : MonoBehaviour
     {
         if (gameState == GameState.None) return;
 
+        // 移動データの作成
         var moveData = new MoveData()
         {
             ConnectionId = roomModel.ConnectionId,
-            Position = characterList[roomModel.ConnectionId].transform.position,
-            Rotation = characterList[roomModel.ConnectionId].transform.eulerAngles
+            Position = playerController.transform.position + posCorrection,
+            Rotation = playerController.transform.eulerAngles,
+            WheelAngle = wheelAngle.eulerAngles.y
         };
 
         await roomModel.MoveAsync(moveData);
@@ -163,24 +192,6 @@ public class GameManager : MonoBehaviour
         Debug.Log("入室");
     }
 
-    // 準備完了処理
-    public async void OnReady()
-    {
-        await roomModel.ReadyAsync();
-
-        gameState = GameState.Ready;
-        ChangeUI(gameState);
-    }
-
-    // 準備キャンセル処理
-    public async void OnCancel()
-    {
-        await roomModel.NonReadyAsync();
-
-        gameState = GameState.Join;
-        ChangeUI(gameState);
-    }
-
     // 切断処理
     public async void OnDisconnect()
     {
@@ -188,10 +199,9 @@ public class GameManager : MonoBehaviour
 
         // 退出
         await roomModel.ExitAsync();
-        // 切断
-        await roomModel.DisconnectionAsync();
+
         // プレイヤーオブジェクトの削除
-        foreach(Transform child in parentObj.transform)
+        foreach (Transform child in parentObj.transform)
         {
             Destroy(child.gameObject);
         }
@@ -199,6 +209,12 @@ public class GameManager : MonoBehaviour
         gameState = GameState.None;
         ChangeUI(gameState);
         Debug.Log("退出");
+    }
+
+    // ゲームスタート通知処理
+    public async void OnStart()
+    {
+        await roomModel.StartAsync();
     }
 
     // --------------------------------------------------------------
@@ -209,42 +225,45 @@ public class GameManager : MonoBehaviour
     {
         Debug.Log(user.JoinOrder + "P");
 
-        // プレイヤーの生成
-        GameObject characterObj = Instantiate(characterPrefab, respownList[user.JoinOrder-1].position, Quaternion.Euler(0,180,0));
+        GameObject characterObj;    // 生成されるオブジェ
+
+        // 自分か他プレイヤーか
+        if (user.ConnectionId == roomModel.ConnectionId)
+        {
+            // 自機・操作用オブジェの生成
+            characterObj = Instantiate(playerPrefab, respownList[user.JoinOrder - 1].position, Quaternion.Euler(0, 180, 0));
+            inputController = Instantiate(inputPrefab, Vector3.zero, Quaternion.identity);
+
+            // カーコントローラーの取得・反映
+            playerController = characterObj.transform.GetChild(0).gameObject;
+            wheelAngle = characterObj.transform.Find("Visuals/WheelFrontLeft").transform;
+
+            // UI変更
+            gameState = GameState.Join;
+            ChangeUI(gameState);
+            Debug.Log("自機生成完了");
+
+            // 位置送信開始
+            InvokeRepeating("SendMoveData", 0.5f, internetSpeed);
+        }
+        else
+        {
+            // 他プレイヤーの生成
+            characterObj = Instantiate(otherPrefab, respownList[user.JoinOrder - 1].position, Quaternion.Euler(0, 180, 0));
+        }
 
         characterObj.transform.parent = parentObj.transform;    // 親の設定
         characterList[user.ConnectionId] = characterObj;        // フィールドで保存
-
-        if(user.ConnectionId == roomModel.ConnectionId)
-        {
-            characterList[roomModel.ConnectionId].gameObject.AddComponent<PlayerManager>();
-            gameState = GameState.Join;
-            ChangeUI(gameState);
-            InvokeRepeating("SendMoveData", 0, internetSpeed);
-        }
-    }
-
-
-    // 準備完了通知時の処理
-    private void OnReadyUser(JoinedUser user)
-    {
-        readyStateTexts[user.JoinOrder - 1].text = "準備完了！";
-    }
-
-    // 準備キャンセル通知時の処理
-    private void OnNonReadyUser(JoinedUser user)
-    {
-        readyStateTexts[user.JoinOrder - 1].text = "準備中...";
     }
 
     // 退出通知時の処理
-    private void OnExitedUser(Guid connectionId)
+    private void OnExitedUser(JoinedUser user)
     {
         // 位置情報の更新
-        if (!characterList.ContainsKey(connectionId)) return;
+        if (!characterList.ContainsKey(user.ConnectionId)) return;  // 退出者オブジェの存在チェック
 
-        Destroy(characterList[connectionId]);   // オブジェクトの破棄
-        characterList.Remove(connectionId);     // リストから削除
+        Destroy(characterList[user.ConnectionId]);   // オブジェクトの破棄
+        characterList.Remove(user.ConnectionId);     // リストから削除
     }
 
     // プレイヤーが移動したときの処理
@@ -253,8 +272,35 @@ public class GameManager : MonoBehaviour
         // 位置情報の更新
         if (!characterList.ContainsKey(moveData.ConnectionId)) return;
 
-        characterList[moveData.ConnectionId].gameObject.transform.DOMove(moveData.Position, internetSpeed).SetEase(Ease.Linear);
-        characterList[moveData.ConnectionId].gameObject.transform.DORotate(moveData.Rotation, internetSpeed).SetEase(Ease.Linear);
+        // 本体位置の更新
+        characterList[moveData.ConnectionId].transform.DOMove(moveData.Position, internetSpeed).SetEase(Ease.Linear);
+        characterList[moveData.ConnectionId].transform.DORotate(moveData.Rotation, internetSpeed).SetEase(Ease.Linear);
+
+        // タイヤ角の更新
+        characterList[moveData.ConnectionId].transform.Find("wheels/wheel front right").transform.DORotate(new Vector3(0,moveData.WheelAngle,0),internetSpeed).SetEase(Ease.Linear);
+        characterList[moveData.ConnectionId].transform.Find("wheels/wheel front left").transform.DORotate(new Vector3(0, moveData.WheelAngle, 0), internetSpeed).SetEase(Ease.Linear);
+    }
+
+    /// <summary>
+    /// インゲーム通知処理
+    /// </summary>
+    private void OnInGameUser()
+    {
+        // カウントダウン開始
+        Debug.Log("カウントダウン");
+        StartCoroutine("StartCount");
+    }
+
+    /// <summary>
+    /// ゲームスタート通知処理
+    /// </summary>
+    private void OnStartGameUser()
+    {
+        // テキスト変更
+        timerText.text = "Start!";
+        StartCoroutine("HiddenText");
+        // 操作可能にする
+        inputController.GetComponent<TinyCarStandardInput>().carController = playerController.GetComponent<TinyCarController>();
     }
 
     // 表示UIの変更
@@ -267,17 +313,9 @@ public class GameManager : MonoBehaviour
                 // InputField
                 idInput.enabled = true;
 
-                // Text
-                for (int i = 0;readyStateTexts.Length > i; i++)
-                {
-                    readyStateTexts[i].gameObject.SetActive(false);
-                }
-
                 // Button
                 joinButton.gameObject.SetActive(true);
                 exitButton.gameObject.SetActive(false);
-                readyButton.gameObject.SetActive(false);
-                nonReadyButton.gameObject.SetActive(false);
                 break;
 
             // 入室状態 ---------------------------------------------
@@ -285,36 +323,45 @@ public class GameManager : MonoBehaviour
                 // InputField
                 idInput.enabled = false;
 
-                // Text
-                for (int i = 0; readyStateTexts.Length > i; i++)
-                {
-                    readyStateTexts[i].gameObject.SetActive(true);
-                }
-
                 // Button
                 joinButton.gameObject.SetActive(false);
                 exitButton.gameObject.SetActive(true);
-                readyButton.gameObject.SetActive(true);
-                nonReadyButton.gameObject.SetActive(false);
                 break;
 
-            // 準備完了状態 -----------------------------------------
-            case GameState.Ready:
-                // InputField
-                idInput.enabled = false;
-
-                // Text
-                for (int i = 0; readyStateTexts.Length > i; i++)
-                {
-                    readyStateTexts[i].gameObject.SetActive(true);
-                }
-
-                // Button
-                joinButton.gameObject.SetActive(false);
-                exitButton.gameObject.SetActive(true);
-                readyButton.gameObject.SetActive(false);
-                nonReadyButton.gameObject.SetActive(true);
+            default:
                 break;
         }
+    }
+
+    /// <summary>
+    /// ゲームカウント
+    /// </summary>
+    /// <returns></returns>
+    IEnumerator StartCount()
+    {
+        for (int i = 3; i > 0; i--)
+        {
+            timerText.text = i.ToString();
+
+            // 1秒待ってコルーチン中断
+            yield return new WaitForSeconds(1.0f);
+
+            if (i == 1)
+            {
+                OnStart();
+            }
+        }
+    }
+
+    /// <summary>
+    /// タイマーテキスト非表示処理
+    /// </summary>
+    /// <returns></returns>
+    IEnumerator HiddenText()
+    {
+        // 1秒待ってコルーチン中断
+        yield return new WaitForSeconds(0.8f);
+
+        timerText.text = "";
     }
 }

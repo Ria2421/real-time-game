@@ -52,7 +52,7 @@ public class RoomHub:StreamingHubBase<IRoomHub,IRoomHubReceiver>,IRoomHub
 
         if (nowRoomDataList.Length == 0)
         {   // 誰もいない時
-            joinedUser = new JoinedUser() { ConnectionId = this.ConnectionId, UserData = user, JoinOrder = 1 };
+            joinedUser = new JoinedUser() { ConnectionId = this.ConnectionId, UserData = user, JoinOrder = 1, GameState = 1 };
         }
         else
         {
@@ -67,7 +67,7 @@ public class RoomHub:StreamingHubBase<IRoomHub,IRoomHubReceiver>,IRoomHub
             IEnumerable<int> result = noList.Except(numbers);
 
             // 最小値のPLNoを適用したユーザーデータを作成
-            joinedUser = new JoinedUser() { ConnectionId = this.ConnectionId, UserData = user, JoinOrder = result.Min() };
+            joinedUser = new JoinedUser() { ConnectionId = this.ConnectionId, UserData = user, JoinOrder = result.Min(), GameState = 1 };
         }
         
         var roomData = new RoomData() { JoinedUser = joinedUser, GameState = 0 };
@@ -83,37 +83,15 @@ public class RoomHub:StreamingHubBase<IRoomHub,IRoomHubReceiver>,IRoomHub
         {
             joinedUserList[i] = roomDataList[i].JoinedUser;
         }
+
+        // 4人揃ったら開始の合図を送る
+        if(roomDataList.Length == MAX_PLAYER)
+        {
+            Console.WriteLine("全員揃いました");
+            this.Broadcast(room).OnInGame();    // inGame通知処理
+        }
+
         return joinedUserList;
-    }
-
-    /// <summary>
-    /// 準備完了処理
-    /// </summary>
-    /// <returns></returns>
-    public async Task ReadyAsync()
-    {
-        // 呼び出した接続IDのルームデータに準備状態を保存
-        var roomStrage = this.room.GetInMemoryStorage<RoomData>();
-        var roomData = roomStrage.Get(this.ConnectionId);
-        roomData.GameState = 1;
-
-        // 他のユーザーにReady通知を送信
-        this.Broadcast(room).OnReady(roomData.JoinedUser);
-    }
-
-    /// <summary>
-    /// 準備キャンセル処理
-    /// </summary>
-    /// <returns></returns>
-    public async Task NonReadyAsync()
-    {
-        // 呼び出した接続IDのルームデータに準備状態を保存
-        var roomStrage = this.room.GetInMemoryStorage<RoomData>();
-        var roomData = roomStrage.Get(this.ConnectionId);
-        roomData.GameState = 0;
-
-        // 他のユーザーにNonReady通知を送信
-        this.Broadcast(room).OnNonReady(roomData.JoinedUser);
     }
 
     /// <summary>
@@ -122,14 +100,47 @@ public class RoomHub:StreamingHubBase<IRoomHub,IRoomHubReceiver>,IRoomHub
     /// <returns></returns>
     public async Task ExitAsync()
     {
+        // ルーム参加者全員に、ユーザーの退出通知を送信
+        var roomStrage = this.room.GetInMemoryStorage<RoomData>();
+        var roomData = roomStrage.Get(this.ConnectionId);
+
+        if (roomData == null) return;   // ユーザーデータが存在するかnullチェック
+        
+        this.BroadcastExceptSelf(room).OnExit(roomData.JoinedUser);
+
         // グループデータから削除
         this.room.GetInMemoryStorage<RoomData>().Remove(this.ConnectionId);
 
         // ルーム内のメンバーから自分を削除
         await room.RemoveAsync(this.Context);
+    }
 
-        // ルーム参加者全員に、ユーザーの退出通知を送信
-        this.BroadcastExceptSelf(room).OnExit(this.ConnectionId);
+    /// <summary>
+    /// ゲーム開始処理
+    /// </summary>
+    /// <returns></returns>
+    public async Task StartAsync()
+    {
+        // 該当するルームデータを取得
+        var roomStrage = this.room.GetInMemoryStorage<RoomData>();
+        var roomData = roomStrage.Get(this.ConnectionId);
+
+        // GameStateの変更
+        roomData.GameState = 2;
+
+        // 全員がスタート状態か調べる
+        int startCnt = 0;
+        RoomData[] roomDataList = roomStrage.AllValues.ToArray<RoomData>();
+        foreach(RoomData data in roomDataList)
+        {
+            if (data.GameState == 2) { startCnt++; }
+        }
+
+        if (startCnt == MAX_PLAYER)
+        {   // 揃っている場合はゲーム開始通知
+            Console.WriteLine("ゲームスタート");
+            this.Broadcast(room).OnStartGame();
+        }
     }
 
     /// <summary>
@@ -140,8 +151,6 @@ public class RoomHub:StreamingHubBase<IRoomHub,IRoomHubReceiver>,IRoomHub
     {
         // ルームデータを削除
         this.room.GetInMemoryStorage<RoomData>().Remove(this.ConnectionId);
-        // 退室したことを全メンバーに通知
-        this.Broadcast(room).OnExit(this.ConnectionId);
         // ルーム内のメンバーから削除
         room.RemoveAsync(this.Context);
         return CompletedTask;

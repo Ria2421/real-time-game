@@ -8,6 +8,7 @@ using Cysharp.Net.Http;
 using Cysharp.Threading.Tasks;
 using Grpc.Net.Client;
 using MagicOnion.Client;
+using RealTimeServer.Model.Entity;
 using Shared.Interfaces.Services;
 using Shared.Interfaces.StreamingHubs;
 using System;
@@ -31,29 +32,34 @@ public class RoomModel : BaseModel,IRoomHubReceiver
     public Guid ConnectionId { get; set; }
 
     /// <summary>
+    /// 参加順 (PLNo)
+    /// </summary>
+    public int JoinOrder { get; set; }
+
+    /// <summary>
     /// ユーザー接続通知
     /// </summary>
     public Action<JoinedUser> OnJoinedUser {  get; set; }
 
     /// <summary>
-    /// ユーザー準備完了通知
-    /// </summary>
-    public Action<JoinedUser> OnReadyUser { get; set; }
-
-    /// <summary>
-    /// ユーザー準備キャンセル通知
-    /// </summary>
-    public Action<JoinedUser> OnNonReadyUser { get; set; }
-
-    /// <summary>
     /// ユーザー退出通知
     /// </summary>
-    public Action<Guid> OnExitedUser { get; set; }
+    public Action<JoinedUser> OnExitedUser { get; set; }
 
     /// <summary>
     /// ユーザー移動通知
     /// </summary>
     public Action<MoveData> OnMovedUser { get; set; }
+
+    /// <summary>
+    /// インゲーム通知
+    /// </summary>
+    public Action OnInGameUser { get; set; }
+
+    /// <summary>
+    /// ゲーム開始通知
+    /// </summary>
+    public Action OnStartGameUser { get; set; }
 
     //-------------------------------------------------------
     // メソッド
@@ -86,39 +92,38 @@ public class RoomModel : BaseModel,IRoomHubReceiver
     }
 
     // 入室処理
-    public async Task JoinAsync(string roomName, int userId)
+    public async UniTask JoinAsync(string roomName, int userId)
     {
         JoinedUser[] users =await roomHub.JoinAsync(roomName, userId);
         foreach(var user in users)
         {
-            if(user.UserData.Id == userId) this.ConnectionId = user.ConnectionId;   // 接続IDの保存
+            if (user.UserData.Id == userId)
+            {
+                this.ConnectionId = user.ConnectionId;  // 接続IDの保存
+                this.JoinOrder = user.JoinOrder;        // 参加順(PLNo)の保存
+            }
             OnJoinedUser(user); // ActionでModelを使うクラスに通知
         }
     }
 
-    // 準備処理
-    public async Task ReadyAsync()
-    {
-        await roomHub.ReadyAsync();
-    }
-
-    // 準備キャンセル処理
-    public async Task NonReadyAsync()
-    {
-        await roomHub.NonReadyAsync();
-    }
-
     // 退出処理
-    public async Task ExitAsync()
+    public async UniTask ExitAsync()
     {
         await roomHub.ExitAsync();
     }
 
     // 移動処理
-    public async Task MoveAsync(MoveData moveData)
+    public async UniTask MoveAsync(MoveData moveData)
     {
         await roomHub.MoveAsync(moveData);
     }
+
+    // ゲーム開始通知処理
+    public async UniTask StartAsync()
+    {
+        await roomHub.StartAsync();
+    }
+
 
     //==================================================================
     // IRoomHubReceiverインターフェースの実装
@@ -129,27 +134,27 @@ public class RoomModel : BaseModel,IRoomHubReceiver
         OnJoinedUser(user);
     }
 
-    // 準備完了通知
-    public void OnReady(JoinedUser user)
-    {
-        OnReadyUser(user);
-    }
-
-    // 準備キャンセル通知
-    public void OnNonReady(JoinedUser user)
-    {
-        OnNonReadyUser(user);
-    }
-
     // 退出通知
-    public void OnExit(Guid exitId)
+    public void OnExit(JoinedUser user)
     {
-        OnExitedUser(exitId);
+        OnExitedUser(user);
     }
 
     // 移動通知
     public void OnMove(MoveData moveData)
     {
         OnMovedUser(moveData);
+    }
+
+    // インゲーム通知
+    public void OnInGame()
+    {
+        OnInGameUser();
+    }
+
+    // ゲーム開始通知
+    public void OnStartGame()
+    {
+        OnStartGameUser();
     }
 }

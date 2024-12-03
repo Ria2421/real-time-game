@@ -21,9 +21,15 @@ namespace Shared.Interfaces.StreamingHubs
         public Vector3 Position { get; set; }
 
         /// <summary>
-        /// 角度情報
+        /// 車体角度情報
         /// </summary>
         [Key(2)]
         public Vector3 Rotation { get; set; }
+
+        /// <summary>
+        /// タイヤ角
+        /// </summary>
+        [Key(3)]
+        public float WheelAngle { get; set; }
     }
 }

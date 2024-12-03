@@ -10,16 +10,16 @@ namespace Shared.Interfaces.StreamingHubs
         // ユーザーの入室通知
         void OnJoin(JoinedUser user);
 
-        // ユーザーの準備完了通知 [引数はそのうちプレイヤーデータに変える(車種やスキン等の情報)]
-        void OnReady(JoinedUser user);
-
-        // ユーザーの準備キャンセル通知
-        void OnNonReady(JoinedUser user);
-
         // ユーザーの退出通知
-        void OnExit(Guid connectionId);
+        void OnExit(JoinedUser user);
 
         // ユーザーの移動通知
         void OnMove(MoveData moveData);
+
+        // インゲーム通知
+        void OnInGame();
+
+        // ゲーム開始通知
+        void OnStartGame();
     }
 }

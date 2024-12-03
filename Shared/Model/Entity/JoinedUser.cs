@@ -25,5 +25,11 @@ namespace Shared.Interfaces.StreamingHubs
         /// </summary>
         [Key(2)]
         public int JoinOrder { get; set; }
+
+        /// <summary>
+        /// ゲーム状態 [0:None 1:参加 2:インゲーム]
+        /// </summary>
+        [Key(3)]
+        public int GameState { get; set; }
     }
 }
