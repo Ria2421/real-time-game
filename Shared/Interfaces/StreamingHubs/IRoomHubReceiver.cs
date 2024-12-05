@@ -21,5 +21,8 @@ namespace Shared.Interfaces.StreamingHubs
 
         // ゲーム開始通知
         void OnStartGame();
+
+        // ゲーム終了通知
+        void OnEndGame(int plNo,string name);
     }
 }

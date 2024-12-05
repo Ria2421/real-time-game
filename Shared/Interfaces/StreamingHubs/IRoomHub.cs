@@ -32,6 +32,12 @@ namespace Shared.Interfaces.StreamingHubs
         /// ゲームスタート処理
         /// </summary>
         /// <returns></returns>
-        Task StartAsync();
+        Task GameStartAsync();
+
+        /// <summary>
+        /// ゲーム終了処理
+        /// </summary>
+        /// <returns></returns>
+        Task GameEndAsync();
     }
 }

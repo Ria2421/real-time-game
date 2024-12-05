@@ -2,7 +2,7 @@
 // ゲームマネージャー [ GameManager.cs ]
 // Author:Kenta Nakamoto
 // Data:2024/11/18
-// Update:2024/11/26
+// Update:2024/12/05
 //---------------------------------------------------------------
 using Shared.Interfaces.StreamingHubs;
 using System;
@@ -15,6 +15,7 @@ using UnityEngine.Windows;
 using DG.Tweening;
 using RealTimeServer.Model.Entity;
 using DavidJalbert;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
@@ -119,6 +120,11 @@ public class GameManager : MonoBehaviour
     /// </summary>
     [SerializeField] private Text timerText;
 
+    /// <summary>
+    /// 勝者表示
+    /// </summary>
+    [SerializeField] private Text winnerText;
+
     [Space(10)]
     [Header("---- InputField ----")]
 
@@ -140,10 +146,20 @@ public class GameManager : MonoBehaviour
     /// </summary>
     [SerializeField] private Button exitButton;
 
+    [Space(10)]
+    [Header("---- Panel ----")]
+
+    /// <summary>
+    /// リザルトパネル
+    /// </summary>
+    [SerializeField] private GameObject resultPanel;
+
     //=====================================
     // メソッド
 
-    // 初期処理
+    /// <summary>
+    /// 初期処理
+    /// </summary>
     void Start()
     {
         // 各通知が届いた際に行う処理をモデルに登録する
@@ -152,17 +168,22 @@ public class GameManager : MonoBehaviour
         roomModel.OnMovedUser += OnMovedUser;           // 移動
         roomModel.OnInGameUser += OnInGameUser;         // インゲーム
         roomModel.OnStartGameUser += OnStartGameUser;   // ゲームスタート
+        roomModel.OnEndGameUser += OnEndGameUser;       // ゲーム終了
 
         ChangeUI(gameState);
     }
 
-    // Update is called once per frame
+    /// <summary>
+    /// 更新処理
+    /// </summary>
     void Update()
     {
         
     }
 
-    // 移動データ送信処理
+    /// <summary>
+    /// 移動データ送信処理
+    /// </summary>
     private async void SendMoveData()
     {
         if (gameState == GameState.None) return;
@@ -179,7 +200,9 @@ public class GameManager : MonoBehaviour
         await roomModel.MoveAsync(moveData);
     }
 
-    // 接続処理
+    /// <summary>
+    /// 接続処理
+    /// </summary>
     public async void OnConnect()
     {
         int userId = int.Parse(idText.text);    // 入力したユーザーIDの変換
@@ -192,7 +215,9 @@ public class GameManager : MonoBehaviour
         Debug.Log("入室");
     }
 
-    // 切断処理
+    /// <summary>
+    /// 切断処理
+    /// </summary>
     public async void OnDisconnect()
     {
         CancelInvoke();
@@ -211,16 +236,21 @@ public class GameManager : MonoBehaviour
         Debug.Log("退出");
     }
 
-    // ゲームスタート通知処理
+    /// <summary>
+    /// ゲームスタート通知処理
+    /// </summary>
     public async void OnStart()
     {
-        await roomModel.StartAsync();
+        await roomModel.GameStartAsync();
     }
 
     // --------------------------------------------------------------
     // モデル登録用関数
 
-    // 入室通知時の処理
+    /// <summary>
+    /// 入室通知受信時の処理
+    /// </summary>
+    /// <param name="user"></param>
     private void OnJoinedUser(JoinedUser user)
     {
         Debug.Log(user.JoinOrder + "P");
@@ -256,7 +286,10 @@ public class GameManager : MonoBehaviour
         characterList[user.ConnectionId] = characterObj;        // フィールドで保存
     }
 
-    // 退出通知時の処理
+    /// <summary>
+    /// 退出通知受信時の処理
+    /// </summary>
+    /// <param name="user"></param>
     private void OnExitedUser(JoinedUser user)
     {
         // 位置情報の更新
@@ -266,7 +299,10 @@ public class GameManager : MonoBehaviour
         characterList.Remove(user.ConnectionId);     // リストから削除
     }
 
-    // プレイヤーが移動したときの処理
+    /// <summary>
+    /// プレイヤーが移動したときの処理
+    /// </summary>
+    /// <param name="moveData"></param>
     private void OnMovedUser(MoveData moveData)
     {
         // 位置情報の更新
@@ -282,7 +318,7 @@ public class GameManager : MonoBehaviour
     }
 
     /// <summary>
-    /// インゲーム通知処理
+    /// インゲーム通知受信処理
     /// </summary>
     private void OnInGameUser()
     {
@@ -292,18 +328,39 @@ public class GameManager : MonoBehaviour
     }
 
     /// <summary>
-    /// ゲームスタート通知処理
+    /// ゲームスタート通知受信処理
     /// </summary>
     private void OnStartGameUser()
     {
         // テキスト変更
-        timerText.text = "Start!";
+        timerText.text = "開始!";
         StartCoroutine("HiddenText");
         // 操作可能にする
         inputController.GetComponent<TinyCarStandardInput>().carController = playerController.GetComponent<TinyCarController>();
     }
 
-    // 表示UIの変更
+    /// <summary>
+    /// ゲーム終了通知受信処理
+    /// </summary>
+    private void OnEndGameUser(int plNo, string name)
+    {
+        // 操作不能にする
+        inputController.GetComponent<TinyCarStandardInput>().carController = null;
+
+        //++ 終了SE再生
+
+        // 終了表示
+        timerText.text = "終了!";
+
+        // 1秒後にリザルト表示
+        winnerText.text = name;
+        StartCoroutine("DisplayResult");
+    }
+
+    /// <summary>
+    /// 表示UIの変更
+    /// </summary>
+    /// <param name="gameState"></param>
     private void ChangeUI(GameState gameState)
     {
         switch (gameState)
@@ -363,5 +420,42 @@ public class GameManager : MonoBehaviour
         yield return new WaitForSeconds(0.8f);
 
         timerText.text = "";
+    }
+
+    /// <summary>
+    /// リザルト表示
+    /// </summary>
+    /// <returns></returns>
+    IEnumerator DisplayResult()
+    {
+        // 1秒待ってコルーチン中断
+        yield return new WaitForSeconds(1.0f);
+
+        timerText.text = "";    // 終了非表示
+        resultPanel.gameObject.SetActive(true); // リザルトパネル表示
+    }
+
+    /// <summary>
+    /// タイトルボタン押下時
+    /// </summary>
+    public async void OnTitleButton()
+    {
+        CancelInvoke();
+
+        // 退出
+        await roomModel.ExitAsync();
+
+        // プレイヤーオブジェクトの削除
+        foreach (Transform child in parentObj.transform)
+        {
+            Destroy(child.gameObject);
+        }
+
+        gameState = GameState.None;
+        ChangeUI(gameState);
+        Debug.Log("退出");
+
+        // タイトルに戻る
+        SceneManager.LoadScene("01_TitleScene");
     }
 }

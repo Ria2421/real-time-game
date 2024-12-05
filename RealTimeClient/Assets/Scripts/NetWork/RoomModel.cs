@@ -2,21 +2,14 @@
 // ルーム情報モデル [ RoomModel.cs ]
 // Author:Kenta Nakamoto
 // Data:2024/11/18
-// Update:2024/11/18
+// Update:2024/12/05
 //---------------------------------------------------------------
 using Cysharp.Net.Http;
 using Cysharp.Threading.Tasks;
 using Grpc.Net.Client;
 using MagicOnion.Client;
-using RealTimeServer.Model.Entity;
-using Shared.Interfaces.Services;
 using Shared.Interfaces.StreamingHubs;
 using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using UnityEngine;
-using UnityEngine.Rendering.Universal;
 
 public class RoomModel : BaseModel,IRoomHubReceiver
 {
@@ -60,6 +53,11 @@ public class RoomModel : BaseModel,IRoomHubReceiver
     /// ゲーム開始通知
     /// </summary>
     public Action OnStartGameUser { get; set; }
+
+    /// <summary>
+    /// ゲーム終了通知
+    /// </summary>
+    public Action<int,string> OnEndGameUser { get; set; }
 
     //-------------------------------------------------------
     // メソッド
@@ -119,11 +117,15 @@ public class RoomModel : BaseModel,IRoomHubReceiver
     }
 
     // ゲーム開始通知処理
-    public async UniTask StartAsync()
+    public async UniTask GameStartAsync()
     {
-        await roomHub.StartAsync();
+        await roomHub.GameStartAsync();
     }
 
+    public async UniTask GameEndAsync()
+    {
+        await roomHub.GameEndAsync();
+    }
 
     //==================================================================
     // IRoomHubReceiverインターフェースの実装
@@ -156,5 +158,11 @@ public class RoomModel : BaseModel,IRoomHubReceiver
     public void OnStartGame()
     {
         OnStartGameUser();
+    }
+
+    // ゲーム終了通知
+    public void OnEndGame(int plNo, string name)
+    {
+        OnEndGameUser(plNo,name);
     }
 }

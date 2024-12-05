@@ -119,7 +119,7 @@ public class RoomHub:StreamingHubBase<IRoomHub,IRoomHubReceiver>,IRoomHub
     /// ゲーム開始処理
     /// </summary>
     /// <returns></returns>
-    public async Task StartAsync()
+    public async Task GameStartAsync()
     {
         // 該当するルームデータを取得
         var roomStrage = this.room.GetInMemoryStorage<RoomData>();
@@ -141,6 +141,21 @@ public class RoomHub:StreamingHubBase<IRoomHub,IRoomHubReceiver>,IRoomHub
             Console.WriteLine("ゲームスタート");
             this.Broadcast(room).OnStartGame();
         }
+    }
+
+    /// <summary>
+    /// ゲーム終了処理
+    /// </summary>
+    /// <returns></returns>
+    public async Task GameEndAsync()
+    {
+        // 該当するルームデータを取得
+        var roomStrage = this.room.GetInMemoryStorage<RoomData>();
+        var roomData = roomStrage.Get(this.ConnectionId);
+
+        // ゲーム終了通知 (勝者のPLNoと名前を渡す)
+        Console.WriteLine("ゲーム終了");
+        this.Broadcast(room).OnEndGame(roomData.JoinedUser.JoinOrder,roomData.JoinedUser.UserData.Name);
     }
 
     /// <summary>

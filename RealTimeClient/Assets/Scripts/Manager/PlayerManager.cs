@@ -1,36 +1,54 @@
+//---------------------------------------------------------------
+// プレイヤーマネージャー [ PlayerManager.cs ]
+// Author:Kenta Nakamoto
+// Data:2024/12/05
+// Update:2024/12/05
+//---------------------------------------------------------------
+using Shared.Interfaces.StreamingHubs;
 using UnityEngine;
 
 public class PlayerManager : MonoBehaviour
 {
-    //移動速度
-    private float _speed = 7.0f;
+    //=====================================
+    // フィールド
 
-    //x軸方向の入力を保存
-    private float _input_x;
-    //z軸方向の入力を保存
-    private float _input_z;
+    /// <summary>
+    /// ルームモデル格納用
+    /// </summary>
+    private RoomModel roomModel;
 
-    void Update()
+    /// <summary>
+    /// ゲーム終了フラグ
+    /// </summary>
+    private bool endFlag = false;
+
+    //=====================================
+    // メソッド
+
+    // 初期処理
+    void Start()
     {
-        //x軸方向、z軸方向の入力を取得
-        //Horizontal、水平、横方向のイメージ
-        _input_x = Input.GetAxis("Horizontal");
-        //Vertical、垂直、縦方向のイメージ
-        _input_z = Input.GetAxis("Vertical");
+        // ルームモデルの取得
+        roomModel = GameObject.Find("RoomModel").GetComponent<RoomModel>();
+    }
 
-        //移動の向きなど座標関連はVector3で扱う
-        Vector3 velocity = new Vector3(_input_x, 0, _input_z);
-        //ベクトルの向きを取得
-        Vector3 direction = velocity.normalized;
+    // ゲーム終了通知送信処理
+    private async void SendEndGame()
+    {
+        await roomModel.GameEndAsync();
+    }
 
-        //移動距離を計算
-        float distance = _speed * Time.deltaTime;
-        //移動先を計算
-        Vector3 destination = transform.position + direction * distance;
+    // トリガーコライダー接触時処理
+    private void OnTriggerEnter(Collider collision)
+    {
+        if(endFlag) return;
 
-        //移動先に向けて回転
-        transform.LookAt(destination);
-        //移動先の座標を設定
-        transform.position = destination;
+        if (collision.gameObject.tag == "Goal")
+        {   // "Goal"タグのオブジェクトに接触した時
+            endFlag = true;
+
+            // 全ユーザーにゲーム終了通知
+            SendEndGame();
+        }
     }
 }
