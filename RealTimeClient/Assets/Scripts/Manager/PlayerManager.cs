@@ -4,6 +4,7 @@
 // Data:2024/12/05
 // Update:2024/12/05
 //---------------------------------------------------------------
+using DavidJalbert;
 using Shared.Interfaces.StreamingHubs;
 using UnityEngine;
 
@@ -49,6 +50,11 @@ public class PlayerManager : MonoBehaviour
 
             // 全ユーザーにゲーム終了通知
             SendEndGame();
+        }
+
+        if(collision.gameObject.tag == "Trap")
+        {
+            transform.parent.gameObject.GetComponent<TinyCarExplosiveBody>().explode();
         }
     }
 }

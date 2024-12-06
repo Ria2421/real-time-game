@@ -353,7 +353,7 @@ public class GameManager : MonoBehaviour
     private void OnEndGameUser(int plNo, string name)
     {
         // ‘€ì•s”\‚É‚·‚é
-        inputController.GetComponent<TinyCarStandardInput>().carController = null;
+        inputController.SetActive(false);
 
         //++ I—¹SEÄ¶
 

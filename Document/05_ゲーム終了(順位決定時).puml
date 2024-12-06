@@ -1,0 +1,38 @@
+@startuml
+'https://plantuml.com/sequence-diagram
+
+participant Client1
+participant Client2
+participant Client3
+participant MagickOnion
+
+autonumber
+
+rnote over Client1,MagickOnion : ゲームスタート
+
+rnote over Client1:死亡
+Client1 -[#blue]> MagickOnion : 死亡通知
+rnote over MagickOnion:該当PLの順位保存
+Client2 <- MagickOnion : PL死亡通知
+Client3 <- MagickOnion : PL死亡通知
+rnote over Client2,Client3:死亡演出
+rnote over MagickOnion:2位まで確定したか判定
+
+rnote over Client2:死亡
+Client2 -[#blue]> MagickOnion : 死亡通知
+rnote over MagickOnion:該当PLの順位保存
+Client1 <- MagickOnion : PL死亡通知
+Client3 <- MagickOnion : PL死亡通知
+rnote over Client1:死亡演出
+rnote over Client3:死亡演出
+rnote over MagickOnion:2位まで確定したか判定
+
+rnote over MagickOnion:順位確定
+Client1 <- MagickOnion : リザルト通知
+Client2 <- MagickOnion : リザルト通知
+Client3 <- MagickOnion : リザルト通知
+rnote over Client1,Client3 : リザルト表示
+
+rnote over Client1,MagickOnion : 退室処理
+
+@enduml

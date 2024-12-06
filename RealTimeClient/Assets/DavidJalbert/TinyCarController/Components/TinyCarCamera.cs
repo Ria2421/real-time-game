@@ -49,6 +49,7 @@ namespace DavidJalbert
             { 
                 gameObject.transform.position = defaultPos;
                 gameObject.transform.eulerAngles = defaultAngle;
+                return;
             }
 
             Vector3 followPosition = whatToFollow.position;

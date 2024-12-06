@@ -1,4 +1,10 @@
-﻿using MessagePack;
+﻿//---------------------------------------------------------------
+// 移動データ [ MoveData.cs ]
+// Author:Kenta Nakamoto
+// Data:2024/12/06
+// Update:2024/12/06
+//---------------------------------------------------------------
+using MessagePack;
 using RealTimeServer.Model.Entity;
 using System;
 using UnityEngine;

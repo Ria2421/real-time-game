@@ -1,4 +1,10 @@
-﻿using MessagePack;
+﻿//---------------------------------------------------------------
+// 参加者データ [ JoinedUser.cs ]
+// Author:Kenta Nakamoto
+// Data:2024/11/18
+// Update:2024/12/06
+//---------------------------------------------------------------
+using MessagePack;
 using RealTimeServer.Model.Entity;
 using System;
 using UnityEngine;
@@ -31,5 +37,11 @@ namespace Shared.Interfaces.StreamingHubs
         /// </summary>
         [Key(3)]
         public int GameState { get; set; }
+
+        /// <summary>
+        /// ゲーム順位
+        /// </summary>
+        [Key(4)]
+        public int Ranking { get; set; }
     }
 }

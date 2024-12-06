@@ -47,12 +47,15 @@ namespace MessagePack.Resolvers
 
         static GeneratedResolverGetFormatterHelper()
         {
-            lookup = new global::System.Collections.Generic.Dictionary<global::System.Type, int>(4)
+            lookup = new global::System.Collections.Generic.Dictionary<global::System.Type, int>(7)
             {
-                { typeof(global::RealTimeServer.Model.Entity.User), 0 },
-                { typeof(global::Shared.Interfaces.Services.IMyFirstService.Number), 1 },
-                { typeof(global::Shared.Interfaces.StreamingHubs.JoinedUser), 2 },
-                { typeof(global::Shared.Interfaces.StreamingHubs.MoveData), 3 },
+                { typeof(global::System.Collections.Generic.Dictionary<int, string>), 0 },
+                { typeof(global::System.Collections.Generic.List<global::System.Collections.Generic.Dictionary<int, string>>), 1 },
+                { typeof(global::RealTimeServer.Model.Entity.User), 2 },
+                { typeof(global::Shared.Interfaces.Services.IMyFirstService.Number), 3 },
+                { typeof(global::Shared.Interfaces.StreamingHubs.JoinedUser), 4 },
+                { typeof(global::Shared.Interfaces.StreamingHubs.MoveData), 5 },
+                { typeof(global::Shared.Interfaces.StreamingHubs.ResultData), 6 },
             };
         }
 
@@ -66,10 +69,13 @@ namespace MessagePack.Resolvers
 
             switch (key)
             {
-                case 0: return new MessagePack.Formatters.RealTimeServer.Model.Entity.UserFormatter();
-                case 1: return new MessagePack.Formatters.Shared.Interfaces.Services.IMyFirstService_NumberFormatter();
-                case 2: return new MessagePack.Formatters.Shared.Interfaces.StreamingHubs.JoinedUserFormatter();
-                case 3: return new MessagePack.Formatters.Shared.Interfaces.StreamingHubs.MoveDataFormatter();
+                case 0: return new global::MessagePack.Formatters.DictionaryFormatter<int, string>();
+                case 1: return new global::MessagePack.Formatters.ListFormatter<global::System.Collections.Generic.Dictionary<int, string>>();
+                case 2: return new MessagePack.Formatters.RealTimeServer.Model.Entity.UserFormatter();
+                case 3: return new MessagePack.Formatters.Shared.Interfaces.Services.IMyFirstService_NumberFormatter();
+                case 4: return new MessagePack.Formatters.Shared.Interfaces.StreamingHubs.JoinedUserFormatter();
+                case 5: return new MessagePack.Formatters.Shared.Interfaces.StreamingHubs.MoveDataFormatter();
+                case 6: return new MessagePack.Formatters.Shared.Interfaces.StreamingHubs.ResultDataFormatter();
                 default: return null;
             }
         }
@@ -289,11 +295,12 @@ namespace MessagePack.Formatters.Shared.Interfaces.StreamingHubs
             }
 
             global::MessagePack.IFormatterResolver formatterResolver = options.Resolver;
-            writer.WriteArrayHeader(4);
+            writer.WriteArrayHeader(5);
             global::MessagePack.FormatterResolverExtensions.GetFormatterWithVerify<global::System.Guid>(formatterResolver).Serialize(ref writer, value.ConnectionId, options);
             global::MessagePack.FormatterResolverExtensions.GetFormatterWithVerify<global::RealTimeServer.Model.Entity.User>(formatterResolver).Serialize(ref writer, value.UserData, options);
             writer.Write(value.JoinOrder);
             writer.Write(value.GameState);
+            writer.Write(value.Ranking);
         }
 
         public global::Shared.Interfaces.StreamingHubs.JoinedUser Deserialize(ref global::MessagePack.MessagePackReader reader, global::MessagePack.MessagePackSerializerOptions options)
@@ -323,6 +330,9 @@ namespace MessagePack.Formatters.Shared.Interfaces.StreamingHubs
                         break;
                     case 3:
                         ____result.GameState = reader.ReadInt32();
+                        break;
+                    case 4:
+                        ____result.Ranking = reader.ReadInt32();
                         break;
                     default:
                         reader.Skip();
@@ -381,6 +391,52 @@ namespace MessagePack.Formatters.Shared.Interfaces.StreamingHubs
                         break;
                     case 3:
                         ____result.WheelAngle = reader.ReadSingle();
+                        break;
+                    default:
+                        reader.Skip();
+                        break;
+                }
+            }
+
+            reader.Depth--;
+            return ____result;
+        }
+    }
+
+    public sealed class ResultDataFormatter : global::MessagePack.Formatters.IMessagePackFormatter<global::Shared.Interfaces.StreamingHubs.ResultData>
+    {
+
+        public void Serialize(ref global::MessagePack.MessagePackWriter writer, global::Shared.Interfaces.StreamingHubs.ResultData value, global::MessagePack.MessagePackSerializerOptions options)
+        {
+            if (value == null)
+            {
+                writer.WriteNil();
+                return;
+            }
+
+            global::MessagePack.IFormatterResolver formatterResolver = options.Resolver;
+            writer.WriteArrayHeader(1);
+            global::MessagePack.FormatterResolverExtensions.GetFormatterWithVerify<global::System.Collections.Generic.List<global::System.Collections.Generic.Dictionary<int, string>>>(formatterResolver).Serialize(ref writer, value.Rank, options);
+        }
+
+        public global::Shared.Interfaces.StreamingHubs.ResultData Deserialize(ref global::MessagePack.MessagePackReader reader, global::MessagePack.MessagePackSerializerOptions options)
+        {
+            if (reader.TryReadNil())
+            {
+                return null;
+            }
+
+            options.Security.DepthStep(ref reader);
+            global::MessagePack.IFormatterResolver formatterResolver = options.Resolver;
+            var length = reader.ReadArrayHeader();
+            var ____result = new global::Shared.Interfaces.StreamingHubs.ResultData();
+
+            for (int i = 0; i < length; i++)
+            {
+                switch (i)
+                {
+                    case 0:
+                        ____result.Rank = global::MessagePack.FormatterResolverExtensions.GetFormatterWithVerify<global::System.Collections.Generic.List<global::System.Collections.Generic.Dictionary<int, string>>>(formatterResolver).Deserialize(ref reader, options);
                         break;
                     default:
                         reader.Skip();

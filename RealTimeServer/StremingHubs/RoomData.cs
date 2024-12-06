@@ -1,4 +1,10 @@
-﻿using Shared.Interfaces.StreamingHubs;
+﻿//---------------------------------------------------------------
+// ルームデータクラス [ RoomData.cs ]
+// Author:Kenta Nakamoto
+// Data:2024/11/18
+// Update:2024/12/06
+//---------------------------------------------------------------
+using Shared.Interfaces.StreamingHubs;
 
 namespace RealTimeServer.StremingHubs
 {
