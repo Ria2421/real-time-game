@@ -90,6 +90,11 @@ public class GameManager : MonoBehaviour
     [SerializeField] private GameObject parentObj;
 
     /// <summary>
+    /// メインカメラ
+    /// </summary>
+    [SerializeField] private GameObject mainCamera;
+
+    /// <summary>
     /// プレイヤーごとのリス地点
     /// </summary>
     [SerializeField] private Transform[] respownList;
@@ -104,7 +109,7 @@ public class GameManager : MonoBehaviour
     /// </summary>
     [SerializeField] private float timeLimit = 3.0f;
 
-    [Space (40)]
+    [Space (25)]
     [Header("===== UI関連 =====")]
 
     [Space(10)]
@@ -335,6 +340,9 @@ public class GameManager : MonoBehaviour
         // テキスト変更
         timerText.text = "開始!";
         StartCoroutine("HiddenText");
+
+        // カメラをトップダウンに変更
+        mainCamera.GetComponent<TinyCarCamera>().whatToFollow = playerController.transform;
         // 操作可能にする
         inputController.GetComponent<TinyCarStandardInput>().carController = playerController.GetComponent<TinyCarController>();
     }

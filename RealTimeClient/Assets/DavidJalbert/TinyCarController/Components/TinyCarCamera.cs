@@ -11,6 +11,10 @@ namespace DavidJalbert
             TopDown, ThirdPerson
         }
 
+        // カメラのデフォルト位置
+        private Vector3 defaultPos = new Vector3(54.0f, 59.1f, 1.8f);
+        private Vector3 defaultAngle = new Vector3(60.0f, 0, 0);
+
         [Tooltip("Which Transform the camera should track.")]
         public Transform whatToFollow;
         [Tooltip("Top Down: Only change the camera's position, keep rotation fixed.\nThird Person: Change both the position and rotation relative to the vehicle.")]
@@ -41,6 +45,12 @@ namespace DavidJalbert
 
         void FixedUpdate()
         {
+            if (whatToFollow == null) 
+            { 
+                gameObject.transform.position = defaultPos;
+                gameObject.transform.eulerAngles = defaultAngle;
+            }
+
             Vector3 followPosition = whatToFollow.position;
             Quaternion followRotation = whatToFollow.rotation;
 
