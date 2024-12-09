@@ -357,11 +357,13 @@ namespace MessagePack.Formatters.Shared.Interfaces.StreamingHubs
             }
 
             global::MessagePack.IFormatterResolver formatterResolver = options.Resolver;
-            writer.WriteArrayHeader(4);
+            writer.WriteArrayHeader(6);
             global::MessagePack.FormatterResolverExtensions.GetFormatterWithVerify<global::System.Guid>(formatterResolver).Serialize(ref writer, value.ConnectionId, options);
             global::MessagePack.FormatterResolverExtensions.GetFormatterWithVerify<global::UnityEngine.Vector3>(formatterResolver).Serialize(ref writer, value.Position, options);
             global::MessagePack.FormatterResolverExtensions.GetFormatterWithVerify<global::UnityEngine.Vector3>(formatterResolver).Serialize(ref writer, value.Rotation, options);
             writer.Write(value.WheelAngle);
+            writer.Write(value.IsTurbo);
+            writer.Write(value.IsDrift);
         }
 
         public global::Shared.Interfaces.StreamingHubs.MoveData Deserialize(ref global::MessagePack.MessagePackReader reader, global::MessagePack.MessagePackSerializerOptions options)
@@ -391,6 +393,12 @@ namespace MessagePack.Formatters.Shared.Interfaces.StreamingHubs
                         break;
                     case 3:
                         ____result.WheelAngle = reader.ReadSingle();
+                        break;
+                    case 4:
+                        ____result.IsTurbo = reader.ReadBoolean();
+                        break;
+                    case 5:
+                        ____result.IsDrift = reader.ReadBoolean();
                         break;
                     default:
                         reader.Skip();

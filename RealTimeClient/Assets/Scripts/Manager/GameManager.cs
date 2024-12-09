@@ -62,6 +62,16 @@ public class GameManager : MonoBehaviour
     /// </summary>
     private Transform wheelAngle;
 
+    /// <summary>
+    /// プレイヤーのターボパーティクル
+    /// </summary>
+    private ParticleSystem playerTurboParticle;
+
+    /// <summary>
+    /// プレイヤーのドリフトパーティクル
+    /// </summary>
+    private ParticleSystem playerDriftParticle;
+
     [Header("各種Objectをアタッチ")]
 
     /// <summary>
@@ -183,7 +193,7 @@ public class GameManager : MonoBehaviour
     /// </summary>
     void Update()
     {
-        
+
     }
 
     /// <summary>
@@ -199,7 +209,9 @@ public class GameManager : MonoBehaviour
             ConnectionId = roomModel.ConnectionId,
             Position = playerController.transform.position + posCorrection,
             Rotation = playerController.transform.eulerAngles,
-            WheelAngle = wheelAngle.eulerAngles.y
+            WheelAngle = wheelAngle.eulerAngles.y,
+            IsTurbo = playerTurboParticle.isPlaying,
+            IsDrift = playerDriftParticle.isPlaying
         };
 
         await roomModel.MoveAsync(moveData);
@@ -273,6 +285,10 @@ public class GameManager : MonoBehaviour
             playerController = characterObj.transform.GetChild(0).gameObject;
             wheelAngle = characterObj.transform.Find("Visuals/WheelFrontLeft").transform;
 
+            // パーティクルの取得
+            playerTurboParticle = characterObj.transform.Find("Visuals/ParticlesBoost").GetComponent<ParticleSystem>();
+            playerDriftParticle = characterObj.transform.Find("Visuals/ParticlesDrifting").GetComponent<ParticleSystem>();
+
             // UI変更
             gameState = GameState.Join;
             ChangeUI(gameState);
@@ -320,6 +336,10 @@ public class GameManager : MonoBehaviour
         // タイヤ角の更新
         characterList[moveData.ConnectionId].transform.Find("wheels/wheel front right").transform.DORotate(new Vector3(0,moveData.WheelAngle,0),internetSpeed).SetEase(Ease.Linear);
         characterList[moveData.ConnectionId].transform.Find("wheels/wheel front left").transform.DORotate(new Vector3(0, moveData.WheelAngle, 0), internetSpeed).SetEase(Ease.Linear);
+
+        // パーティクルの取得・更新
+        characterList[moveData.ConnectionId].GetComponent<OtherPlayerManager>().playDrift(moveData.IsDrift);
+        characterList[moveData.ConnectionId].GetComponent<OtherPlayerManager>().playTurbo(moveData.IsTurbo);
     }
 
     /// <summary>

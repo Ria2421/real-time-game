@@ -37,5 +37,17 @@ namespace Shared.Interfaces.StreamingHubs
         /// </summary>
         [Key(3)]
         public float WheelAngle { get; set; }
+
+        /// <summary>
+        /// ターボフラグ
+        /// </summary>
+        [Key(4)]
+        public bool IsTurbo { get; set; }
+
+        /// <summary>
+        /// ドリフトフラグ
+        /// </summary>
+        [Key(5)]
+        public bool IsDrift { get; set; }
     }
 }

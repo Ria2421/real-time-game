@@ -931,7 +931,7 @@ MonoBehaviour:
   roomModel: {fileID: 1197729796}
   playerPrefab: {fileID: 9119118491832856353, guid: a784eefdf96e44443998670f41b4aef4,
     type: 3}
-  otherPrefab: {fileID: 6871175417294970825, guid: 881ae40ec8a380849a7142719c98ec25,
+  otherPrefab: {fileID: 3110377832017560899, guid: 836aa45b9633b494ea5b4f6fbd40a4a3,
     type: 3}
   inputPrefab: {fileID: 5487294334574541708, guid: a62455488d048f348a8f566984c2f304,
     type: 3}
