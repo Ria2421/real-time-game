@@ -1,5 +1,6 @@
 ﻿using MagicOnion;
 using System;
+using System.Collections.Generic;
 
 namespace Shared.Interfaces.StreamingHubs
 {
@@ -23,6 +24,9 @@ namespace Shared.Interfaces.StreamingHubs
         void OnStartGame();
 
         // ゲーム終了通知
-        void OnEndGame(int plNo,string name);
+        void OnEndGame(Dictionary<int, string> result);
+
+        // 撃破情報通知
+        void OnCrushing(string attackName, string cruchName, Guid crushID);
     }
 }

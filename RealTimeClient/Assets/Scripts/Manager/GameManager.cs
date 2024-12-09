@@ -16,6 +16,8 @@ using DG.Tweening;
 using RealTimeServer.Model.Entity;
 using DavidJalbert;
 using UnityEngine.SceneManagement;
+using Unity.VisualScripting;
+using Cysharp.Threading.Tasks.Triggers;
 
 public class GameManager : MonoBehaviour
 {
@@ -119,6 +121,11 @@ public class GameManager : MonoBehaviour
     /// </summary>
     [SerializeField] private float timeLimit = 3.0f;
 
+    /// <summary>
+    /// 爆発パーティクル
+    /// </summary>
+    [SerializeField] private GameObject explosionPrefab;
+
     [Space (25)]
     [Header("===== UI関連 =====")]
 
@@ -136,9 +143,14 @@ public class GameManager : MonoBehaviour
     [SerializeField] private Text timerText;
 
     /// <summary>
-    /// 勝者表示
+    /// ランキング表示
     /// </summary>
-    [SerializeField] private Text winnerText;
+    [SerializeField] private Text[] rankTexts;
+
+    /// <summary>
+    /// 撃破通知表示
+    /// </summary>
+    [SerializeField] private GameObject crushText;
 
     [Space(10)]
     [Header("---- InputField ----")]
@@ -177,6 +189,8 @@ public class GameManager : MonoBehaviour
     /// </summary>
     void Start()
     {
+        Application.targetFrameRate = 60;
+
         // 各通知が届いた際に行う処理をモデルに登録する
         roomModel.OnJoinedUser += OnJoinedUser;         // 入室
         roomModel.OnExitedUser += OnExitedUser;         // 退室
@@ -184,6 +198,7 @@ public class GameManager : MonoBehaviour
         roomModel.OnInGameUser += OnInGameUser;         // インゲーム
         roomModel.OnStartGameUser += OnStartGameUser;   // ゲームスタート
         roomModel.OnEndGameUser += OnEndGameUser;       // ゲーム終了
+        roomModel.OnCrushingUser += OnCrushingUser;     // 撃破
 
         ChangeUI(gameState);
     }
@@ -301,6 +316,8 @@ public class GameManager : MonoBehaviour
         {
             // 他プレイヤーの生成
             characterObj = Instantiate(otherPrefab, respownList[user.JoinOrder - 1].position, Quaternion.Euler(0, 180, 0));
+            characterObj.GetComponent<OtherPlayerManager>().ConnectionID = user.ConnectionId;   // 接続IDの保存
+            characterObj.GetComponent<OtherPlayerManager>().UserName = user.UserData.Name;      // ユーザー名の保存
         }
 
         characterObj.transform.parent = parentObj.transform;    // 親の設定
@@ -370,19 +387,57 @@ public class GameManager : MonoBehaviour
     /// <summary>
     /// ゲーム終了通知受信処理
     /// </summary>
-    private void OnEndGameUser(int plNo, string name)
+    private void OnEndGameUser(Dictionary<int, string> result)
     {
         // 操作不能にする
-        inputController.SetActive(false);
+        playerController.GetComponent<Rigidbody>().isKinematic = true;
 
         //++ 終了SE再生
 
         // 終了表示
         timerText.text = "終了!";
 
+        // リザルトパネルに結果を反映
+        for (int i = 0; i < result.Count; i++)
+        {
+            rankTexts[i].text = result[i + 1];
+        }
+
         // 1秒後にリザルト表示
-        winnerText.text = name;
         StartCoroutine("DisplayResult");
+    }
+
+    /// <summary>
+    /// プレイヤー撃破通知処理
+    /// </summary>
+    /// <param name="attackName">撃破した人のPL名</param>
+    /// <param name="cruchName"> 撃破された人のPL名</param>
+    /// <param name="crushID">   撃破された人の接続ID</param>
+    private void OnCrushingUser(string attackName, string cruchName, Guid crushID)
+    {
+        // 撃破通知テキストの内容変更・表示
+        crushText.GetComponent<Text>().text = attackName + " が " + cruchName + "を撃破！";
+
+        // 通知表示Sequenceを作成
+        var sequence = DOTween.Sequence();
+        sequence.Append(crushText.transform.DOLocalMove(new Vector3(0f, 450f, 0f), 1.5f));
+        sequence.Append(crushText.transform.DOLocalMove(new Vector3(0f, 625f, 0f), 0.5f));
+        sequence.Play();
+
+        // 爆発アニメーション生成
+        if (roomModel.ConnectionId == crushID)
+        {   // 自分が撃破されたとき
+            Instantiate(explosionPrefab, playerController.transform.position, Quaternion.identity); // 爆発エフェクト
+            mainCamera.GetComponent<TinyCarCamera>().whatToFollow = null;                           // カメラを俯瞰に変更
+            characterList[crushID].GetComponent<TinyCarExplosiveBody>().explode();                  // 自爆処理
+            characterList.Remove(crushID);                                                          // PLリストから削除
+        }
+        else
+        {
+            Instantiate(explosionPrefab, characterList[crushID].transform.position, Quaternion.identity);
+            Destroy(characterList[crushID]);
+            characterList.Remove(crushID);
+        }
     }
 
     /// <summary>

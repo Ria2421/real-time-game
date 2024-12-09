@@ -10,6 +10,7 @@ using Grpc.Net.Client;
 using MagicOnion.Client;
 using Shared.Interfaces.StreamingHubs;
 using System;
+using System.Collections.Generic;
 
 public class RoomModel : BaseModel,IRoomHubReceiver
 {
@@ -28,6 +29,11 @@ public class RoomModel : BaseModel,IRoomHubReceiver
     /// 参加順 (PLNo)
     /// </summary>
     public int JoinOrder { get; set; }
+
+    /// <summary>
+    /// ユーザー名
+    /// </summary>
+    public string UserName { get; set; }
 
     /// <summary>
     /// ユーザー接続通知
@@ -57,7 +63,12 @@ public class RoomModel : BaseModel,IRoomHubReceiver
     /// <summary>
     /// ゲーム終了通知
     /// </summary>
-    public Action<int,string> OnEndGameUser { get; set; }
+    public Action<Dictionary<int,string>> OnEndGameUser { get; set; }
+
+    /// <summary>
+    /// ユーザー撃破通知
+    /// </summary>
+    public Action<string,string,Guid> OnCrushingUser { get; set; }
 
     //-------------------------------------------------------
     // メソッド
@@ -99,6 +110,7 @@ public class RoomModel : BaseModel,IRoomHubReceiver
             {
                 this.ConnectionId = user.ConnectionId;  // 接続IDの保存
                 this.JoinOrder = user.JoinOrder;        // 参加順(PLNo)の保存
+                this.UserName = user.UserData.Name;     // ユーザー名の保存
             }
             OnJoinedUser(user); // ActionでModelを使うクラスに通知
         }
@@ -122,9 +134,16 @@ public class RoomModel : BaseModel,IRoomHubReceiver
         await roomHub.GameStartAsync();
     }
 
+    // ゲーム終了通知処理
     public async UniTask GameEndAsync()
     {
         await roomHub.GameEndAsync();
+    }
+
+    // 撃破通知処理
+    public async UniTask CrushingPlayerAsync(string attackName, string cruchName, Guid crushID)
+    {
+        await roomHub.CrushingPlayerAsync(attackName, cruchName, crushID);
     }
 
     //==================================================================
@@ -161,8 +180,14 @@ public class RoomModel : BaseModel,IRoomHubReceiver
     }
 
     // ゲーム終了通知
-    public void OnEndGame(int plNo, string name)
+    public void OnEndGame(Dictionary<int,string> result)
     {
-        OnEndGameUser(plNo,name);
+        OnEndGameUser(result);
+    }
+
+    // 撃破通知処理
+    public void OnCrushing(string attackName, string cruchName, Guid crushID)
+    {
+        OnCrushingUser(attackName, cruchName, crushID);
     }
 }

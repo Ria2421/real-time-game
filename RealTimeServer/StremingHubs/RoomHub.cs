@@ -153,9 +153,9 @@ public class RoomHub:StreamingHubBase<IRoomHub,IRoomHubReceiver>,IRoomHub
         var roomStrage = this.room.GetInMemoryStorage<RoomData>();
         var roomData = roomStrage.Get(this.ConnectionId);
 
-        // ゲーム終了通知 (勝者のPLNoと名前を渡す)
+        // ゲーム終了通知 (順位と名前を渡す)
         Console.WriteLine("ゲーム終了");
-        this.Broadcast(room).OnEndGame(roomData.JoinedUser.JoinOrder,roomData.JoinedUser.UserData.Name);
+        //this.Broadcast(room).OnEndGame();
     }
 
     /// <summary>
@@ -184,5 +184,49 @@ public class RoomHub:StreamingHubBase<IRoomHub,IRoomHubReceiver>,IRoomHub
 
         // ルーム参加者全員に、ユーザーの移動情報を送信
         this.BroadcastExceptSelf(room).OnMove(moveData);
+    }
+
+    /// <summary>
+    /// 撃破処理
+    /// </summary>
+    /// <param name="attackName">撃破した人のPL名</param>
+    /// <param name="cruchName"> 撃破された人のPL名</param>
+    /// <param name="crushID">   撃破された人の接続ID</param>
+    /// <returns></returns>
+    public async Task CrushingPlayerAsync(string attackName, string cruchName, Guid crushID)
+    {
+        // 撃破された人のデータを取得
+        var roomStrage = this.room.GetInMemoryStorage<RoomData>();
+        var roomData = roomStrage.Get(crushID);
+
+        // 全員に撃破情報通知を送る
+        this.Broadcast(room).OnCrushing(attackName, cruchName, crushID);
+
+        // 順位の計算
+        RoomData[] roomDataList = roomStrage.AllValues.ToArray<RoomData>();
+        int rankCnt = 0;
+        foreach(RoomData data in roomDataList)
+        {
+            if(data.JoinedUser.Ranking == 0) rankCnt++;
+        }
+
+        roomData.JoinedUser.Ranking = rankCnt;  // 順位の保存
+
+        if (rankCnt == 2)
+        {
+            // 2位と同時に1位が確定
+            var data = roomStrage.Get(this.ConnectionId);
+            data.JoinedUser.Ranking = 1;
+
+            // リザルトデータの作成
+            Dictionary<int,string> rank = new Dictionary<int,string>();
+            foreach(var data2 in roomDataList)
+            {
+                rank.Add(data2.JoinedUser.Ranking,data2.JoinedUser.UserData.Name);
+            }
+
+            Console.WriteLine("ゲーム終了");
+            this.Broadcast(room).OnEndGame(rank);
+        }
     }
 }

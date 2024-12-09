@@ -6,6 +6,7 @@
 //---------------------------------------------------------------
 using DavidJalbert;
 using Shared.Interfaces.StreamingHubs;
+using System;
 using UnityEngine;
 
 public class PlayerManager : MonoBehaviour
@@ -39,13 +40,21 @@ public class PlayerManager : MonoBehaviour
         await roomModel.GameEndAsync();
     }
 
+    // 撃破通知処理
+    private async void CrushingPlayerAsync(string attackName, string cruchName, Guid crushID)
+    {
+        await roomModel.CrushingPlayerAsync(attackName, cruchName, crushID);
+    }
+
     // トリガーコライダー接触時処理
     private void OnTriggerEnter(Collider collision)
     {
         if(endFlag) return;
 
+        // Tag毎の接触時処理
+
         if (collision.gameObject.tag == "Goal")
-        {   // "Goal"タグのオブジェクトに接触した時
+        {
             endFlag = true;
 
             // 全ユーザーにゲーム終了通知
@@ -54,7 +63,14 @@ public class PlayerManager : MonoBehaviour
 
         if(collision.gameObject.tag == "Trap")
         {
+            // 爆発
             transform.parent.gameObject.GetComponent<TinyCarExplosiveBody>().explode();
+        }
+
+        if(collision.gameObject.tag == "OtherPlayer")
+        {
+            // 撃破通知 (倒したPL名,倒されたPL名,倒された人の接続ID)
+            CrushingPlayerAsync(roomModel.UserName,collision.GetComponent<OtherPlayerManager>().UserName,collision.GetComponent<OtherPlayerManager>().ConnectionID);
         }
     }
 }

@@ -6,6 +6,9 @@ TagManager:
   tags:
   - Goal
   - Trap
+  - FxTemporaire
+  - Enemy
+  - OtherPlayer
   layers:
   - Default
   - TransparentFX

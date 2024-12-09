@@ -39,5 +39,11 @@ namespace Shared.Interfaces.StreamingHubs
         /// </summary>
         /// <returns></returns>
         Task GameEndAsync();
+
+        /// <summary>
+        /// プレイヤー撃破処理
+        /// </summary>
+        /// <returns></returns>
+        Task CrushingPlayerAsync(string attackName,string cruchName,Guid crushID);
     }
 }

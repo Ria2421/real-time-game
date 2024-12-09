@@ -42,6 +42,6 @@ namespace Shared.Interfaces.StreamingHubs
         /// ゲーム順位
         /// </summary>
         [Key(4)]
-        public int Ranking { get; set; }
+        public int Ranking { get; set; } = 0;
     }
 }

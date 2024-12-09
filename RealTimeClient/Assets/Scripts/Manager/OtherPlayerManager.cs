@@ -4,6 +4,7 @@
 // Data:2024/12/09
 // Update:2024/12/09
 //---------------------------------------------------------------
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -12,16 +13,26 @@ public class OtherPlayerManager : MonoBehaviour
 {
     //=====================================
     // フィールド
-    
+
+    /// <summary>
+    /// 機体に関連する接続ID
+    /// </summary>
+    public Guid ConnectionID { get; set; }
+
+    /// <summary>
+    /// 機体に関連するユーザー名
+    /// </summary>
+    public string UserName { get; set; }
+
     /// <summary>
     /// ターボパーティクル
     /// </summary>
-    [SerializeField] ParticleSystem turboParticle;
+    [SerializeField] private ParticleSystem turboParticle;
 
     /// <summary>
     /// ドリフトパーティクル
     /// </summary>
-    [SerializeField] ParticleSystem driftParticle;
+    [SerializeField] private ParticleSystem driftParticle;
 
     //=====================================
     // メソッド
