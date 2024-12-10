@@ -12,6 +12,14 @@ using UnityEngine.SceneManagement;
 public class TitleManager : MonoBehaviour
 {
     /// <summary>
+    /// 初期処理
+    /// </summary>
+    void Start()
+    {
+        Application.targetFrameRate = 60;
+    }
+
+    /// <summary>
     /// スタートボタン押下時
     /// </summary>
     public void OnStartButton()

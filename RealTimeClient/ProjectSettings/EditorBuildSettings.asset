@@ -15,6 +15,9 @@ EditorBuildSettings:
     path: Assets/Scenes/03_SoloScene.unity
     guid: 6b5e854c0439ea24f8496c684bda54ce
   - enabled: 1
-    path: Assets/Scenes/04_OnlineScene.unity
+    path: Assets/Scenes/04_MatchingScene.unity
+    guid: 0aff169aa82409342a29a9d6cdae27a0
+  - enabled: 1
+    path: Assets/Scenes/05_OnlineScene.unity
     guid: 907f9aabc3823094981c59ca61d68390
   m_configObjects: {}

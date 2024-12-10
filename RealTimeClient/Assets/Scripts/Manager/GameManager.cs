@@ -35,6 +35,11 @@ public class GameManager : MonoBehaviour
     }
 
     /// <summary>
+    /// ルームモデル格納用
+    /// </summary>
+    private RoomModel roomModel;
+
+    /// <summary>
     /// 接続IDをキーにキャラクタのオブジェクトを管理
     /// </summary>
     private Dictionary<Guid, GameObject> characterList = new Dictionary<Guid, GameObject>();
@@ -75,11 +80,6 @@ public class GameManager : MonoBehaviour
     private ParticleSystem playerDriftParticle;
 
     [Header("各種Objectをアタッチ")]
-
-    /// <summary>
-    /// ルームモデル格納用
-    /// </summary>
-    [SerializeField] private RoomModel roomModel;
 
     /// <summary>
     /// 生成するプレイヤーのキャラクタープレハブ
@@ -187,9 +187,10 @@ public class GameManager : MonoBehaviour
     /// <summary>
     /// 初期処理
     /// </summary>
-    void Start()
+    async void Start()
     {
-        Application.targetFrameRate = 60;
+        // ルームモデルの取得
+        roomModel = GameObject.Find("RoomModel").GetComponent<RoomModel>();
 
         // 各通知が届いた際に行う処理をモデルに登録する
         roomModel.OnJoinedUser += OnJoinedUser;         // 入室
@@ -201,6 +202,13 @@ public class GameManager : MonoBehaviour
         roomModel.OnCrushingUser += OnCrushingUser;     // 撃破
 
         ChangeUI(gameState);
+
+        // 接続
+        await roomModel.ConnectAsync();
+        // 入室 (ルーム名とユーザーIDを渡して入室。最終的にはローカルデータのユーザーIDを使用
+        await roomModel.JoinAsync();
+
+        Debug.Log("入室");
     }
 
     /// <summary>
@@ -237,14 +245,7 @@ public class GameManager : MonoBehaviour
     /// </summary>
     public async void OnConnect()
     {
-        int userId = int.Parse(idText.text);    // 入力したユーザーIDの変換
 
-        // 接続
-        await roomModel.ConnectAsync();
-        // 入室 (ルーム名とユーザーIDを渡して入室。最終的にはローカルデータのユーザーIDを使用)
-        await roomModel.JoinAsync("sampleRoom", userId);
-
-        Debug.Log("入室");
     }
 
     /// <summary>
@@ -537,6 +538,9 @@ public class GameManager : MonoBehaviour
         gameState = GameState.None;
         ChangeUI(gameState);
         Debug.Log("退出");
+
+        // ルームモデルの破棄
+        Destroy(GameObject.Find("RoomModel"));
 
         // タイトルに戻る
         SceneManager.LoadScene("02_MenuScene");

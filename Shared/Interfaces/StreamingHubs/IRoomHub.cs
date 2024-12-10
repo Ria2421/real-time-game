@@ -9,12 +9,19 @@ namespace Shared.Interfaces.StreamingHubs
         // [ここにクライアント側からサーバー側を呼び出す関数を定義する]
 
         /// <summary>
+        /// ロビー入室処理
+        /// </summary>
+        /// <param name="UserId">参加するUserID</param>
+        /// <returns></returns>
+        Task JoinLobbyAsync(int userId);
+
+        /// <summary>
         /// ユーザー入室処理 [retuns : 参加者情報]
         /// </summary>
         /// <param name="roomName">参加するroom名</param>
         /// <param name="UserId">  参加するUserID</param>
         /// <returns></returns>
-        Task<JoinedUser[]> JoinAsync(string roomName, int UserId);
+        Task<JoinedUser[]> JoinAsync(string roomName, int userId);
 
         /// <summary>
         /// ユーザー退出処理

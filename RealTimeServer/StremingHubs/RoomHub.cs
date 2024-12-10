@@ -34,6 +34,26 @@ public class RoomHub:StreamingHubBase<IRoomHub,IRoomHubReceiver>,IRoomHub
     /// <param name="roomName">参加するroom名</param>
     /// <param name="UserId">  参加するUserID</param>
     /// <returns></returns>
+    public async Task JoinLobbyAsync(int userId)
+    {
+        JoinedUser[] joinedUserList = await JoinAsync("Lobby", userId);   // ロビーに参加
+
+        Console.WriteLine(joinedUserList.Length + "人目参加");
+
+        // マッチングが完了していたらクライアント側のマッチング処理を呼び出す
+        if(joinedUserList.Length == MAX_PLAYER)
+        {   // とりあえず人数揃い次第マッチング完了
+            Console.WriteLine("マッチング完了");
+            this.Broadcast(room).OnMatching(Guid.NewGuid().ToString("N"));
+        }
+    }
+
+    /// <summary>
+    /// ユーザー入室処理 [retuns : 参加者情報]
+    /// </summary>
+    /// <param name="roomName">参加するroom名</param>
+    /// <param name="UserId">  参加するUserID</param>
+    /// <returns></returns>
     public async Task<JoinedUser[]> JoinAsync(string roomName, int UserId)
     {
         // ルームに参加 & ルームを保持

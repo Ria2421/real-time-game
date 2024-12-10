@@ -79,6 +79,6 @@ public class MenuManager : MonoBehaviour
     public void OnOnlineButton()
     {
         // オンラインモード遷移
-        SceneManager.LoadScene("04_OnlineScene");
+        SceneManager.LoadScene("04_MatchingScene");
     }
 }

@@ -8,6 +8,9 @@ namespace Shared.Interfaces.StreamingHubs
     {
         // [ここにサーバー側からクライアント側を呼び出す関数を定義する]
 
+        // マッチング完了通知
+        void OnMatching(string roomName);
+
         // ユーザーの入室通知
         void OnJoin(JoinedUser user);
 

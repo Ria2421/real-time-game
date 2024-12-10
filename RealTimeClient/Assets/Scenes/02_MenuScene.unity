@@ -676,9 +676,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f10ffa1155a3c7143b3bcdc1b8ff877d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  profileButton: {fileID: 0}
-  shopButton: {fileID: 0}
-  optionButton: {fileID: 0}
+  profileButton: {fileID: 815972417}
+  shopButton: {fileID: 672555856}
+  optionButton: {fileID: 778121111}
 --- !u!4 &499071221
 Transform:
   m_ObjectHideFlags: 0

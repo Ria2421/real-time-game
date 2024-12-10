@@ -11,6 +11,7 @@ using MagicOnion.Client;
 using Shared.Interfaces.StreamingHubs;
 using System;
 using System.Collections.Generic;
+using UnityEngine;
 
 public class RoomModel : BaseModel,IRoomHubReceiver
 {
@@ -19,11 +20,17 @@ public class RoomModel : BaseModel,IRoomHubReceiver
 
     private GrpcChannel channel;    // 接続時に使用
     private IRoomHub roomHub;
+    private int userId;
 
     /// <summary>
     /// 接続ID
     /// </summary>
     public Guid ConnectionId { get; set; }
+
+    /// <summary>
+    /// 参加ルーム名
+    /// </summary>
+    public string RoomName { get; set; }
 
     /// <summary>
     /// 参加順 (PLNo)
@@ -34,6 +41,11 @@ public class RoomModel : BaseModel,IRoomHubReceiver
     /// ユーザー名
     /// </summary>
     public string UserName { get; set; }
+
+    /// <summary>
+    /// マッチング完了通知
+    /// </summary>
+    public Action<string> OnMatchingUser { get; set; }
 
     /// <summary>
     /// ユーザー接続通知
@@ -72,6 +84,11 @@ public class RoomModel : BaseModel,IRoomHubReceiver
 
     //-------------------------------------------------------
     // メソッド
+    void Start()
+    {
+        // roomModelが破棄されないように設定
+        DontDestroyOnLoad(this.gameObject);
+    }
 
     // 接続処理
     public async UniTask ConnectAsync()
@@ -100,10 +117,17 @@ public class RoomModel : BaseModel,IRoomHubReceiver
         await DisconnectionAsync();
     }
 
-    // 入室処理
-    public async UniTask JoinAsync(string roomName, int userId)
+    // ロビー接続処理
+    public async UniTask JoinLobbyAsync(int userId)
     {
-        JoinedUser[] users =await roomHub.JoinAsync(roomName, userId);
+        this.userId = userId;   // ユーザーIDの保存
+        await roomHub.JoinLobbyAsync(userId);
+    }
+
+    // 入室処理
+    public async UniTask JoinAsync()
+    {
+        JoinedUser[] users =await roomHub.JoinAsync(RoomName, userId);
         foreach(var user in users)
         {
             if (user.UserData.Id == userId)
@@ -148,6 +172,12 @@ public class RoomModel : BaseModel,IRoomHubReceiver
 
     //==================================================================
     // IRoomHubReceiverインターフェースの実装
+
+    // マッチング完了通知
+    public void OnMatching(string roomName)
+    {
+        OnMatchingUser(roomName);
+    }
 
     // 入室通知
     public void OnJoin(JoinedUser user)
