@@ -2,7 +2,7 @@
 // タイトルマネージャー [ TitleManager.cs ]
 // Author:Kenta Nakamoto
 // Data:2024/12/05
-// Update:2024/12/05
+// Update:2024/12/10
 //---------------------------------------------------------------
 using System.Collections;
 using System.Collections.Generic;
@@ -16,6 +16,6 @@ public class TitleManager : MonoBehaviour
     /// </summary>
     public void OnStartButton()
     {
-        SceneManager.LoadScene("RoomConnectTest");
+        SceneManager.LoadScene("02_MenuScene");
     }
 }

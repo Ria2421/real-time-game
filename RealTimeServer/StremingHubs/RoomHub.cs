@@ -123,23 +123,29 @@ public class RoomHub:StreamingHubBase<IRoomHub,IRoomHubReceiver>,IRoomHub
     {
         // 該当するルームデータを取得
         var roomStrage = this.room.GetInMemoryStorage<RoomData>();
-        var roomData = roomStrage.Get(this.ConnectionId);
 
-        // GameStateの変更
-        roomData.GameState = 2;
-
-        // 全員がスタート状態か調べる
-        int startCnt = 0;
-        RoomData[] roomDataList = roomStrage.AllValues.ToArray<RoomData>();
-        foreach(RoomData data in roomDataList)
+        // lockを使った排他制御 (room参加者全員のデータを参照するときに使用)
+        // 処理が並行して同時に行われることで不具合が発生するのを防ぐ。
+        lock (roomStrage)   
         {
-            if (data.GameState == 2) { startCnt++; }
-        }
+            var roomData = roomStrage.Get(this.ConnectionId);
 
-        if (startCnt == MAX_PLAYER)
-        {   // 揃っている場合はゲーム開始通知
-            Console.WriteLine("ゲームスタート");
-            this.Broadcast(room).OnStartGame();
+            // GameStateの変更
+            roomData.GameState = 2;
+
+            // 全員がスタート状態か調べる
+            int startCnt = 0;
+            RoomData[] roomDataList = roomStrage.AllValues.ToArray<RoomData>();
+            foreach (RoomData data in roomDataList)
+            {
+                if (data.GameState == 2) { startCnt++; }
+            }
+
+            if (startCnt == MAX_PLAYER)
+            {   // 揃っている場合はゲーム開始通知
+                Console.WriteLine("ゲームスタート");
+                this.Broadcast(room).OnStartGame();
+            }
         }
     }
 

@@ -539,6 +539,6 @@ public class GameManager : MonoBehaviour
         Debug.Log("退出");
 
         // タイトルに戻る
-        SceneManager.LoadScene("01_TitleScene");
+        SceneManager.LoadScene("02_MenuScene");
     }
 }

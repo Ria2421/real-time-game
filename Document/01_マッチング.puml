@@ -1,0 +1,47 @@
+@startuml
+'https://plantuml.com/sequence-diagram
+
+participant Client1
+participant Client2
+participant Client3
+participant MagickOnion
+participant DB
+
+autonumber
+
+Client1 -[#blue]> MagickOnion : ロビー入室
+rnote over Client1 : 待機画面
+rnote over MagickOnion : マッチング\n条件判定
+
+Client2 -[#blue]> MagickOnion : ロビー入室
+rnote over Client2 : 待機画面
+rnote over MagickOnion : マッチング\n条件判定
+
+Client3 -[#blue]> MagickOnion : ロビー入室
+rnote over Client3 : 待機画面
+rnote over MagickOnion : マッチング\n条件判定
+
+rnote over MagickOnion : ルーム名決定
+MagickOnion -> DB : 対戦情報登録
+rnote over DB : レコード追加
+MagickOnion <- DB : レコードID
+
+Client1 <- MagickOnion : マッチング完了 (ルーム名)
+Client2 <- MagickOnion : マッチング完了 (ルーム名)
+Client3 <- MagickOnion : マッチング完了 (ルーム名)
+
+rnote over Client1,Client3 : ルーム名保存
+
+Client1 -> MagickOnion : ロビー退出
+Client2 -> MagickOnion : ロビー退出
+Client3 -> MagickOnion : ロビー退出
+
+rnote over Client1,Client3 : ゲームシーン遷移
+
+Client1 -> MagickOnion : 保存済ルーム名に入室
+Client2 -> MagickOnion : 保存済ルーム名に入室
+Client3 -> MagickOnion : 保存済ルーム名に入室
+
+rnote over Client1,Client3 : ゲーム開始
+
+@enduml
