@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -9,9 +10,20 @@ public class MatchingManager : MonoBehaviour
     //-------------------------------------------------------
     // フィールド
 
+    /// <summary>
+    /// ルームモデル格納用
+    /// </summary>
     [SerializeField] private RoomModel roomModel;
 
+    /// <summary>
+    /// 入力されたユーザーID
+    /// </summary>
     [SerializeField] private Text inputText;
+
+    /// <summary>
+    /// マッチングボタン
+    /// </summary>
+    [SerializeField] private Button matchingButton;
 
     //-------------------------------------------------------
     // メソッド
@@ -29,6 +41,8 @@ public class MatchingManager : MonoBehaviour
     /// </summary>
     public async void OnMatchingButton()
     {
+        matchingButton.interactable = false;
+
         // 接続
         await roomModel.ConnectAsync();
         // マッチング
@@ -46,7 +60,16 @@ public class MatchingManager : MonoBehaviour
         // 退出
         await roomModel.ExitAsync();
 
-        // ゲームシーンに移動
+        StartCoroutine("TransGmaeScene");
+    }
+
+    // ゲームシーン遷移
+    private IEnumerator TransGmaeScene()
+    {
+        // 1秒待ってコルーチン中断
+        yield return new WaitForSeconds(1.0f);
+
+        // ゲームシーンに遷移
         SceneManager.LoadScene("05_OnlineScene");
     }
 }

@@ -25,6 +25,11 @@ public class RoomHub:StreamingHubBase<IRoomHub,IRoomHubReceiver>,IRoomHub
     /// </summary>
     private const int MAX_PLAYER = 4;
 
+    /// <summary>
+    /// ロビー名
+    /// </summary>
+    private const string LOBBY_NAME = "Lobby";
+
     //------------------------------------------------------
     // メソッド
 
@@ -36,7 +41,7 @@ public class RoomHub:StreamingHubBase<IRoomHub,IRoomHubReceiver>,IRoomHub
     /// <returns></returns>
     public async Task JoinLobbyAsync(int userId)
     {
-        JoinedUser[] joinedUserList = await JoinAsync("Lobby", userId);   // ロビーに参加
+        JoinedUser[] joinedUserList = await JoinAsync(LOBBY_NAME, userId);   // ロビーに参加
 
         Console.WriteLine(joinedUserList.Length + "人目参加");
 
@@ -52,66 +57,74 @@ public class RoomHub:StreamingHubBase<IRoomHub,IRoomHubReceiver>,IRoomHub
     /// ユーザー入室処理 [retuns : 参加者情報]
     /// </summary>
     /// <param name="roomName">参加するroom名</param>
-    /// <param name="UserId">  参加するUserID</param>
+    /// <param name="userId">  参加するUserID</param>
     /// <returns></returns>
-    public async Task<JoinedUser[]> JoinAsync(string roomName, int UserId)
+    public async Task<JoinedUser[]> JoinAsync(string roomName, int userId)
     {
         // ルームに参加 & ルームを保持
         this.room = await this.Group.AddAsync(roomName);
         
         // DBからユーザー情報を取得
         GameDbContext context = new GameDbContext();
-        var user = context.Users.Where(user => user.Id == UserId).First();
+        var user = context.Users.Where(user => user.Id == userId).First();
 
         // グループストレージにユーザーデータを格納
         var roomStrage = this.room.GetInMemoryStorage<RoomData>();      // ルームには参加者全員が参照可能な共有の保存領域がある(メモリ)
 
-        // ユーザーデータの作成・追加
-        var nowRoomDataList = roomStrage.AllValues.ToArray<RoomData>();
-        JoinedUser joinedUser;
-
-        if (nowRoomDataList.Length == 0)
-        {   // 誰もいない時
-            joinedUser = new JoinedUser() { ConnectionId = this.ConnectionId, UserData = user, JoinOrder = 1, GameState = 1 };
-        }
-        else
+        lock (roomStrage)
         {
-            // 存在するプレイヤーNoを取得
-            int[] numbers = new int[nowRoomDataList.Length];
-            for(int i = 0;i < nowRoomDataList.Length;i++)
+            // ユーザーデータの作成・追加
+            var nowRoomDataList = roomStrage.AllValues.ToArray<RoomData>();
+            JoinedUser joinedUser;
+
+            if (nowRoomDataList.Length == 0)
+            {   // 誰もいない時
+                joinedUser = new JoinedUser() { ConnectionId = this.ConnectionId, UserData = user, JoinOrder = 1, GameState = 1 };
+            }
+            else
             {
-                numbers[i] = nowRoomDataList[i].JoinedUser.JoinOrder;
+                // 存在するプレイヤーNoを取得
+                int[] numbers = new int[nowRoomDataList.Length];
+                for (int i = 0; i < nowRoomDataList.Length; i++)
+                {
+                    numbers[i] = nowRoomDataList[i].JoinedUser.JoinOrder;
+                }
+
+                // 空いているPLNoを取得
+                IEnumerable<int> result = noList.Except(numbers);
+
+                // 最小値のPLNoを適用したユーザーデータを作成
+                joinedUser = new JoinedUser() { ConnectionId = this.ConnectionId, UserData = user, JoinOrder = result.Min(), GameState = 1 };
             }
 
-            // 空いているPLNoを取得
-            IEnumerable<int> result = noList.Except(numbers);
+            var roomData = new RoomData() { JoinedUser = joinedUser, GameState = 0 };
+            roomStrage.Set(this.ConnectionId, roomData);  // 接続IDをキーにデータを格納
 
-            // 最小値のPLNoを適用したユーザーデータを作成
-            joinedUser = new JoinedUser() { ConnectionId = this.ConnectionId, UserData = user, JoinOrder = result.Min(), GameState = 1 };
+            // ルーム参加者全員に、ユーザーの入室通知を送信
+            if(roomName != LOBBY_NAME) 
+            {   // マッチング時は送らない
+                this.BroadcastExceptSelf(room).OnJoin(joinedUser);  // 自分以外の参加者のOnJoinを呼び出す。※BroadCast()は自分を含む
+                Console.WriteLine(userId + "参加通知");
+            }
+            
+            RoomData[] roomDataList = roomStrage.AllValues.ToArray<RoomData>();
+
+            // 参加中のユーザー情報を渡す
+            JoinedUser[] joinedUserList = new JoinedUser[roomDataList.Length];
+            for (int i = 0; i < roomDataList.Length; i++)
+            {
+                joinedUserList[i] = roomDataList[i].JoinedUser;
+            }
+
+            // 4人揃ったら開始の合図を送る
+            if (roomDataList.Length == MAX_PLAYER && roomName != LOBBY_NAME)
+            {
+                Console.WriteLine("全員揃いました");
+                this.Broadcast(room).OnInGame();    // inGame通知処理
+            }
+
+            return joinedUserList;
         }
-        
-        var roomData = new RoomData() { JoinedUser = joinedUser, GameState = 0 };
-        roomStrage.Set(this.ConnectionId, roomData);  // 接続IDをキーにデータを格納
-
-        // ルーム参加者全員に、ユーザーの入室通知を送信
-        this.BroadcastExceptSelf(room).OnJoin(joinedUser);  // 自分以外の参加者のOnJoinを呼び出す。※BroadCast()は自分を含む
-        RoomData[] roomDataList = roomStrage.AllValues.ToArray<RoomData>();
-
-        // 参加中のユーザー情報を渡す
-        JoinedUser[] joinedUserList = new JoinedUser[roomDataList.Length];
-        for (int i = 0; i < roomDataList.Length; i++)
-        {
-            joinedUserList[i] = roomDataList[i].JoinedUser;
-        }
-
-        // 4人揃ったら開始の合図を送る
-        if(roomDataList.Length == MAX_PLAYER)
-        {
-            Console.WriteLine("全員揃いました");
-            this.Broadcast(room).OnInGame();    // inGame通知処理
-        }
-
-        return joinedUserList;
     }
 
     /// <summary>

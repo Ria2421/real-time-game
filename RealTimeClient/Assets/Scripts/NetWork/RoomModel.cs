@@ -182,42 +182,49 @@ public class RoomModel : BaseModel,IRoomHubReceiver
     // 入室通知
     public void OnJoin(JoinedUser user)
     {
+        if (OnJoinedUser == null) return;
         OnJoinedUser(user);
     }
 
     // 退出通知
     public void OnExit(JoinedUser user)
     {
+        if (OnExitedUser == null) return;
         OnExitedUser(user);
     }
 
     // 移動通知
     public void OnMove(MoveData moveData)
     {
+        if (OnMovedUser == null) return;
         OnMovedUser(moveData);
     }
 
     // インゲーム通知
     public void OnInGame()
     {
+        if (OnInGameUser == null) return;
         OnInGameUser();
     }
 
     // ゲーム開始通知
     public void OnStartGame()
     {
+        if (OnStartGameUser == null) return;
         OnStartGameUser();
     }
 
     // ゲーム終了通知
     public void OnEndGame(Dictionary<int,string> result)
     {
+        if (OnEndGameUser == null) return;
         OnEndGameUser(result);
     }
 
     // 撃破通知処理
     public void OnCrushing(string attackName, string cruchName, Guid crushID)
     {
+        if (OnCrushingUser == null) return;
         OnCrushingUser(attackName, cruchName, crushID);
     }
 }

@@ -286,9 +286,9 @@ public class GameManager : MonoBehaviour
     /// <param name="user"></param>
     private void OnJoinedUser(JoinedUser user)
     {
-        Debug.Log(user.JoinOrder + "P");
+        if (characterList.ContainsKey(user.ConnectionId)) return;
 
-        GameObject characterObj;    // 生成されるオブジェ
+        GameObject characterObj;    // 生成されるオブジェクト
 
         // 自分か他プレイヤーか
         if (user.ConnectionId == roomModel.ConnectionId)
@@ -321,8 +321,10 @@ public class GameManager : MonoBehaviour
             characterObj.GetComponent<OtherPlayerManager>().UserName = user.UserData.Name;      // ユーザー名の保存
         }
 
-        characterObj.transform.parent = parentObj.transform;    // 親の設定
-        characterList[user.ConnectionId] = characterObj;        // フィールドで保存
+        characterObj.transform.parent = parentObj.transform;    // 親を設定
+        characterList[user.ConnectionId] = characterObj;        // フィールドに保存
+
+        Debug.Log(user.JoinOrder + "P参加");
     }
 
     /// <summary>
