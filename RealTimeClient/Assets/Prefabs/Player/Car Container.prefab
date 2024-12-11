@@ -30350,10 +30350,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   colliderRadius: 1.8
-  bodyMass: 25
+  bodyMass: 20
   gravityMode: 1
-  gravityVelocity: 150
-  maxGravity: 160
+  gravityVelocity: 70
+  maxGravity: 100
   maxSlopeAngle: 50
   sideFriction: 1
   collidableLayers:

@@ -12,8 +12,8 @@ namespace DavidJalbert
         }
 
         // カメラのデフォルト位置
-        private Vector3 defaultPos = new Vector3(54.0f, 59.1f, 1.8f);
-        private Vector3 defaultAngle = new Vector3(60.0f, 0, 0);
+        private Vector3 defaultPos = new Vector3(0, 40f, 0f);
+        private Vector3 defaultAngle = new Vector3(90.0f, 0, 0);
 
         [Tooltip("Which Transform the camera should track.")]
         public Transform whatToFollow;

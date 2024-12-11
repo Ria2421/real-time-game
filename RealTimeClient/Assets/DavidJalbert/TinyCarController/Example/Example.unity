@@ -1313,7 +1313,7 @@ MonoBehaviour:
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
   m_DynamicPixelsPerUnit: 1
-  m_PresetInfoIsWorld: 0
+  m_PresetInfoIsWorld: 1
 --- !u!223 &372003725
 Canvas:
   m_ObjectHideFlags: 0
@@ -1752,6 +1752,18 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 475375295}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!134 &496448251
+PhysicMaterial:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: DynamicMaterial
+  dynamicFriction: 0
+  staticFriction: 0
+  bounciness: 0
+  frictionCombine: 1
+  bounceCombine: 1
 --- !u!1 &497903720
 GameObject:
   m_ObjectHideFlags: 0
@@ -2455,18 +2467,6 @@ Transform:
   - {fileID: 1812071385}
   m_Father: {fileID: 1080246136}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!134 &869850024
-PhysicMaterial:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_Name: DynamicMaterial
-  dynamicFriction: 0
-  staticFriction: 0
-  bounciness: 0
-  frictionCombine: 1
-  bounceCombine: 1
 --- !u!1 &871099485
 GameObject:
   m_ObjectHideFlags: 0
@@ -6375,7 +6375,7 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Material
       value: 
-      objectReference: {fileID: 869850024}
+      objectReference: {fileID: 496448251}
     - target: {fileID: 9119118491832856353, guid: a784eefdf96e44443998670f41b4aef4,
         type: 3}
       propertyPath: m_Name

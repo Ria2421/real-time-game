@@ -193,7 +193,7 @@ public class RoomHub:StreamingHubBase<IRoomHub,IRoomHubReceiver>,IRoomHub
         var roomData = roomStrage.Get(this.ConnectionId);
 
         // ゲーム終了通知 (順位と名前を渡す)
-        Console.WriteLine("ゲーム終了");
+        Console.WriteLine("ゲーム終了\n\n");
         //this.Broadcast(room).OnEndGame();
     }
 

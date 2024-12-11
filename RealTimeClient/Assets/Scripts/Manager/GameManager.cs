@@ -133,11 +133,6 @@ public class GameManager : MonoBehaviour
     [Header("---- Text ----")]
 
     /// <summary>
-    /// ユーザーID
-    /// </summary>
-    [SerializeField] private Text idText;
-
-    /// <summary>
     /// タイマー
     /// </summary>
     [SerializeField] private Text timerText;
@@ -151,27 +146,6 @@ public class GameManager : MonoBehaviour
     /// 撃破通知表示
     /// </summary>
     [SerializeField] private GameObject crushText;
-
-    [Space(10)]
-    [Header("---- InputField ----")]
-
-    /// <summary>
-    /// ID入力欄
-    /// </summary>
-    [SerializeField] private InputField idInput;
-
-    [Space(10)]
-    [Header("---- Button ----")]
-
-    /// <summary>
-    /// 入室ボタン
-    /// </summary>
-    [SerializeField] private Button joinButton;
-
-    /// <summary>
-    /// 退室ボタン
-    /// </summary>
-    [SerializeField] private Button exitButton;
 
     [Space(10)]
     [Header("---- Panel ----")]
@@ -200,8 +174,6 @@ public class GameManager : MonoBehaviour
         roomModel.OnStartGameUser += OnStartGameUser;   // ゲームスタート
         roomModel.OnEndGameUser += OnEndGameUser;       // ゲーム終了
         roomModel.OnCrushingUser += OnCrushingUser;     // 撃破
-
-        ChangeUI(gameState);
 
         // 接続
         await roomModel.ConnectAsync();
@@ -265,7 +237,6 @@ public class GameManager : MonoBehaviour
         }
 
         gameState = GameState.None;
-        ChangeUI(gameState);
         Debug.Log("退出");
     }
 
@@ -307,7 +278,6 @@ public class GameManager : MonoBehaviour
 
             // UI変更
             gameState = GameState.Join;
-            ChangeUI(gameState);
             Debug.Log("自機生成完了");
 
             // 位置送信開始
@@ -444,39 +414,6 @@ public class GameManager : MonoBehaviour
     }
 
     /// <summary>
-    /// 表示UIの変更
-    /// </summary>
-    /// <param name="gameState"></param>
-    private void ChangeUI(GameState gameState)
-    {
-        switch (gameState)
-        {
-            // 退室状態 ---------------------------------------------
-            case GameState.None:
-                // InputField
-                idInput.enabled = true;
-
-                // Button
-                joinButton.gameObject.SetActive(true);
-                exitButton.gameObject.SetActive(false);
-                break;
-
-            // 入室状態 ---------------------------------------------
-            case GameState.Join:
-                // InputField
-                idInput.enabled = false;
-
-                // Button
-                joinButton.gameObject.SetActive(false);
-                exitButton.gameObject.SetActive(true);
-                break;
-
-            default:
-                break;
-        }
-    }
-
-    /// <summary>
     /// ゲームカウント
     /// </summary>
     /// <returns></returns>
@@ -538,7 +475,6 @@ public class GameManager : MonoBehaviour
         }
 
         gameState = GameState.None;
-        ChangeUI(gameState);
         Debug.Log("退出");
 
         // ルームモデルの破棄

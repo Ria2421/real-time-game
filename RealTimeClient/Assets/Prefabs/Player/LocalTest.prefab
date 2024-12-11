@@ -24809,9 +24809,9 @@ MonoBehaviour:
     type: 3
     name: 304
     invert: 0
-  boostDuration: 0.2
-  boostCoolOff: 0
-  boostMultiplier: 1.8
+  boostDuration: 2.5
+  boostCoolOff: 4
+  boostMultiplier: 2
 --- !u!1 &6431622008654790305
 GameObject:
   m_ObjectHideFlags: 0
@@ -29976,7 +29976,6 @@ GameObject:
   - component: {fileID: 1752114574551165225}
   - component: {fileID: 3661189130063636754}
   - component: {fileID: 3363936320835211231}
-  - component: {fileID: 85174007658667521}
   m_Layer: 0
   m_Name: Car Controller
   m_TagString: Player
@@ -30007,7 +30006,7 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8133049123007920942}
   serializedVersion: 4
-  m_Mass: 25
+  m_Mass: 20
   m_Drag: 0
   m_AngularDrag: 0
   m_CenterOfMass: {x: 0, y: 0, z: 0}
@@ -30060,10 +30059,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   colliderRadius: 1.8
-  bodyMass: 25
+  bodyMass: 20
   gravityMode: 1
-  gravityVelocity: 150
-  maxGravity: 160
+  gravityVelocity: 70
+  maxGravity: 100
   maxSlopeAngle: 50
   sideFriction: 1
   collidableLayers:
@@ -30100,7 +30099,7 @@ MonoBehaviour:
   maxSpeedReverse: 20
   brakeStrength: 100
   slopeFriction: 1
-  maxSteering: 125
+  maxSteering: 135
   steeringMultiplierInAir: 1
   steeringBySpeed:
     serializedVersion: 2
@@ -30158,18 +30157,6 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 3, y: 2, z: 7}
   m_Center: {x: 0, y: 0.2, z: 0}
---- !u!114 &85174007658667521
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8133049123007920942}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 88bf5ed870c16ff418c71d40417342ae, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &8387821209640014059
 GameObject:
   m_ObjectHideFlags: 0
