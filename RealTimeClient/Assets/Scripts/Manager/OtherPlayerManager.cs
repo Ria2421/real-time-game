@@ -2,12 +2,13 @@
 // 他プレイヤーマネージャー [ OtherPlayerManager.cs ]
 // Author:Kenta Nakamoto
 // Data:2024/12/09
-// Update:2024/12/09
+// Update:2024/12/16
 //---------------------------------------------------------------
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class OtherPlayerManager : MonoBehaviour
 {
@@ -34,6 +35,11 @@ public class OtherPlayerManager : MonoBehaviour
     /// </summary>
     [SerializeField] private ParticleSystem driftParticle;
 
+    /// <summary>
+    /// タイトルシーン用コライダー
+    /// </summary>
+    [SerializeField] private GameObject titleCollider;
+
     //=====================================
     // メソッド
 
@@ -42,7 +48,10 @@ public class OtherPlayerManager : MonoBehaviour
     /// </summary>
     void Start()
     {
-        
+        if(SceneManager.GetActiveScene().name == "01_TitleScene")
+        {   // タイトルシーンのみ有効
+            titleCollider.SetActive(true);
+        }
     }
 
     /// <summary>
@@ -82,6 +91,24 @@ public class OtherPlayerManager : MonoBehaviour
         else
         {
             if(driftParticle.isPlaying) driftParticle.Stop();
+        }
+    }
+
+    /// <summary>
+    /// コライダー接触時処理
+    /// </summary>
+    /// <param name="collision"></param>
+    private void OnTriggerEnter(Collider collision)
+    {
+        if (collision.gameObject.tag == "TitleObj")
+        {
+            // 自身を削除
+            Destroy(this.gameObject);
+        }
+
+        if (collision.gameObject.tag == "Goal")
+        {
+            Destroy(this.gameObject);
         }
     }
 }

@@ -9,6 +9,7 @@ TagManager:
   - FxTemporaire
   - Enemy
   - OtherPlayer
+  - TitleObj
   layers:
   - Default
   - TransparentFX
