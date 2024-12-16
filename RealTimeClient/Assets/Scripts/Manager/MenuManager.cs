@@ -18,7 +18,7 @@ public class MenuManager : MonoBehaviour
     [Header("---- Button ----")]
 
     // メニューボタン
-    [SerializeField] private Button profileButton;  // プロフィール
+    [SerializeField] private Button acountButton;   // アカウント
     [SerializeField] private Button shopButton;     // ショップ
     [SerializeField] private Button optionButton;   // オプション
 

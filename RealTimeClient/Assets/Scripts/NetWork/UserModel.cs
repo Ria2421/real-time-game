@@ -37,6 +37,7 @@ public class UserModel : BaseModel
         using var handler = new YetAnotherHttpHandler() { Http2Only = true };   // ハンドラーの設定
         var channel = GrpcChannel.ForAddress(ServerURL, new GrpcChannelOptions() { HttpHandler = handler });    // サーバーとのチャンネルを設定
         var client = MagicOnionClient.Create<IUserService>(channel); // サーバーとの接続
+
         try
         {
             userId = await client.RegistUserAsync(name);   // 関数呼び出し
