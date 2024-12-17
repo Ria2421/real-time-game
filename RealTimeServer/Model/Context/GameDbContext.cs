@@ -9,7 +9,11 @@ namespace MagicOnionServer.Model.Context
         public DbSet<User> Users { get; set; }
 
         // 接続先のDB (ローカル・オンラインで "server="の接続先が変わる)
-        readonly string connectionString = "server=localhost;database=daydream_racing;user=jobi;password=jobi;";
+#if DEBUG
+        readonly string connectionString = "server=localhost;database=carboomcrash;user=jobi;password=jobi;";
+#else
+        readonly string connectionString = "server=db-ge-07.mysql.database.azure.com;database=carboomcrash;user=student;password=Yoshidajobi2023;";
+#endif
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             // MySQLのバージョン指定

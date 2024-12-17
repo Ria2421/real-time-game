@@ -63,7 +63,7 @@ public class PlayerManager : MonoBehaviour
 
         if(collision.gameObject.tag == "Trap")
         {
-            // ”š”­
+            // ”š”­Ä¶
             transform.parent.gameObject.GetComponent<TinyCarExplosiveBody>().explode();
         }
 
