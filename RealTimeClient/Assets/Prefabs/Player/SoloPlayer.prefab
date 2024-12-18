@@ -9949,7 +9949,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5895762356746343894}
   m_Layer: 0
-  m_Name: LocalTest
+  m_Name: SoloPlayer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -9964,7 +9964,7 @@ Transform:
   m_GameObject: {fileID: 3499965207058322914}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 27.7, y: 2, z: 22.8}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -24810,7 +24810,7 @@ MonoBehaviour:
     name: 304
     invert: 0
   boostDuration: 2.5
-  boostCoolOff: 4
+  boostCoolOff: 3.5
   boostMultiplier: 2
 --- !u!1 &6431622008654790305
 GameObject:
@@ -29975,7 +29975,7 @@ GameObject:
   - component: {fileID: 6708486840222891194}
   - component: {fileID: 1752114574551165225}
   - component: {fileID: 3661189130063636754}
-  - component: {fileID: 3363936320835211231}
+  - component: {fileID: 7390615597294799640}
   m_Layer: 0
   m_Name: Car Controller
   m_TagString: Player
@@ -29992,7 +29992,7 @@ Transform:
   m_GameObject: {fileID: 8133049123007920942}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 2, z: 0}
+  m_LocalPosition: {x: 0, y: 2.5, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -30006,7 +30006,7 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8133049123007920942}
   serializedVersion: 4
-  m_Mass: 20
+  m_Mass: 10
   m_Drag: 0
   m_AngularDrag: 0
   m_CenterOfMass: {x: 0, y: 0, z: 0}
@@ -30059,7 +30059,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   colliderRadius: 1.8
-  bodyMass: 20
+  bodyMass: 10
   gravityMode: 1
   gravityVelocity: 70
   maxGravity: 100
@@ -30093,29 +30093,29 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  maxAccelerationForward: 120
-  maxSpeedForward: 40
+  maxAccelerationForward: 80
+  maxSpeedForward: 50
   maxAccelerationReverse: 50
   maxSpeedReverse: 20
   brakeStrength: 100
   slopeFriction: 1
-  maxSteering: 135
+  maxSteering: 160
   steeringMultiplierInAir: 1
   steeringBySpeed:
     serializedVersion: 2
     m_Curve:
     - serializedVersion: 3
-      time: 0
-      value: -0.014587402
-      inSlope: 2.5120306
-      outSlope: 2.5120306
+      time: -0.0033340454
+      value: 0.0007019043
+      inSlope: 3.8781579
+      outSlope: 3.8781579
       tangentMode: 34
       weightedMode: 0
       inWeight: 0
       outWeight: 0.33333334
     - serializedVersion: 3
-      time: 0.4035208
-      value: 0.9990692
+      time: 0.25434685
+      value: 1.0000291
       inSlope: 0
       outSlope: 0
       tangentMode: 0
@@ -30125,8 +30125,8 @@ MonoBehaviour:
     - serializedVersion: 3
       time: 1
       value: 1
-      inSlope: 0.0015604671
-      outSlope: 0.0015604671
+      inSlope: -0.000039008843
+      outSlope: -0.000039008843
       tangentMode: 34
       weightedMode: 0
       inWeight: 0.33333334
@@ -30134,29 +30134,26 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  forwardFriction: 40
-  lateralFriction: 65
---- !u!65 &3363936320835211231
-BoxCollider:
+  forwardFriction: 60
+  lateralFriction: 125
+--- !u!114 &7390615597294799640
+MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8133049123007920942}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 1
-  m_ProvidesContacts: 0
   m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 3, y: 2, z: 7}
-  m_Center: {x: 0, y: 0.2, z: 0}
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 315eef2c3e0f2e945aa08d846c589321, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  checkPoints:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  soloManager: {fileID: 0}
 --- !u!1 &8387821209640014059
 GameObject:
   m_ObjectHideFlags: 0

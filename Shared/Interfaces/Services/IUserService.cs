@@ -12,9 +12,10 @@ namespace Shared.Interfaces.Services
         /// ユーザー登録処理
         /// [return : ユーザーID]
         /// </summary>
-        /// <param name="name">ユーザー名</param>
+        /// <param name="name">  ユーザー名</param>
+        /// <param token="token">トークン</param>
         /// <returns></returns>
-        UnaryResult<int> RegistUserAsync(string name);
+        UnaryResult<int> RegistUserAsync(string name,string token);
 
         /// <summary>
         /// ユーザーをID指定で検索

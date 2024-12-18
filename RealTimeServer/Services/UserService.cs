@@ -16,24 +16,26 @@ namespace RealTimeServer.Services
         /// </summary>
         /// <param name="name">ユーザー名</param>
         /// <returns></returns>
-        public async UnaryResult<int> RegistUserAsync(string name)
+        public async UnaryResult<int> RegistUserAsync(string name,string token)
         {
             using var context = new GameDbContext();
 
             // バリデーションチェック
             if(context.Users.Where(user => user.Name == name).Count() > 0)
-            {
+            {   // 重複チェック
                 // 例外スロー
                 throw new ReturnStatusException(Grpc.Core.StatusCode.InvalidArgument, "");
             }
 
             User user = new User();
             user.Name = name;
-            user.Token = "test";
+            user.Token = token;
             user.Created_at = DateTime.Now;
             user.Updated_at = DateTime.Now;
             context.Users.Add(user);            // ユーザー情報の追加
             await context.SaveChangesAsync();   // テーブルに保存
+
+            Console.WriteLine(name + " : 登録完了");
             return user.Id;
         }
 

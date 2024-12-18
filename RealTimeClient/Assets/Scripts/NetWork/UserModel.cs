@@ -9,9 +9,13 @@ using Cysharp.Threading.Tasks;
 using Grpc.Core;
 using Grpc.Net.Client;
 using MagicOnion.Client;
+using Newtonsoft.Json;
 using Shared.Interfaces.Services;
+using Shared.Interfaces.StreamingHubs;
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using UnityEngine;
 
 public class UserModel : BaseModel
@@ -22,13 +26,89 @@ public class UserModel : BaseModel
     /// <summary>
     /// ユーザーID
     /// </summary>
-    private int userId;
+    public int UserId { get; set; }
+
+    /// <summary>
+    /// トークンID
+    /// </summary>
+    public string Token { get; set; }
+
+    /// <summary>
+    /// getプロパティを呼び出した初回時にインスタンス生成してstaticで保持
+    /// </summary>
+    private static UserModel instance;
+
+    /// <summary>
+    /// NetworkManagerプロパティ
+    /// </summary>
+    public static UserModel Instance
+    {
+        get
+        {
+            if (instance == null)
+            {
+                // GameObjectを生成し、UserModelを追加
+                GameObject gameObject = new GameObject("UserModel");
+                instance = gameObject.AddComponent<UserModel>();
+
+                // シーン遷移で破棄されないように設定
+                DontDestroyOnLoad(gameObject);
+            }
+
+            return instance;
+        }
+    }
 
     //-------------------------------------------------------
     // メソッド
 
     /// <summary>
-    /// ユーザー登録処理
+    /// ユーザーデータ保存処理
+    /// </summary>
+    private void SaveUserData()
+    {
+        // セーブデータクラスの生成
+        SaveData saveData = new SaveData();
+        saveData.UserID = this.UserId;
+        saveData.Token = this.Token;
+
+        // データをJSONシリアライズ
+        string json = JsonConvert.SerializeObject(saveData);
+
+        // 指定した絶対パスに"saveData.json"を保存
+        var writer = new StreamWriter(Application.persistentDataPath + "/saveData.json");
+        writer.Write(json); // 書き出し
+        writer.Flush();     // バッファに残っている値を全て書き出し
+        writer.Close();     // ファイル閉
+    }
+
+    /// <summary>
+    /// ユーザーデータ読み込み処理
+    /// </summary>
+    /// <returns></returns>
+    public bool LoadUserData()
+    {
+        if (!File.Exists(Application.persistentDataPath + "/saveData.json"))
+        {   // 指定のパスのファイルが存在しなかった時、早期リターン
+            return false;
+        }
+
+        //  ローカルファイルからユーザーデータの読込処理
+        var reader = new StreamReader(Application.persistentDataPath + "/saveData.json");
+        string json = reader.ReadToEnd();
+        reader.Close();
+
+        // セーブデータJSONをデシリアライズして取得
+        SaveData saveData = JsonConvert.DeserializeObject<SaveData>(json);
+        this.UserId = saveData.UserID;
+        this.Token = saveData.Token;
+
+        // 読み込み結果をリターン
+        return true;
+    }
+
+    /// <summary>
+    /// ユーザーデータ登録処理
     /// </summary>
     /// <param name="name">ユーザー名</param>
     /// <returns> [true]成功 , [false]失敗 </returns>
@@ -36,11 +116,13 @@ public class UserModel : BaseModel
     {
         using var handler = new YetAnotherHttpHandler() { Http2Only = true };   // ハンドラーの設定
         var channel = GrpcChannel.ForAddress(ServerURL, new GrpcChannelOptions() { HttpHandler = handler });    // サーバーとのチャンネルを設定
-        var client = MagicOnionClient.Create<IUserService>(channel); // サーバーとの接続
+        var client = MagicOnionClient.Create<IUserService>(channel);    // サーバーとの接続
 
         try
         {
-            userId = await client.RegistUserAsync(name);   // 関数呼び出し
+            this.Token = Guid.NewGuid().ToString();                     // トークン生成
+            this.UserId = await client.RegistUserAsync(name, Token);    // 関数呼び出し
+            SaveUserData();                                             // ローカルに保存
             return true;
         }catch(RpcException e)
         {

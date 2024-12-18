@@ -46,7 +46,7 @@ public class MatchingManager : MonoBehaviour
         // 接続
         await roomModel.ConnectAsync();
         // マッチング
-        await roomModel.JoinLobbyAsync(int.Parse(inputText.text));
+        await roomModel.JoinLobbyAsync(UserModel.Instance.UserId);
     }
 
     /// <summary>

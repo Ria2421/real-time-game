@@ -17,6 +17,9 @@ return new class extends Migration {
             $table->id();
             $table->string('name', 128)->unique();  // ユーザー名
             $table->string('token', 128);           // トークン
+            $table->integer("rate")->default(1500);                  // レートpt
+            $table->integer("skin_no")->default(1);                  // スキンNo
+            $table->integer("money")->default(200);                  // 所持金
             $table->timestamps();
         });
     }

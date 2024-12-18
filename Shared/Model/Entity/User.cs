@@ -24,16 +24,35 @@ namespace RealTimeServer.Model.Entity
         [Key(2)]
         public string Token { get; set; }
 
+
+        /// <summary>
+        /// レート
+        /// </summary>
+        [Key(3)]
+        public int Rate { get; set; }
+
+        /// <summary>
+        /// スキンNo
+        /// </summary>
+        [Key(4)]
+        public int Skin_No { get; set; }
+
+        /// <summary>
+        /// 所持金
+        /// </summary>
+        [Key(5)]
+        public int Money { get; set; }
+
         /// <summary>
         /// 生成日時
         /// </summary>
-        [Key(3)]
+        [Key(6)]
         public DateTime Created_at { get; set; }
 
         /// <summary>
         /// 更新日時
         /// </summary>
-        [Key(4)]
+        [Key(7)]
         public DateTime Updated_at { get; set; }
     }
 }
