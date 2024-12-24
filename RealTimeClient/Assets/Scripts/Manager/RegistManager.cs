@@ -28,12 +28,6 @@ public class RegistManager : MonoBehaviour
     //-------------------------------------------------------
     // ÉÅÉ\ÉbÉh
 
-    // Update is called once per frame
-    void Start()
-    {
-
-    }
-
     public async void OnInputName()
     {
         bool flag = await userModel.RegistUserAsync(nameText.text);

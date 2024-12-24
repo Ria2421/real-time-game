@@ -18,26 +18,4 @@ class User extends Model
     protected $guarded = [
         'id',
     ];
-
-    // -------------------------------------
-    // リレーションの設定
-
-    // 所持アイテム
-    public function items()
-    {
-        return $this->belongsToMany(Item::class, 'have_items', 'user_id', 'item_id')
-            ->withPivot('quantity');
-    }
-
-    // フォロー
-    public function follows()
-    {
-        return $this->belongsToMany(User::class, 'follows', 'user_id', 'follow_id');
-    }
-
-    // フォロワー
-    public function followers()
-    {
-        return $this->belongsToMany(User::class, 'follows', 'follow_id', 'user_id');
-    }
 }

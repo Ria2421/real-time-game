@@ -6,6 +6,7 @@
 //---------------------------------------------------------------
 using DavidJalbert;
 using DG.Tweening;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -28,14 +29,24 @@ public class SoloManager : MonoBehaviour
     private float timer;
 
     /// <summary>
+    /// ゴールタイム保存
+    /// </summary>
+    private int goalTime = 0;
+
+    /// <summary>
     /// 計測フラグ
     /// </summary>
     private bool isCount = false;
 
     /// <summary>
-    /// 操作入力オブジェ
+    /// 基本入力管理オブジェ
     /// </summary>
-    [SerializeField] private GameObject inputManager;
+    [SerializeField] private GameObject standardInput;
+
+    /// <summary>
+    /// モバイル入力管理オブジェ
+    /// </summary>
+    [SerializeField] private GameObject mobileInput;
 
     /// <summary>
     /// 車体爆破マネージャー
@@ -120,7 +131,10 @@ public class SoloManager : MonoBehaviour
             sequence.Append(timerPanel.transform.DOLocalMove(new Vector3(0,80,0), 0.5f));
             sequence.Play();
 
-            Debug.Log("owari");
+            timer = (float)Math.Round(timer, 3, MidpointRounding.AwayFromZero);
+            goalTime = (int)(timer * 1000);
+
+            Debug.Log("owari : " + goalTime.ToString() + "m/sec");
         }
         else
         {
@@ -174,7 +188,8 @@ public class SoloManager : MonoBehaviour
             {
                 // 計測開始・操作可能に
                 countDownText.text = "GO!";
-                inputManager.SetActive(true);
+                standardInput.SetActive(true);
+                mobileInput.SetActive(true);
                 isCount = true;
 
                 // カウント非表示

@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 namespace DavidJalbert
@@ -12,8 +13,8 @@ namespace DavidJalbert
         }
 
         // カメラのデフォルト位置
-        private Vector3 defaultPos = new Vector3(0, 40f, 0f);
-        private Vector3 defaultAngle = new Vector3(90.0f, 0, 0);
+        private Vector3 defaultPos = new Vector3(0, 40, 0);
+        private Vector3 defaultAngle = new Vector3(90, 0, 0);
 
         [Tooltip("Which Transform the camera should track.")]
         public Transform whatToFollow;
@@ -82,8 +83,8 @@ namespace DavidJalbert
                         targetPosition = followPosition + directionVectorNormal * Mathf.Max(thirdPersonSkinWidth, hit.distance - thirdPersonSkinWidth);
                     }
                     else
-                    {
-                        targetPosition = directionVector + followPosition;
+                    {   // ブースト時のカメラ座標変更
+                        //targetPosition = directionVector + followPosition;
                     }
                     break;
 
@@ -96,6 +97,26 @@ namespace DavidJalbert
 
             transform.position = targetPosition;
             transform.rotation = targetRotation;
+        }
+
+        /// <summary>
+        /// ボタン押下時モードチェンジ
+        /// </summary>
+        public void OnChangeMode()
+        {
+            switch (viewMode)
+            {
+                case CAMERA_MODE.ThirdPerson:
+                    viewMode = CAMERA_MODE.TopDown;
+                    break;
+
+                case CAMERA_MODE.TopDown:
+                    viewMode=CAMERA_MODE.ThirdPerson;
+                    break;
+
+                default:
+                    break;
+            }
         }
     }
 }
