@@ -6,6 +6,8 @@
 //---------------------------------------------------------------
 using DavidJalbert;
 using DG.Tweening;
+using KanKikuchi.AudioManager;
+using Shared.Model.Entity;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -15,8 +17,13 @@ using UnityEngine.UI;
 
 public class SoloManager : MonoBehaviour
 {
-    //=====================================
+    //===================================
     // フィールド
+
+    /// <summary>
+    /// ステージNo
+    /// </summary>
+    [SerializeField] private int stageID; 
 
     /// <summary>
     /// 現ラップ数
@@ -69,9 +76,14 @@ public class SoloManager : MonoBehaviour
     [SerializeField] private GameObject timerPanel;
 
     /// <summary>
-    /// カウントダウン用テキスト
+    /// カウントダウンオブジェ
     /// </summary>
-    [SerializeField] private Text countDownText;
+    [SerializeField] private GameObject countDownObj;
+
+    /// <summary>
+    /// カウントダウン用スプライト
+    /// </summary>
+    [SerializeField] private Sprite[] countDownSprits;
 
     /// <summary>
     /// 時間計測用テキスト
@@ -83,6 +95,16 @@ public class SoloManager : MonoBehaviour
     /// </summary>
     [SerializeField] private Text rapText;
 
+    /// <summary>
+    /// ランキングモデル格納用
+    /// </summary>
+    [SerializeField] private RankingModel rankingModel;
+
+    /// <summary>
+    /// 新記録画像
+    /// </summary>
+    [SerializeField] private GameObject newRecordObj;
+
     //=====================================
     // メソッド
 
@@ -91,6 +113,10 @@ public class SoloManager : MonoBehaviour
     /// </summary>
     void Start()
     {
+        // メインBGM一時停止
+        BGMManager.Instance.Pause(BGMPath.MAIN_BGM);
+        BGMManager.Instance.Play(BGMPath.TIME_ATTACK);
+
         // フラグ初期化
         isCount = false;
 
@@ -114,27 +140,43 @@ public class SoloManager : MonoBehaviour
     /// <summary>
     /// ラップ数加算処理
     /// </summary>
-    public void AddRapCnt()
+    public async void AddRapCnt()
     {
         currentRapNum++;    // ラップ数加算
 
         if(currentRapNum == maxRapNum + 1)
         {
+            // SE再生
+            SEManager.Instance.Play(SEPath.GOAL);
+
             // 終了判定
             isCount = false;                // タイマーストップ
             Invoke("BoomCar", 1);           // 車体爆破
             resultPanel.SetActive(true);    // リザルト表示
+            mobileInput.SetActive(false);   // モバイルUI非表示
             
             // タイマー移動処理
             var sequence = DOTween.Sequence();
             sequence.Append(timerPanel.transform.DOScale(1.7f, 0.7f));
-            sequence.Append(timerPanel.transform.DOLocalMove(new Vector3(0,80,0), 0.5f));
+            sequence.Append(timerPanel.transform.DOLocalMove(new Vector3(0,-25,0), 0.5f));
             sequence.Play();
 
             timer = (float)Math.Round(timer, 3, MidpointRounding.AwayFromZero);
             goalTime = (int)(timer * 1000);
 
-            Debug.Log("owari : " + goalTime.ToString() + "m/sec");
+            UserModel userModel = UserModel.Instance;
+
+            // 記録登録処理
+            bool isRegist = await rankingModel.RegistClearTimeAsync(stageID, userModel.UserId, goalTime);
+
+            if (isRegist)
+            {   // newRecord表示
+                SEManager.Instance.Play(SEPath.NEW_RECORD);
+                newRecordObj.SetActive(true);
+                newRecordObj.transform.DOScale(1.3f, 1.5f).SetEase(Ease.InCubic).SetLoops(-1, LoopType.Yoyo);
+            }
+
+            Debug.Log("goal : " + goalTime.ToString() + "m/sec");
         }
         else
         {
@@ -160,7 +202,7 @@ public class SoloManager : MonoBehaviour
     /// <param name="obj">非表示にしたいオブジェ</param>
     private void HiddenCount()
     {
-        countDownText.text = "";
+        countDownObj.SetActive(false);
     }
 
     /// <summary>
@@ -177,23 +219,27 @@ public class SoloManager : MonoBehaviour
     /// <returns></returns>
     IEnumerator StartCount()
     {
-        for (int i = 3; i > 0; i--)
+        for (int i = 0; i < 4; i++)
         {
-            countDownText.text = i.ToString();
+            countDownObj.GetComponent<Image>().sprite = countDownSprits[i];
 
-            // 1秒待ってコルーチン中断
-            yield return new WaitForSeconds(1.0f);
-
-            if (i == 1)
+            if (i == 3)
             {
-                // 計測開始・操作可能に
-                countDownText.text = "GO!";
+                SEManager.Instance.Play(SEPath.START);
+                // 計測開始・操作可能
+                countDownObj.GetComponent<Image>().sprite = countDownSprits[i];
                 standardInput.SetActive(true);
                 mobileInput.SetActive(true);
                 isCount = true;
 
                 // カウント非表示
                 Invoke("HiddenCount", 0.6f);
+            }
+            else
+            {
+                SEManager.Instance.Play(SEPath.COUNT);
+                // 1秒待ってコルーチン中断
+                yield return new WaitForSeconds(0.9f);
             }
         }
     }
@@ -203,6 +249,31 @@ public class SoloManager : MonoBehaviour
     /// </summary>
     public void OnBackMenu()
     {
+        // SE再生
+        SEManager.Instance.Play(SEPath.TAP_BUTTON);
+
         SceneManager.LoadScene("02_MenuScene");
+    }
+
+    /// <summary>
+    /// ステージ選択遷移処理
+    /// </summary>
+    public void OnBackSelect()
+    {
+        // SE再生
+        SEManager.Instance.Play(SEPath.TAP_BUTTON);
+
+        SceneManager.LoadScene("03_SoloSelectScene");
+    }
+
+    /// <summary>
+    /// リトライ遷移処理
+    /// </summary>
+    public void OnRetryButton() 
+    {
+        // SE再生
+        SEManager.Instance.Play(SEPath.TAP_BUTTON);
+
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 }

@@ -1,7 +1,10 @@
 ﻿using MagicOnion.Server.Hubs;
 using MagicOnionServer.Model.Context;
+using RealTimeServer.Model.Entity;
 using RealTimeServer.StremingHubs;
 using Shared.Interfaces.StreamingHubs;
+using System.Xml.Linq;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace StreamingHubs;
 
@@ -253,15 +256,52 @@ public class RoomHub:StreamingHubBase<IRoomHub,IRoomHubReceiver>,IRoomHub
 
         if (rankCnt == 2)
         {
+            using var context = new GameDbContext();
+
             // 2位と同時に1位が確定
             var data = roomStrage.Get(this.ConnectionId);
             data.JoinedUser.Ranking = 1;
 
             // リザルトデータの作成
-            Dictionary<int,string> rank = new Dictionary<int,string>();
+            List<ResultData> rank = new List<ResultData>();
             foreach(var data2 in roomDataList)
             {
-                rank.Add(data2.JoinedUser.Ranking,data2.JoinedUser.UserData.Name);
+                ResultData resultData = new ResultData() { UserId = data2.JoinedUser.UserData.Id, Rank = data2.JoinedUser.Ranking, Rate = data2.JoinedUser.UserData.Rate };
+
+                // 増減レートポイントの反映
+                switch (data2.JoinedUser.Ranking)
+                {
+                    case 1:
+                        data2.JoinedUser.UserData.Rate += 100;
+                        resultData.ChangeRate = 100;
+                        break;
+
+                    case 2:
+                        data2.JoinedUser.UserData.Rate += 50;
+                        resultData.ChangeRate = 50;
+                        break;
+
+                    case 3:
+                        data2.JoinedUser.UserData.Rate -= 100;
+                        resultData.ChangeRate = -100;
+                        break;
+
+                    case 4:
+                        data2.JoinedUser.UserData.Rate -= 50;
+                        resultData.ChangeRate = -50;
+                        break;
+
+                    default:
+                        break;
+                }
+
+                // ユーザー情報の更新
+                User user = context.Users.Where(user => user.Id == data2.JoinedUser.UserData.Id).First();
+                user.Rate = data2.JoinedUser.UserData.Rate;
+                user.Updated_at = DateTime.Now;
+                await context.SaveChangesAsync();   // テーブルに保存
+
+                rank.Add(resultData);
             }
 
             Console.WriteLine("ゲーム終了");

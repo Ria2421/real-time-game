@@ -5,6 +5,7 @@
 // Update:2024/12/17
 //---------------------------------------------------------------
 using DG.Tweening;
+using KanKikuchi.AudioManager;
 using Shared.Interfaces.StreamingHubs;
 using System.Collections;
 using System.Collections.Generic;
@@ -66,8 +67,11 @@ public class TitleManager : MonoBehaviour
     {
         Application.targetFrameRate = 60;
 
-        titleImage.transform.DOScale(0.9f, 1.3f).SetEase(Ease.InCubic).SetLoops(-1,LoopType.Yoyo);
+        // BGM再生
+        BGMManager.Instance.Play(BGMPath.MAIN_BGM,0.75f,0,1,true,true);
 
+        // タイトル画像アニメーション
+        titleImage.transform.DOScale(0.9f, 1.3f).SetEase(Ease.InCubic).SetLoops(-1,LoopType.Yoyo);
         InvokeRepeating("BlinkingImage", 0, 0.8f);
     }
 
@@ -76,6 +80,9 @@ public class TitleManager : MonoBehaviour
     /// </summary>
     public void OnStartButton()
     {
+        // SE再生
+        SEManager.Instance.Play(SEPath.TAP_BUTTON);
+
         // ユーザーデータの読込処理・結果を取得
         bool isSuccess = UserModel.Instance.LoadUserData();
 
@@ -98,6 +105,9 @@ public class TitleManager : MonoBehaviour
     public async void OnRegistUser()
     {
         if (nameText.text == "") return;
+
+        // SE再生
+        SEManager.Instance.Play(SEPath.MENU_SELECT);
 
         // ボタン無効化
         registButton.interactable = false;

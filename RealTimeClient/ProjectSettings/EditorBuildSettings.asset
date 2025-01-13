@@ -12,12 +12,15 @@ EditorBuildSettings:
     path: Assets/Scenes/02_MenuScene.unity
     guid: e844a1175bd51694c95f02e8596b6ada
   - enabled: 1
-    path: Assets/Scenes/03_SoloScene.unity
+    path: Assets/Scenes/03_SoloSelectScene.unity
+    guid: 2a9d6956ade73fe4385aa00cb4398ed5
+  - enabled: 1
+    path: Assets/Scenes/04_SoloPlayScene.unity
     guid: 6b5e854c0439ea24f8496c684bda54ce
   - enabled: 1
-    path: Assets/Scenes/04_MatchingScene.unity
+    path: Assets/Scenes/05_MatchingScene.unity
     guid: 0aff169aa82409342a29a9d6cdae27a0
   - enabled: 1
-    path: Assets/Scenes/05_OnlineScene.unity
+    path: Assets/Scenes/06_OnlinePlayScene.unity
     guid: 907f9aabc3823094981c59ca61d68390
   m_configObjects: {}

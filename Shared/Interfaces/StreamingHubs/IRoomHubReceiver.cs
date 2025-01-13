@@ -27,7 +27,7 @@ namespace Shared.Interfaces.StreamingHubs
         void OnStartGame();
 
         // ゲーム終了通知
-        void OnEndGame(Dictionary<int, string> result);
+        void OnEndGame(List<ResultData> result);
 
         // 撃破情報通知
         void OnCrushing(string attackName, string cruchName, Guid crushID);

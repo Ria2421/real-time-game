@@ -16,9 +16,27 @@ namespace Shared.Interfaces.StreamingHubs
     public class ResultData
     {
         /// <summary>
-        /// 順位データ
+        /// ユーザーID
         /// </summary>
         [Key(0)]
-        public List<Dictionary<int, string>> Rank { get; set; }
+        public int UserId { get; set; }
+
+        /// <summary>
+        /// 順位
+        /// </summary>
+        [Key(1)]
+        public int Rank { get; set; }
+
+        /// <summary>
+        /// 現レートポイント
+        /// </summary>
+        [Key(2)]
+        public int Rate { get; set; }
+
+        /// <summary>
+        /// 増減レートポイント
+        /// </summary>
+        [Key(3)]
+        public int ChangeRate { get; set; }
     }
 }

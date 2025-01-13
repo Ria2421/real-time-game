@@ -4,6 +4,7 @@
 // Data:2024/12/10
 // Update:2024/12/10
 //---------------------------------------------------------------
+using KanKikuchi.AudioManager;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -30,6 +31,17 @@ public class MenuManager : MonoBehaviour
     /// </summary>
     void Start()
     {
+        // BGM再生
+        //再生中のBGMの名前を全て取得
+        var currentBGMNames = BGMManager.Instance.GetCurrentAudioNames();
+
+        if (currentBGMNames[0] != "MainBGM")
+        {   // MainBGMを再開
+            BGMManager.Instance.Stop(BGMPath.TIME_ATTACK);
+            BGMManager.Instance.Stop(BGMPath.MULTI_PLAY);
+            BGMManager.Instance.Play(BGMPath.MAIN_BGM, 0.75f, 0, 1, true, true);
+        }
+
         //++ プロフィール情報取得・UI反映
 
         //++ ショップ情報取得・UI反映
@@ -52,6 +64,8 @@ public class MenuManager : MonoBehaviour
     /// <param name="panel">表示パネル</param>
     public void OnDisplayPanel(GameObject panel)
     {
+        // SE再生
+        SEManager.Instance.Play(SEPath.TAP_BUTTON);
         panel.SetActive(true);
     }
 
@@ -61,6 +75,8 @@ public class MenuManager : MonoBehaviour
     /// <param name="panel">閉じるパネル</param>
     public void OnClosePanel(GameObject panel)
     {
+        // SE再生
+        SEManager.Instance.Play(SEPath.TAP_BUTTON);
         panel.SetActive(false);
     }
 
@@ -69,8 +85,11 @@ public class MenuManager : MonoBehaviour
     /// </summary>
     public void OnSoloButton()
     {
-        // ソロモード遷移
-        SceneManager.LoadScene("03_SoloScene");
+        // SE再生
+        SEManager.Instance.Play(SEPath.TAP_BUTTON);
+
+        // ソロ選択モード遷移
+        SceneManager.LoadScene("03_SoloSelectScene");
     }
 
     /// <summary>
@@ -78,7 +97,10 @@ public class MenuManager : MonoBehaviour
     /// </summary>
     public void OnOnlineButton()
     {
+        // SE再生
+        SEManager.Instance.Play(SEPath.TAP_BUTTON);
+
         // オンラインモード遷移
-        SceneManager.LoadScene("04_MatchingScene");
+        SceneManager.LoadScene("05_MatchingScene");
     }
 }

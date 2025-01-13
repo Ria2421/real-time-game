@@ -20,7 +20,11 @@ public class RoomModel : BaseModel,IRoomHubReceiver
 
     private GrpcChannel channel;    // 接続時に使用
     private IRoomHub roomHub;
-    private int userId;
+
+    /// <summary>
+    /// ユーザーID
+    /// </summary>
+    public int UserId { get; set; }
 
     /// <summary>
     /// 接続ID
@@ -75,7 +79,7 @@ public class RoomModel : BaseModel,IRoomHubReceiver
     /// <summary>
     /// ゲーム終了通知
     /// </summary>
-    public Action<Dictionary<int,string>> OnEndGameUser { get; set; }
+    public Action<List<ResultData>> OnEndGameUser { get; set; }
 
     /// <summary>
     /// ユーザー撃破通知
@@ -120,17 +124,17 @@ public class RoomModel : BaseModel,IRoomHubReceiver
     // ロビー接続処理
     public async UniTask JoinLobbyAsync(int userId)
     {
-        this.userId = userId;   // ユーザーIDの保存
+        this.UserId = userId;   // ユーザーIDの保存
         await roomHub.JoinLobbyAsync(userId);
     }
 
     // 入室処理
     public async UniTask JoinAsync()
     {
-        JoinedUser[] users =await roomHub.JoinAsync(RoomName, userId);
+        JoinedUser[] users =await roomHub.JoinAsync(RoomName, UserId);
         foreach(var user in users)
         {
-            if (user.UserData.Id == userId)
+            if (user.UserData.Id == UserId)
             {
                 this.ConnectionId = user.ConnectionId;  // 接続IDの保存
                 this.JoinOrder = user.JoinOrder;        // 参加順(PLNo)の保存
@@ -215,7 +219,7 @@ public class RoomModel : BaseModel,IRoomHubReceiver
     }
 
     // ゲーム終了通知
-    public void OnEndGame(Dictionary<int,string> result)
+    public void OnEndGame(List<ResultData> result)
     {
         if (OnEndGameUser == null) return;
         OnEndGameUser(result);

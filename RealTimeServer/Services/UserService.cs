@@ -30,6 +30,9 @@ namespace RealTimeServer.Services
             User user = new User();
             user.Name = name;
             user.Token = token;
+            user.Skin_No = 1;
+            user.Rate = 1500;
+            user.Money = 200;
             user.Created_at = DateTime.Now;
             user.Updated_at = DateTime.Now;
             context.Users.Add(user);            // ユーザー情報の追加

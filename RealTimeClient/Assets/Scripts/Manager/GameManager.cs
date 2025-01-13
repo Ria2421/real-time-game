@@ -18,6 +18,7 @@ using DavidJalbert;
 using UnityEngine.SceneManagement;
 using Unity.VisualScripting;
 using Cysharp.Threading.Tasks.Triggers;
+using KanKikuchi.AudioManager;
 
 public class GameManager : MonoBehaviour
 {
@@ -33,6 +34,16 @@ public class GameManager : MonoBehaviour
         Join,
         InGame
     }
+
+    /// <summary>
+    /// モバイルインプットスクリプト
+    /// </summary>
+    [SerializeField] private TinyCarMobileInput tinyCarMobileInput;
+
+    /// <summary>
+    /// モバイルインプットobj
+    /// </summary>
+    [SerializeField] private GameObject mobileInputObj;
 
     /// <summary>
     /// ルームモデル格納用
@@ -138,14 +149,24 @@ public class GameManager : MonoBehaviour
     [SerializeField] private Text timerText;
 
     /// <summary>
-    /// ランキング表示
-    /// </summary>
-    [SerializeField] private Text[] rankTexts;
-
-    /// <summary>
     /// 撃破通知表示
     /// </summary>
     [SerializeField] private GameObject crushText;
+
+    /// <summary>
+    /// レートテキスト
+    /// </summary>
+    [SerializeField] private Text rateText;
+
+    /// <summary>
+    /// 符号表示テキスト
+    /// </summary>
+    [SerializeField] private Text signText;
+
+    /// <summary>
+    /// レート増減テキスト
+    /// </summary>
+    [SerializeField] private Text changeRateText;
 
     [Space(10)]
     [Header("---- Panel ----")]
@@ -155,6 +176,37 @@ public class GameManager : MonoBehaviour
     /// </summary>
     [SerializeField] private GameObject resultPanel;
 
+    [Space(10)]
+    [Header("---- Image ----")]
+
+    /// <summary>
+    /// 順位表示画像
+    /// </summary>
+    [SerializeField] private GameObject[] rankImages;
+
+    /// <summary>
+    /// カウントダウン画像オブジェ
+    /// </summary>
+    [SerializeField] private GameObject countDownImageObj;
+
+    /// <summary>
+    /// 終了表示画像
+    /// </summary>
+    [SerializeField] private GameObject endImageObj;
+
+    /// <summary>
+    /// カウントダウン画像
+    /// </summary>
+    [SerializeField] private Image countDownImage;
+
+    [Space(10)]
+    [Header("---- Sprit ----")]
+
+    /// <summary>
+    /// カウントダウンスプライト
+    /// </summary>
+    [SerializeField] private Sprite[] countSprits;
+
     //=====================================
     // メソッド
 
@@ -163,6 +215,10 @@ public class GameManager : MonoBehaviour
     /// </summary>
     async void Start()
     {
+        // BGM再生
+        BGMManager.Instance.Pause(BGMPath.MAIN_BGM);
+        BGMManager.Instance.Play(BGMPath.MULTI_PLAY);
+
         // ルームモデルの取得
         roomModel = GameObject.Find("RoomModel").GetComponent<RoomModel>();
 
@@ -228,7 +284,7 @@ public class GameManager : MonoBehaviour
         CancelInvoke();
 
         // 退出
-        await roomModel.ExitAsync();
+        await roomModel.DisconnectionAsync();
 
         // プレイヤーオブジェクトの削除
         foreach (Transform child in parentObj.transform)
@@ -275,6 +331,9 @@ public class GameManager : MonoBehaviour
             // パーティクルの取得
             playerTurboParticle = characterObj.transform.Find("Visuals/ParticlesBoost").GetComponent<ParticleSystem>();
             playerDriftParticle = characterObj.transform.Find("Visuals/ParticlesDrifting").GetComponent<ParticleSystem>();
+
+            // モバイルインプットにカーコントローラーを設定
+            tinyCarMobileInput.carController = playerController.GetComponent<TinyCarController>();
 
             // UI変更
             gameState = GameState.Join;
@@ -347,33 +406,48 @@ public class GameManager : MonoBehaviour
     /// </summary>
     private void OnStartGameUser()
     {
+        SEManager.Instance.Play(SEPath.START);
+
         // テキスト変更
-        timerText.text = "開始!";
+        countDownImage.sprite = countSprits[0];
         StartCoroutine("HiddenText");
 
         // カメラをトップダウンに変更
         mainCamera.GetComponent<TinyCarCamera>().whatToFollow = playerController.transform;
         // 操作可能にする
         inputController.GetComponent<TinyCarStandardInput>().carController = playerController.GetComponent<TinyCarController>();
+        mobileInputObj.SetActive(true);
+        
     }
 
     /// <summary>
     /// ゲーム終了通知受信処理
     /// </summary>
-    private void OnEndGameUser(Dictionary<int, string> result)
+    private void OnEndGameUser(List<ResultData> result)
     {
         // 操作不能にする
         playerController.GetComponent<Rigidbody>().isKinematic = true;
 
         //++ 終了SE再生
+        SEManager.Instance.Play(SEPath.GOAL);
 
         // 終了表示
-        timerText.text = "終了!";
+        endImageObj.SetActive(true);
 
-        // リザルトパネルに結果を反映
-        for (int i = 0; i < result.Count; i++)
+        // リザルトパネルに結果を反映 (自分の順位・レートを反映)
+        foreach(ResultData resultData in result)
         {
-            rankTexts[i].text = result[i + 1];
+            if(resultData.UserId == roomModel.UserId)
+            {
+                rateText.text = resultData.Rate.ToString();                         // 取得したレートを表示
+                changeRateText.text = Math.Abs(resultData.ChangeRate).ToString();   // 増減レートを表示
+                if(resultData.ChangeRate < 0)
+                {   // 減算の場合は - を表示
+                    signText.text = "-";
+                }
+
+                rankImages[resultData.Rank - 1].SetActive(true);        // 該当順位の表示
+            }
         }
 
         // 1秒後にリザルト表示
@@ -400,6 +474,7 @@ public class GameManager : MonoBehaviour
         // 爆発アニメーション生成
         if (roomModel.ConnectionId == crushID)
         {   // 自分が撃破されたとき
+            SEManager.Instance.Play(SEPath.BOOM);
             Instantiate(explosionPrefab, playerController.transform.position, Quaternion.identity); // 爆発エフェクト
             mainCamera.GetComponent<TinyCarCamera>().whatToFollow = null;                           // カメラを俯瞰に変更
             characterList[crushID].GetComponent<TinyCarExplosiveBody>().explode();                  // 自爆処理
@@ -407,6 +482,7 @@ public class GameManager : MonoBehaviour
         }
         else
         {
+            SEManager.Instance.Play(SEPath.BOOM);
             Instantiate(explosionPrefab, characterList[crushID].transform.position, Quaternion.identity);
             Destroy(characterList[crushID]);
             characterList.Remove(crushID);
@@ -421,7 +497,9 @@ public class GameManager : MonoBehaviour
     {
         for (int i = 3; i > 0; i--)
         {
-            timerText.text = i.ToString();
+            countDownImage.sprite = countSprits[i];
+
+            SEManager.Instance.Play(SEPath.COUNT);
 
             // 1秒待ってコルーチン中断
             yield return new WaitForSeconds(1.0f);
@@ -442,6 +520,7 @@ public class GameManager : MonoBehaviour
         // 1秒待ってコルーチン中断
         yield return new WaitForSeconds(0.8f);
 
+        countDownImageObj.SetActive(false);
         timerText.text = "";
     }
 
@@ -454,7 +533,8 @@ public class GameManager : MonoBehaviour
         // 1秒待ってコルーチン中断
         yield return new WaitForSeconds(1.0f);
 
-        timerText.text = "";    // 終了非表示
+        mobileInputObj.SetActive(false);
+        endImageObj.SetActive(false);
         resultPanel.gameObject.SetActive(true); // リザルトパネル表示
     }
 
@@ -464,6 +544,9 @@ public class GameManager : MonoBehaviour
     public async void OnTitleButton()
     {
         CancelInvoke();
+
+        // SE再生
+        SEManager.Instance.Play(SEPath.TAP_BUTTON);
 
         // 退出
         await roomModel.ExitAsync();

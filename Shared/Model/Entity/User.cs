@@ -24,7 +24,6 @@ namespace RealTimeServer.Model.Entity
         [Key(2)]
         public string Token { get; set; }
 
-
         /// <summary>
         /// レート
         /// </summary>
