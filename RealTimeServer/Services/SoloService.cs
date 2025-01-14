@@ -23,7 +23,7 @@ namespace RealTimeServer.Services
             using var context = new GameDbContext();
 
             // 該当データが無いか検索
-            SoloPlayLog soloPlayLog = context.Solo_Play_Logs.Where(soloPlayLog => soloPlayLog.Stage_Id == stageID && soloPlayLog.User_Id == userID).First();
+            var soloPlayLog = context.Solo_Play_Logs.Where(soloPlayLog => soloPlayLog.Stage_Id == stageID && soloPlayLog.User_Id == userID).FirstOrDefault();
 
             if(soloPlayLog == null)
             {
