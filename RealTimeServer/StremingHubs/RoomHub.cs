@@ -282,13 +282,13 @@ public class RoomHub:StreamingHubBase<IRoomHub,IRoomHubReceiver>,IRoomHub
                         break;
 
                     case 3:
-                        data2.JoinedUser.UserData.Rate -= 100;
-                        resultData.ChangeRate = -100;
+                        data2.JoinedUser.UserData.Rate -= 50;
+                        resultData.ChangeRate = -50;
                         break;
 
                     case 4:
-                        data2.JoinedUser.UserData.Rate -= 50;
-                        resultData.ChangeRate = -50;
+                        data2.JoinedUser.UserData.Rate -= 100;
+                        resultData.ChangeRate = -100;
                         break;
 
                     default:
