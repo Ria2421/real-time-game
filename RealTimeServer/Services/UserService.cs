@@ -24,7 +24,7 @@ namespace RealTimeServer.Services
             if(context.Users.Where(user => user.Name == name).Count() > 0)
             {   // 重複チェック
                 // 例外スロー
-                throw new ReturnStatusException(Grpc.Core.StatusCode.InvalidArgument, "");
+                throw new ReturnStatusException(Grpc.Core.StatusCode.InvalidArgument, "SameName");
             }
 
             User user = new User();

@@ -2,7 +2,7 @@
 // ゲームマネージャー [ GameManager.cs ]
 // Author:Kenta Nakamoto
 // Data:2024/11/18
-// Update:2024/12/05
+// Update:2025/01/16
 //---------------------------------------------------------------
 using Shared.Interfaces.StreamingHubs;
 using System;
@@ -69,6 +69,11 @@ public class GameManager : MonoBehaviour
     /// プレイヤーコントローラー
     /// </summary>
     private GameObject playerController;
+
+    /// <summary>
+    /// 車体オブジェの位置情報
+    /// </summary>
+    private Transform visualTransform;
 
     /// <summary>
     /// 操作コントローラー
@@ -259,7 +264,7 @@ public class GameManager : MonoBehaviour
         {
             ConnectionId = roomModel.ConnectionId,
             Position = playerController.transform.position + posCorrection,
-            Rotation = playerController.transform.eulerAngles,
+            Rotation = visualTransform.eulerAngles,
             WheelAngle = wheelAngle.eulerAngles.y,
             IsTurbo = playerTurboParticle.isPlaying,
             IsDrift = playerDriftParticle.isPlaying
@@ -327,6 +332,9 @@ public class GameManager : MonoBehaviour
             // カーコントローラーの取得・反映
             playerController = characterObj.transform.GetChild(0).gameObject;
             wheelAngle = characterObj.transform.Find("Visuals/WheelFrontLeft").transform;
+
+            // プレイヤーの位置情報を取得
+            visualTransform = characterObj.transform.GetChild(1).gameObject.GetComponent<Transform>();
 
             // パーティクルの取得
             playerTurboParticle = characterObj.transform.Find("Visuals/ParticlesBoost").GetComponent<ParticleSystem>();
@@ -428,7 +436,7 @@ public class GameManager : MonoBehaviour
         // 操作不能にする
         playerController.GetComponent<Rigidbody>().isKinematic = true;
 
-        //++ 終了SE再生
+        // 終了SE再生
         SEManager.Instance.Play(SEPath.GOAL);
 
         // 終了表示

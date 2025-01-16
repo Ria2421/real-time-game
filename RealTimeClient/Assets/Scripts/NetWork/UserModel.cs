@@ -2,7 +2,7 @@
 // ユーザーモデル [ UserModel.cs ]
 // Author:Kenta Nakamoto
 // Data:2024/11/12
-// Update:2024/11/12
+// Update:2025/01/16
 //---------------------------------------------------------------
 using Cysharp.Net.Http;
 using Cysharp.Threading.Tasks;
@@ -22,6 +22,13 @@ public class UserModel : BaseModel
 {
     //-------------------------------------------------------
     // フィールド
+
+    public enum Status
+    {
+        True = 0,   // 成功
+        False,      // 失敗
+        SameName,   // 名前被り
+    }
 
     /// <summary>
     /// ユーザーID
@@ -112,7 +119,7 @@ public class UserModel : BaseModel
     /// </summary>
     /// <param name="name">ユーザー名</param>
     /// <returns> [true]成功 , [false]失敗 </returns>
-    public async UniTask<bool> RegistUserAsync(string name)
+    public async UniTask<Status> RegistUserAsync(string name)
     {
         using var handler = new YetAnotherHttpHandler() { Http2Only = true };   // ハンドラーの設定
         var channel = GrpcChannel.ForAddress(ServerURL, new GrpcChannelOptions() { HttpHandler = handler });    // サーバーとのチャンネルを設定
@@ -123,11 +130,18 @@ public class UserModel : BaseModel
             this.Token = Guid.NewGuid().ToString();                     // トークン生成
             this.UserId = await client.RegistUserAsync(name, Token);    // 関数呼び出し
             SaveUserData();                                             // ローカルに保存
-            return true;
+            return Status.True;
         }catch(RpcException e)
         {
             Debug.Log(e);
-            return false;
+            if (e.Status.Detail == "SameName")
+            {   // 名前被り
+                return Status.SameName;
+            }
+            else
+            {   // 通信失敗
+                return Status.False;
+            }
         }
     }
 }

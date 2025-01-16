@@ -2,7 +2,7 @@
 // タイトルマネージャー [ TitleManager.cs ]
 // Author:Kenta Nakamoto
 // Data:2024/12/05
-// Update:2024/12/17
+// Update:2025/01/16
 //---------------------------------------------------------------
 using DG.Tweening;
 using KanKikuchi.AudioManager;
@@ -44,6 +44,11 @@ public class TitleManager : MonoBehaviour
     /// 登録ボタン
     /// </summary>
     [SerializeField] private Button registButton;
+
+    /// <summary>
+    /// エラーボタン
+    /// </summary>
+    [SerializeField] private GameObject errorButton;
 
     // デバッグ用 *******************************
 
@@ -113,17 +118,28 @@ public class TitleManager : MonoBehaviour
         registButton.interactable = false;
 
         // 登録処理
-        bool isSucces = await UserModel.Instance.RegistUserAsync(nameText.text);
+        UserModel.Status statusCode = await UserModel.Instance.RegistUserAsync(nameText.text);
 
-        if (isSucces)
+        switch (statusCode)
         {
-            Debug.Log("登録成功");
-            SceneManager.LoadScene("02_MenuScene");
-        }
-        else
-        {
-            Debug.Log("登録失敗");
-            registButton.interactable = true;
+            case UserModel.Status.True:
+                Debug.Log("登録成功");
+                SceneManager.LoadScene("02_MenuScene");
+                break;
+
+            case UserModel.Status.False:
+                Debug.Log("通信失敗");
+                registButton.interactable = true;
+                break;
+
+            case UserModel.Status.SameName:
+                Debug.Log("名前被り");
+                // 注意表示
+                errorButton.SetActive(true);
+                break;
+
+            default:
+                break;
         }
     }
 
@@ -156,5 +172,16 @@ public class TitleManager : MonoBehaviour
         UserModel.Instance.UserId = int.Parse(debugIDText.text);
 
         SceneManager.LoadScene("02_MenuScene");
+    }
+
+    /// <summary>
+    /// エラーボタン押下時
+    /// </summary>
+    public void OnErrorButton()
+    {
+        errorButton.SetActive(false);
+
+        // 登録ボタンの有効化
+        registButton.interactable = true;
     }
 }

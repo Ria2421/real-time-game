@@ -2,7 +2,7 @@
 // ソロマネージャー [ SoloManager.cs ]
 // Author:Kenta Nakamoto
 // Data:2024/12/10
-// Update:2024/12/10
+// Update:2025/01/16
 //---------------------------------------------------------------
 using DavidJalbert;
 using DG.Tweening;
@@ -105,6 +105,8 @@ public class SoloManager : MonoBehaviour
     /// </summary>
     [SerializeField] private GameObject newRecordObj;
 
+    [SerializeField] private Transform visualObj;
+
     //=====================================
     // メソッド
 
@@ -142,7 +144,7 @@ public class SoloManager : MonoBehaviour
     /// </summary>
     public async void AddRapCnt()
     {
-        currentRapNum++;    // ラップ数加算
+        currentRapNum++;    // ラップ加算
 
         if(currentRapNum == maxRapNum + 1)
         {
