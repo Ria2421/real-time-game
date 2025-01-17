@@ -23,6 +23,16 @@ public class MenuManager : MonoBehaviour
     [SerializeField] private Button shopButton;     // ショップ
     [SerializeField] private Button optionButton;   // オプション
 
+    /// <summary>
+    /// BGMスライダー
+    /// </summary>
+    [SerializeField] private Slider bgmSlider;
+
+    /// <summary>
+    /// SEスライダー
+    /// </summary>
+    [SerializeField] private Slider seSlider;
+
     //=====================================
     // メソッド
 
@@ -95,6 +105,18 @@ public class MenuManager : MonoBehaviour
     /// <summary>
     /// オンラインボタン押下時
     /// </summary>
+    public void OnTitleButton()
+    {
+        // SE再生
+        SEManager.Instance.Play(SEPath.TAP_BUTTON);
+
+        // オンラインモード遷移
+        SceneManager.LoadScene("01_TitleScene");
+    }
+
+    /// <summary>
+    /// オンラインボタン押下時
+    /// </summary>
     public void OnOnlineButton()
     {
         // SE再生
@@ -102,5 +124,21 @@ public class MenuManager : MonoBehaviour
 
         // オンラインモード遷移
         SceneManager.LoadScene("05_MatchingScene");
+    }
+
+    /// <summary>
+    /// BGM音量変更処理
+    /// </summary>
+    public void ChangeBgmVolume()
+    {
+        BGMManager.Instance.ChangeBaseVolume(bgmSlider.value);
+    }
+
+    /// <summary>
+    /// SE音量変更処理
+    /// </summary>
+    public void ChangeSeVolume()
+    {
+        SEManager.Instance.ChangeBaseVolume(seSlider.value);
     }
 }

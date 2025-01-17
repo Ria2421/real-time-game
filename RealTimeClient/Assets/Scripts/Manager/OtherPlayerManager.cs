@@ -26,6 +26,11 @@ public class OtherPlayerManager : MonoBehaviour
     public string UserName { get; set; }
 
     /// <summary>
+    /// 参加順
+    /// </summary>
+    public int JoinOrder { get; set; }
+
+    /// <summary>
     /// ターボパーティクル
     /// </summary>
     [SerializeField] private ParticleSystem turboParticle;

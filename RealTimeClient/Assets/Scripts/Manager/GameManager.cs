@@ -142,6 +142,11 @@ public class GameManager : MonoBehaviour
     /// </summary>
     [SerializeField] private GameObject explosionPrefab;
 
+    /// <summary>
+    /// ユーザー名表示用オブジェ
+    /// </summary>
+    [SerializeField] private GameObject[] nameObjs;
+
     [Space (25)]
     [Header("===== UI関連 =====")]
 
@@ -343,6 +348,11 @@ public class GameManager : MonoBehaviour
             // モバイルインプットにカーコントローラーを設定
             tinyCarMobileInput.carController = playerController.GetComponent<TinyCarController>();
 
+            // ユーザー名UIの追従設定 & 名前反映
+            nameObjs[user.JoinOrder - 1].GetComponent<NameTracker>().SetTarget(playerController.transform);
+            nameObjs[user.JoinOrder - 1].GetComponent<Text>().text = user.UserData.Name;
+            nameObjs[user.JoinOrder - 1].SetActive(true);
+
             // UI変更
             gameState = GameState.Join;
             Debug.Log("自機生成完了");
@@ -356,6 +366,12 @@ public class GameManager : MonoBehaviour
             characterObj = Instantiate(otherPrefab, respownList[user.JoinOrder - 1].position, Quaternion.Euler(0, 180, 0));
             characterObj.GetComponent<OtherPlayerManager>().ConnectionID = user.ConnectionId;   // 接続IDの保存
             characterObj.GetComponent<OtherPlayerManager>().UserName = user.UserData.Name;      // ユーザー名の保存
+            characterObj.GetComponent<OtherPlayerManager>().JoinOrder = user.JoinOrder;         // 参加順の保存
+
+            // ユーザー名UIの追従設定 & 名前反映
+            nameObjs[user.JoinOrder - 1].GetComponent<NameTracker>().SetTarget(characterObj.transform);
+            nameObjs[user.JoinOrder - 1].GetComponent<Text>().text = user.UserData.Name;
+            nameObjs[user.JoinOrder - 1].SetActive(true);
         }
 
         characterObj.transform.parent = parentObj.transform;    // 親を設定
@@ -470,7 +486,7 @@ public class GameManager : MonoBehaviour
     /// <param name="crushID">   撃破された人の接続ID</param>
     private void OnCrushingUser(string attackName, string cruchName, Guid crushID)
     {
-        // 撃破通知テキストの内容変更・表示
+        // 撃破通知テキストの内容変更・表示する
         crushText.GetComponent<Text>().text = attackName + " が " + cruchName + "を撃破！";
 
         // 通知表示Sequenceを作成
@@ -478,6 +494,15 @@ public class GameManager : MonoBehaviour
         sequence.Append(crushText.transform.DOLocalMove(new Vector3(0f, 450f, 0f), 1.5f));
         sequence.Append(crushText.transform.DOLocalMove(new Vector3(0f, 625f, 0f), 0.5f));
         sequence.Play();
+        
+        // 撃破されたプレイヤーの名前を非表示
+        foreach(GameObject nameObj in nameObjs)
+        {
+            if(nameObj.GetComponent<Text>().text == cruchName)
+            {
+                nameObj.SetActive(false);
+            }
+        }
 
         // 爆発アニメーション生成
         if (roomModel.ConnectionId == crushID)
@@ -538,6 +563,12 @@ public class GameManager : MonoBehaviour
     /// <returns></returns>
     IEnumerator DisplayResult()
     {
+        // 名前表示をすべてOFF
+        foreach(GameObject obj in nameObjs)
+        {
+            obj.SetActive(false);
+        }
+
         // 1秒待ってコルーチン中断
         yield return new WaitForSeconds(1.0f);
 
