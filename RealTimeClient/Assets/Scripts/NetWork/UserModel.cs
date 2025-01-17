@@ -10,6 +10,7 @@ using Grpc.Core;
 using Grpc.Net.Client;
 using MagicOnion.Client;
 using Newtonsoft.Json;
+using RealTimeServer.Model.Entity;
 using Shared.Interfaces.Services;
 using Shared.Interfaces.StreamingHubs;
 using System;
@@ -134,6 +135,61 @@ public class UserModel : BaseModel
         }catch(RpcException e)
         {
             Debug.Log(e);
+            if (e.Status.Detail == "SameName")
+            {   // 名前被り
+                return Status.SameName;
+            }
+            else
+            {   // 通信失敗
+                return Status.False;
+            }
+        }
+    }
+
+    /// <summary>
+    /// ユーザーをID指定で検索
+    /// [return : ユーザー情報]
+    /// </summary>
+    /// <param name="id">ユーザーID</param>
+    /// <returns></returns>
+    public async UniTask<User> SearchUserID(int id)
+    {
+        using var handler = new YetAnotherHttpHandler() { Http2Only = true };   // ハンドラーの設定
+        var channel = GrpcChannel.ForAddress(ServerURL, new GrpcChannelOptions() { HttpHandler = handler });    // サーバーとのチャンネルを設定
+        var client = MagicOnionClient.Create<IUserService>(channel);    // サーバーとの接続
+
+        try
+        {
+            var userData = await client.SearchUserID(id);    // 関数呼び出し
+            return userData;
+        }
+        catch(RpcException e)
+        {
+            Debug.Log(e);
+            return null;
+        }
+    }
+
+    /// <summary>
+    /// 指定IDのユーザー名更新
+    /// [return : 真偽]
+    /// </summary>
+    /// <param name="id">  ユーザーID</param>
+    /// <param name="name">ユーザー名</param>
+    /// <returns></returns>
+    public async UniTask<Status> UpdateUserName(int id, string name)
+    {
+        using var handler = new YetAnotherHttpHandler() { Http2Only = true };   // ハンドラーの設定
+        var channel = GrpcChannel.ForAddress(ServerURL, new GrpcChannelOptions() { HttpHandler = handler });    // サーバーとのチャンネルを設定
+        var client = MagicOnionClient.Create<IUserService>(channel);    // サーバーとの接続
+
+        try
+        {
+            var userData = await client.UpdateUserName(id, name);
+            return Status.True;
+        }
+        catch (RpcException e)
+        {
             if (e.Status.Detail == "SameName")
             {   // 名前被り
                 return Status.SameName;

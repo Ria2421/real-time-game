@@ -5,6 +5,7 @@
 // Update:2024/12/10
 //---------------------------------------------------------------
 using KanKikuchi.AudioManager;
+using RealTimeServer.Model.Entity;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -19,19 +20,26 @@ public class MenuManager : MonoBehaviour
     [Header("---- Button ----")]
 
     // メニューボタン
-    [SerializeField] private Button acountButton;   // アカウント
-    [SerializeField] private Button shopButton;     // ショップ
-    [SerializeField] private Button optionButton;   // オプション
+    [SerializeField] private Button acountButton;       // アカウント
+    [SerializeField] private Button shopButton;         // ショップ
+    [SerializeField] private Button optionButton;       // オプション
+    [SerializeField] private Button updateButton;       // 更新編集
+    [SerializeField] private GameObject errorButton;    // エラー (名前被り)
+    [SerializeField] private GameObject netErrorButton; // エラー (通信エラー)
 
-    /// <summary>
-    /// BGMスライダー
-    /// </summary>
+    // サウンドスライダー
     [SerializeField] private Slider bgmSlider;
-
-    /// <summary>
-    /// SEスライダー
-    /// </summary>
     [SerializeField] private Slider seSlider;
+
+    // メニューパネル
+    [SerializeField] private GameObject acountPanel;
+    [SerializeField] private GameObject soundPanel;
+
+    // アカウントパネル表示UI
+    [SerializeField] private Text displayNameText;
+    [SerializeField] private Text inputNameText;
+    [SerializeField] private Text registText;
+    [SerializeField] private Text rateText;
 
     //=====================================
     // メソッド
@@ -69,28 +77,6 @@ public class MenuManager : MonoBehaviour
     // ボタン押下処理
 
     /// <summary>
-    /// パネル表示
-    /// </summary>
-    /// <param name="panel">表示パネル</param>
-    public void OnDisplayPanel(GameObject panel)
-    {
-        // SE再生
-        SEManager.Instance.Play(SEPath.TAP_BUTTON);
-        panel.SetActive(true);
-    }
-
-    /// <summary>
-    /// パネル非表示
-    /// </summary>
-    /// <param name="panel">閉じるパネル</param>
-    public void OnClosePanel(GameObject panel)
-    {
-        // SE再生
-        SEManager.Instance.Play(SEPath.TAP_BUTTON);
-        panel.SetActive(false);
-    }
-
-    /// <summary>
     /// ソロボタン押下時
     /// </summary>
     public void OnSoloButton()
@@ -105,6 +91,18 @@ public class MenuManager : MonoBehaviour
     /// <summary>
     /// オンラインボタン押下時
     /// </summary>
+    public void OnOnlineButton()
+    {
+        // SE再生
+        SEManager.Instance.Play(SEPath.TAP_BUTTON);
+
+        // オンラインモード遷移
+        SceneManager.LoadScene("05_MatchingScene");
+    }
+
+    /// <summary>
+    /// タイトルボタン押下時
+    /// </summary>
     public void OnTitleButton()
     {
         // SE再生
@@ -115,15 +113,92 @@ public class MenuManager : MonoBehaviour
     }
 
     /// <summary>
-    /// オンラインボタン押下時
+    /// アカウントボタン押下時
     /// </summary>
-    public void OnOnlineButton()
+    public async void OnAcountButton()
     {
         // SE再生
         SEManager.Instance.Play(SEPath.TAP_BUTTON);
 
-        // オンラインモード遷移
-        SceneManager.LoadScene("05_MatchingScene");
+        // ユーザーデータの取得
+        var userData =  await UserModel.Instance.SearchUserID(UserModel.Instance.UserId);
+
+        if (userData == null)
+        {   // エラー表示
+            errorButton.SetActive(true);
+            return;
+        }
+        else
+        {   // ユーザーデータ反映・表示
+            displayNameText.text = userData.Name;
+            registText.text = userData.Created_at.ToString();
+            rateText.text = userData.Rate.ToString();
+            acountPanel.SetActive(true);
+        }
+    }
+
+    /// <summary>
+    /// ユーザー名変更ボタン
+    /// </summary>
+    public async void OnNameUpdateButton()
+    {
+        // ボタン無効化
+        updateButton.interactable = false;
+
+        // 登録処理
+        UserModel.Status statusCode = await UserModel.Instance.UpdateUserName(UserModel.Instance.UserId,inputNameText.text);
+
+        switch (statusCode)
+        {
+            case UserModel.Status.True:
+                //++ 変更完了ウィンドウを表示
+                Debug.Log("登録成功");
+                break;
+
+            case UserModel.Status.False:
+                // ネットエラーボタン表示
+                Debug.Log("通信失敗");
+                netErrorButton.SetActive(false);
+                break;
+
+            case UserModel.Status.SameName:
+                // エラー表示
+                Debug.Log("名前被り");
+                errorButton.SetActive(true);
+                break;
+
+            default:
+                break;
+        }
+    }
+
+    /// <summary>
+    /// サウンドサウンドボタン押下時
+    /// </summary>
+    public void OnSoundButton()
+    {
+        // SE再生
+        SEManager.Instance.Play(SEPath.TAP_BUTTON);
+
+        soundPanel.SetActive(true);
+    }
+
+    /// <summary>
+    /// パネル非表示処理
+    /// </summary>
+    public void OnCloseDisplay(GameObject gameObject)
+    {
+        gameObject.SetActive(false);
+    }
+
+    /// <summary>
+    /// エラーボタン非表示・更新ボタン復活
+    /// </summary>
+    public void OnErrorButton()
+    {
+        errorButton.SetActive(false);
+        netErrorButton.SetActive(false);
+        updateButton.interactable=true;
     }
 
     /// <summary>

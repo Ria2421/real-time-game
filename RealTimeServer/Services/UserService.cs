@@ -52,7 +52,7 @@ namespace RealTimeServer.Services
         {
             using var context = new GameDbContext();
 
-            User user = context.Users.Where(user => user.Id == id).First();
+            var user = context.Users.Where(user => user.Id == id).FirstOrDefault();
 
             return user;
         }
@@ -86,7 +86,7 @@ namespace RealTimeServer.Services
             if (context.Users.Where(user => user.Name == name).Count() > 0)
             {
                 // 例外スロー
-                throw new ReturnStatusException(Grpc.Core.StatusCode.InvalidArgument, "");
+                throw new ReturnStatusException(Grpc.Core.StatusCode.InvalidArgument, "SameName");
             }
 
             // ユーザー情報の更新
