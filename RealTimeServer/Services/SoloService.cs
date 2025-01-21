@@ -4,6 +4,7 @@ using MagicOnionServer.Model.Context;
 using RealTimeServer.Model.Entity;
 using Shared.Interfaces.Services;
 using Shared.Model.Entity;
+using System.Diagnostics;
 using System.Xml.Linq;
 
 namespace RealTimeServer.Services
@@ -18,28 +19,50 @@ namespace RealTimeServer.Services
         /// <param name="userID"> ユーザーID</param>
         /// <param name="time">   登録タイム</param>
         /// <returns></returns>
-        public async UnaryResult<bool> RegistClearTimeAsync(int stageID, int userID,int time)
+        public async UnaryResult<RegistResult> RegistClearTimeAsync(int stageID, int userID,int time,string ghostData)
         {
             using var context = new GameDbContext();
+            RegistResult registResult = new RegistResult();
+
+            //================================
+            // クリアタイム登録・更新処理
+
+            // ランキング一位のプレイデータを取得
+            var topData = context.Solo_Play_Data.Where(ranking => ranking.Stage_Id == stageID)
+                                                         .OrderBy(ranking => ranking.Clear_Time_Msec).FirstOrDefault();
 
             // 該当データが無いか検索
-            var soloPlayLog = context.Solo_Play_Logs.Where(soloPlayLog => soloPlayLog.Stage_Id == stageID && soloPlayLog.User_Id == userID).FirstOrDefault();
+            var soloPlayLog = context.Solo_Play_Data.Where(soloPlayLog => soloPlayLog.Stage_Id == stageID && soloPlayLog.User_Id == userID).FirstOrDefault();
 
             if(soloPlayLog == null)
-            {
-                SoloPlayLog solo = new SoloPlayLog();
+            {   // 初回登録
+                SoloPlayData solo = new SoloPlayData();
                 solo.Stage_Id = stageID;
                 solo.User_Id = userID;
                 solo.Car_Type_Id = 1;               // とりあえずスタンダード固定(1)
                 solo.Clear_Time_Msec = time;
                 solo.Created_at = DateTime.Now;
                 solo.Updated_at = DateTime.Now;
-                context.Solo_Play_Logs.Add(solo);   // ソロプレイ情報の追加
-                await context.SaveChangesAsync();   // テーブルに保存
 
-                Console.WriteLine("タイム初登録完了");
+                // 自分の一番早いゴーストデータを表示できる仕様にするときは条件なくゴーストデータを登録する
+                // ゴーストデータ登録処理
+                if (topData.Clear_Time_Msec > time)
+                {
+                    solo.Ghost_Data = ghostData;
+                    registResult.ghostRegistFlag = true;
+                    Console.WriteLine("ゴーストデータ登録");
+                }
+                else
+                {   
+                    solo.Ghost_Data = "";
+                    registResult.ghostRegistFlag = false;
+                    Console.WriteLine("ゴーストデータ未登録");
+                }
 
-                return true;
+                context.Solo_Play_Data.Add(solo);   // ソロプレイ情報の追加
+                Console.WriteLine("タイム初登録");
+
+                registResult.timeRegistFlag = true;
             }
             else
             {
@@ -48,18 +71,34 @@ namespace RealTimeServer.Services
                     // ベストタイム更新処理
                     soloPlayLog.Clear_Time_Msec = time;     // タイム更新
                     soloPlayLog.Updated_at = DateTime.Now;
-                    await context.SaveChangesAsync();       // テーブルに保存
-                    Console.WriteLine("タイム更新完了");
+                    Console.WriteLine("タイム更新");
 
-                    return true;
+                    // ゴーストデータ登録処理
+                    if (topData.Clear_Time_Msec > time)
+                    {
+                        soloPlayLog.Ghost_Data = ghostData;
+                        registResult.ghostRegistFlag = true;
+                        Console.WriteLine("ゴーストデータ登録");
+                    }
+                    else
+                    {
+                        soloPlayLog.Ghost_Data = "";                // 自分の一番早いゴーストデータを表示できる仕様にするときは""にしない
+                        registResult.ghostRegistFlag = false;
+                        Console.WriteLine("ゴーストデータ未登録");
+                    }
+
+                    registResult.timeRegistFlag = true;
                 }
                 else
                 {   // 更新不要
                     Console.WriteLine("更新不要");
 
-                    return false;
+                    registResult.timeRegistFlag = false;
                 }
             }
+
+            await context.SaveChangesAsync();   // テーブルに保存
+            return registResult;
         }
 
         /// <summary>
@@ -72,12 +111,12 @@ namespace RealTimeServer.Services
             using var context = new GameDbContext();
 
             // ランキング情報の取得
-            SoloPlayLog[] ranking = context.Solo_Play_Logs.Where(ranking => ranking.Stage_Id == stageID)
+            SoloPlayData[] ranking = context.Solo_Play_Data.Where(ranking => ranking.Stage_Id == stageID)
                 .OrderBy(ranking => ranking.Clear_Time_Msec).Take(10).ToArray();
 
             // ユーザーIDの抽出
             List<int> userIds = new List<int>();
-            foreach (SoloPlayLog soloPlayLog in ranking)
+            foreach (SoloPlayData soloPlayLog in ranking)
             {   
                 userIds.Add(soloPlayLog.User_Id);
             }
@@ -87,21 +126,23 @@ namespace RealTimeServer.Services
 
             // 送信用ランキング情報に整形
             List<RankingData> rankingDatas = new List<RankingData>();
-            foreach (SoloPlayLog playLog in ranking)
+            foreach (SoloPlayData playData in ranking)
             {
                 RankingData rankingData = new RankingData();
-                rankingData.UserId = playLog.Id;                // ユーザーID格納
+                rankingData.Id = playData.Id;                    // ログID格納
+                rankingData.UserId = playData.Id;                // ユーザーID格納
 
                 // ユーザー名格納
                 foreach (var user in users)
                 {
-                    if(playLog.User_Id == user.Id)
+                    if(playData.User_Id == user.Id)
                     {
                         rankingData.UserName = user.Name;
                     }
                 }
 
-                rankingData.ClearTime = playLog.Clear_Time_Msec;    // クリアタイム格納
+                rankingData.ClearTime = playData.Clear_Time_Msec;// クリアタイム格納
+                rankingData.GhostData = playData.Ghost_Data;     // ゴーストデータ格納
 
                 rankingDatas.Add(rankingData);
             }

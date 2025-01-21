@@ -17,7 +17,7 @@ namespace Shared.Interfaces.Services
         /// <param name="userID"> ユーザーID</param>
         /// <param name="time">   登録タイム</param>
         /// <returns></returns>
-        UnaryResult<bool> RegistClearTimeAsync(int stageID, int userID, int time);
+        UnaryResult<RegistResult> RegistClearTimeAsync(int stageID, int userID, int time,string ghostData);
 
         /// <summary>
         /// ステージ毎のランキングを取得

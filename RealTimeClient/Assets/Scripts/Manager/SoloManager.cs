@@ -7,6 +7,8 @@
 using DavidJalbert;
 using DG.Tweening;
 using KanKikuchi.AudioManager;
+using Newtonsoft.Json;
+using Shared.Interfaces.StreamingHubs;
 using Shared.Model.Entity;
 using System;
 using System.Collections;
@@ -20,10 +22,22 @@ public class SoloManager : MonoBehaviour
     //===================================
     // フィールド
 
+    [Header("===== StageOption =====")]
+
     /// <summary>
     /// ステージNo
     /// </summary>
-    [SerializeField] private int stageID; 
+    [SerializeField] private int stageID;
+
+    /// <summary>
+    /// 最大ラップ数
+    /// </summary>
+    [SerializeField] private int maxRapNum = 0;
+
+    /// <summary>
+    /// ゴーストデータ記録間隔
+    /// </summary>
+    [SerializeField] private float saveSpeed;
 
     /// <summary>
     /// 現ラップ数
@@ -46,6 +60,24 @@ public class SoloManager : MonoBehaviour
     private bool isCount = false;
 
     /// <summary>
+    /// ゴーストデータリスト
+    /// </summary>
+    private List<GhostData> ghostList = new List<GhostData>();
+
+    /// <summary>
+    /// 再生ゴーストデータ
+    /// </summary>
+    private List<GhostData> playGhost = new List<GhostData>();
+
+    /// <summary>
+    /// ゴーストデータカウント
+    /// </summary>
+    private int ghostCnt = 0;
+
+    [Space(25)]
+    [Header("===== DataObject =====")]
+
+    /// <summary>
     /// 基本入力管理オブジェ
     /// </summary>
     [SerializeField] private GameObject standardInput;
@@ -61,9 +93,45 @@ public class SoloManager : MonoBehaviour
     [SerializeField] private TinyCarExplosiveBody boomManager;
 
     /// <summary>
-    /// 最大ラップ数
+    /// ランキングモデル格納用
     /// </summary>
-    [SerializeField] private int maxRapNum = 0;
+    [SerializeField] private RankingModel rankingModel;
+
+    /// <summary>
+    /// 位置情報取得オブジェ
+    /// </summary>
+    [SerializeField] private Transform visualObj;
+
+    /// <summary>
+    /// タイヤ角取得オブジェ
+    /// </summary>
+    [SerializeField] private Transform wheelRot;
+
+    /// <summary>
+    /// ゴースト車オブジェ
+    /// </summary>
+    [SerializeField] private GameObject ghostCarObj;
+
+    /// <summary>
+    /// ゴースト車位置情報
+    /// </summary>
+    [SerializeField] private Transform ghostCatTrs;
+
+    /// <summary>
+    /// ゴースト車位置情報
+    /// </summary>
+    [SerializeField] private Transform ghostWheelR;
+
+    /// <summary>
+    /// ゴースト車位置情報
+    /// </summary>
+    [SerializeField] private Transform ghostWheelL;
+
+    [Space(25)]
+    [Header("===== UI =====")]
+
+    [Space(10)]
+    [Header("---- Panel ----")]
 
     /// <summary>
     /// リザルトパネル
@@ -74,6 +142,9 @@ public class SoloManager : MonoBehaviour
     /// 計測タイマーパネル
     /// </summary>
     [SerializeField] private GameObject timerPanel;
+
+    [Space(10)]
+    [Header("---- Image ----")]
 
     /// <summary>
     /// カウントダウンオブジェ
@@ -86,6 +157,14 @@ public class SoloManager : MonoBehaviour
     [SerializeField] private Sprite[] countDownSprits;
 
     /// <summary>
+    /// 新記録画像
+    /// </summary>
+    [SerializeField] private GameObject newRecordObj;
+
+    [Space(10)]
+    [Header("---- Text ----")]
+
+    /// <summary>
     /// 時間計測用テキスト
     /// </summary>
     [SerializeField] private Text timerText;
@@ -94,18 +173,6 @@ public class SoloManager : MonoBehaviour
     /// ラップ数表示用テキスト
     /// </summary>
     [SerializeField] private Text rapText;
-
-    /// <summary>
-    /// ランキングモデル格納用
-    /// </summary>
-    [SerializeField] private RankingModel rankingModel;
-
-    /// <summary>
-    /// 新記録画像
-    /// </summary>
-    [SerializeField] private GameObject newRecordObj;
-
-    [SerializeField] private Transform visualObj;
 
     //=====================================
     // メソッド
@@ -119,8 +186,20 @@ public class SoloManager : MonoBehaviour
         BGMManager.Instance.Pause(BGMPath.MAIN_BGM);
         BGMManager.Instance.Play(BGMPath.TIME_ATTACK);
 
-        // フラグ初期化
+        // 変数初期化
         isCount = false;
+        ghostCnt = 0;
+
+        // 再生するゴーストデータを取得
+        if (UserModel.Instance.GhostData != "")
+        {
+            playGhost = JsonConvert.DeserializeObject<List<GhostData>>(UserModel.Instance.GhostData);
+            Debug.Log("ゴーストデータ取得");
+        }
+        else
+        {
+            ghostCarObj.SetActive(false);
+        }
 
         // カウントダウン開始
         Debug.Log("カウントダウン");
@@ -133,6 +212,8 @@ public class SoloManager : MonoBehaviour
     void Update()
     {
         if (!isCount) return;
+
+
 
         // timerを利用して経過時間を計測・表示
         timer += Time.deltaTime;
@@ -148,6 +229,8 @@ public class SoloManager : MonoBehaviour
 
         if(currentRapNum == maxRapNum + 1)
         {
+            CancelInvoke("SaveGhost");
+
             // SE再生
             SEManager.Instance.Play(SEPath.GOAL);
 
@@ -163,15 +246,20 @@ public class SoloManager : MonoBehaviour
             sequence.Append(timerPanel.transform.DOLocalMove(new Vector3(0,-25,0), 0.5f));
             sequence.Play();
 
+            // クリアタイムをm/secに変換する
             timer = (float)Math.Round(timer, 3, MidpointRounding.AwayFromZero);
             goalTime = (int)(timer * 1000);
 
             UserModel userModel = UserModel.Instance;
 
-            // 記録登録処理
-            bool isRegist = await rankingModel.RegistClearTimeAsync(stageID, userModel.UserId, goalTime);
+            // 送信用ゴーストデータの作成
+            SaveGhost();
+            string ghostData = JsonConvert.SerializeObject(ghostList);
 
-            if (isRegist)
+            // 記録登録処理
+            RegistResult result = await rankingModel.RegistClearTimeAsync(stageID, userModel.UserId, goalTime, ghostData);
+
+            if (result.timeRegistFlag)
             {   // newRecord表示
                 SEManager.Instance.Play(SEPath.NEW_RECORD);
                 newRecordObj.SetActive(true);
@@ -228,11 +316,18 @@ public class SoloManager : MonoBehaviour
             if (i == 3)
             {
                 SEManager.Instance.Play(SEPath.START);
-                // 計測開始・操作可能
+                // 計測開始・操作可能・ゴーストデータ保存処理起動する
                 countDownObj.GetComponent<Image>().sprite = countDownSprits[i];
+
+                if (UserModel.Instance.GhostData != "")
+                {   // ゴーストデータがある時のみ再生
+                    InvokeRepeating("PlayGhost",0,saveSpeed);
+                }
+
                 standardInput.SetActive(true);
                 mobileInput.SetActive(true);
                 isCount = true;
+                InvokeRepeating("SaveGhost", 0, saveSpeed);
 
                 // カウント非表示
                 Invoke("HiddenCount", 0.6f);
@@ -240,9 +335,45 @@ public class SoloManager : MonoBehaviour
             else
             {
                 SEManager.Instance.Play(SEPath.COUNT);
-                // 1秒待ってコルーチン中断
+                // 0.9秒待ってコルーチン中断
                 yield return new WaitForSeconds(0.9f);
             }
+        }
+    }
+
+    /// <summary>
+    /// ゴーストデータ保存処理
+    /// </summary>
+    private void SaveGhost()
+    {
+        GhostData ghostData = new GhostData();
+        ghostData.Pos = visualObj.position;        // 位置
+        ghostData.Rot = visualObj.eulerAngles;     // 角度
+        ghostData.WRot = wheelRot.eulerAngles.y;   // タイヤ角
+
+        ghostList.Add(ghostData);
+    }
+
+    /// <summary>
+    /// ゴースト再生処理
+    /// </summary>
+    private void PlayGhost()
+    {
+        // 本体位置の更新
+
+        ghostCarObj.transform.DOMove(new Vector3(playGhost[ghostCnt].Pos.x, 0, playGhost[ghostCnt].Pos.z), saveSpeed).SetEase(Ease.Linear).SetUpdate(UpdateType.Fixed, true);
+        ghostCarObj.transform.DORotate(playGhost[ghostCnt].Rot, saveSpeed).SetEase(Ease.Linear).SetUpdate(UpdateType.Fixed, true);
+
+        // タイヤ角の更新
+        ghostWheelL.DOLocalRotate(new Vector3(0, playGhost[ghostCnt].WRot, 0), saveSpeed).SetEase(Ease.Linear).SetUpdate(UpdateType.Fixed, true);
+        ghostWheelR.DOLocalRotate(new Vector3(0, playGhost[ghostCnt].WRot, 0), saveSpeed).SetEase(Ease.Linear).SetUpdate(UpdateType.Fixed, true);
+
+        ghostCnt++;
+
+        if (playGhost.Count - 1 < ghostCnt)
+        {   // 再生するデータが無い時は再生停止
+            CancelInvoke("PlayGhost");
+            return;
         }
     }
 
@@ -253,6 +384,7 @@ public class SoloManager : MonoBehaviour
     {
         // SE再生
         SEManager.Instance.Play(SEPath.TAP_BUTTON);
+        UserModel.Instance.GhostData = "";
 
         SceneManager.LoadScene("02_MenuScene");
     }

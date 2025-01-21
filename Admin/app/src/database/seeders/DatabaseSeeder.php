@@ -20,6 +20,7 @@ class DatabaseSeeder extends Seeder
         $this->call(SoloStagesSeeder::class);           // ソロステージ (マスター)
         $this->call(MultiStagesTableSeeder::class);     // マルチステージ (マスター)
         $this->call(HaveCarsSeeder::class);             // 所持車
+        $this->call(SoloPlayDataTableSeeder::class);    // ソロプレイデータ
         $this->call(SoloPlayLogsTableSeeder::class);    // ソロプレイログ
         $this->call(MultiPlayLogsTableSeeder::class);   // マルチプレイログ
         $this->call(MultiResultLogsTableSeeder::class); // マルチリザルトログ

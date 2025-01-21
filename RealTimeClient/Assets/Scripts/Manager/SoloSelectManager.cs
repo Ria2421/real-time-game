@@ -54,19 +54,22 @@ public class SoloSelectManager : MonoBehaviour
             BGMManager.Instance.Play(BGMPath.MAIN_BGM, 0.75f, 0, 1, true, true);
         }
 
-        // ランキングデータの取得
+        // ランキングデータの取得 (現在はステージ1に固定)
         List<RankingData> rankingDatas = await rankingModel.GetRankingAsync(1);
+
+        // ランキング1位のゴーストデータを取得
+        UserModel.Instance.GhostData = "";  // リセット
+        UserModel.Instance.GhostData = rankingDatas[0].GhostData;
 
         // 画面に反映
         for (int i = 0; i < rankingDatas.Count; i++)
         {
-            nameTexts[i].text = rankingDatas[i].UserName;   // 名前格納
+            nameTexts[i].text = rankingDatas[i].UserName;   // 名前を格納
 
             // クリアタイムをテキストに反映
             float clearTIme = (float)rankingDatas[i].ClearTime / 1000.0f;
             string decNum = (clearTIme - (int)clearTIme).ToString(".000");
             clearTimeTexts[i].text = ((int)(clearTIme / 60)).ToString("00") + ":" + ((int)clearTIme % 60).ToString("00") + decNum;
-            
         }
     }
 

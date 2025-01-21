@@ -6,7 +6,7 @@ using System.Text;
 namespace Shared.Model.Entity
 {
     [MessagePackObject]
-    public class SoloPlayLog
+    public class SoloPlayData
     {
         /// <summary>
         /// ID
@@ -39,15 +39,21 @@ namespace Shared.Model.Entity
         public int Clear_Time_Msec { get; set; }
 
         /// <summary>
-        /// 生成日時
+        /// ゴーストデータ
         /// </summary>
         [Key(5)]
+        public string Ghost_Data { get; set; }
+
+        /// <summary>
+        /// 生成日時
+        /// </summary>
+        [Key(6)]
         public DateTime Created_at { get; set; }
 
         /// <summary>
         /// 更新日時
         /// </summary>
-        [Key(6)]
+        [Key(7)]
         public DateTime Updated_at { get; set; }
     }
 }

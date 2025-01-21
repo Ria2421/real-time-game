@@ -47,7 +47,7 @@ namespace MessagePack.Resolvers
 
         static GeneratedResolverGetFormatterHelper()
         {
-            lookup = new global::System.Collections.Generic.Dictionary<global::System.Type, int>(7)
+            lookup = new global::System.Collections.Generic.Dictionary<global::System.Type, int>(8)
             {
                 { typeof(global::RealTimeServer.Model.Entity.User), 0 },
                 { typeof(global::Shared.Interfaces.Services.IMyFirstService.Number), 1 },
@@ -55,7 +55,8 @@ namespace MessagePack.Resolvers
                 { typeof(global::Shared.Interfaces.StreamingHubs.MoveData), 3 },
                 { typeof(global::Shared.Interfaces.StreamingHubs.ResultData), 4 },
                 { typeof(global::Shared.Model.Entity.RankingData), 5 },
-                { typeof(global::Shared.Model.Entity.SoloPlayLog), 6 },
+                { typeof(global::Shared.Model.Entity.RegistResult), 6 },
+                { typeof(global::Shared.Model.Entity.SoloPlayData), 7 },
             };
         }
 
@@ -75,7 +76,8 @@ namespace MessagePack.Resolvers
                 case 3: return new MessagePack.Formatters.Shared.Interfaces.StreamingHubs.MoveDataFormatter();
                 case 4: return new MessagePack.Formatters.Shared.Interfaces.StreamingHubs.ResultDataFormatter();
                 case 5: return new MessagePack.Formatters.Shared.Model.Entity.RankingDataFormatter();
-                case 6: return new MessagePack.Formatters.Shared.Model.Entity.SoloPlayLogFormatter();
+                case 6: return new MessagePack.Formatters.Shared.Model.Entity.RegistResultFormatter();
+                case 7: return new MessagePack.Formatters.Shared.Model.Entity.SoloPlayDataFormatter();
                 default: return null;
             }
         }
@@ -522,10 +524,12 @@ namespace MessagePack.Formatters.Shared.Model.Entity
             }
 
             global::MessagePack.IFormatterResolver formatterResolver = options.Resolver;
-            writer.WriteArrayHeader(3);
+            writer.WriteArrayHeader(5);
+            writer.Write(value.Id);
             writer.Write(value.UserId);
             global::MessagePack.FormatterResolverExtensions.GetFormatterWithVerify<string>(formatterResolver).Serialize(ref writer, value.UserName, options);
             writer.Write(value.ClearTime);
+            global::MessagePack.FormatterResolverExtensions.GetFormatterWithVerify<string>(formatterResolver).Serialize(ref writer, value.GhostData, options);
         }
 
         public global::Shared.Model.Entity.RankingData Deserialize(ref global::MessagePack.MessagePackReader reader, global::MessagePack.MessagePackSerializerOptions options)
@@ -545,13 +549,19 @@ namespace MessagePack.Formatters.Shared.Model.Entity
                 switch (i)
                 {
                     case 0:
-                        ____result.UserId = reader.ReadInt32();
+                        ____result.Id = reader.ReadInt32();
                         break;
                     case 1:
-                        ____result.UserName = global::MessagePack.FormatterResolverExtensions.GetFormatterWithVerify<string>(formatterResolver).Deserialize(ref reader, options);
+                        ____result.UserId = reader.ReadInt32();
                         break;
                     case 2:
+                        ____result.UserName = global::MessagePack.FormatterResolverExtensions.GetFormatterWithVerify<string>(formatterResolver).Deserialize(ref reader, options);
+                        break;
+                    case 3:
                         ____result.ClearTime = reader.ReadInt32();
+                        break;
+                    case 4:
+                        ____result.GhostData = global::MessagePack.FormatterResolverExtensions.GetFormatterWithVerify<string>(formatterResolver).Deserialize(ref reader, options);
                         break;
                     default:
                         reader.Skip();
@@ -564,10 +574,58 @@ namespace MessagePack.Formatters.Shared.Model.Entity
         }
     }
 
-    public sealed class SoloPlayLogFormatter : global::MessagePack.Formatters.IMessagePackFormatter<global::Shared.Model.Entity.SoloPlayLog>
+    public sealed class RegistResultFormatter : global::MessagePack.Formatters.IMessagePackFormatter<global::Shared.Model.Entity.RegistResult>
     {
 
-        public void Serialize(ref global::MessagePack.MessagePackWriter writer, global::Shared.Model.Entity.SoloPlayLog value, global::MessagePack.MessagePackSerializerOptions options)
+        public void Serialize(ref global::MessagePack.MessagePackWriter writer, global::Shared.Model.Entity.RegistResult value, global::MessagePack.MessagePackSerializerOptions options)
+        {
+            if (value == null)
+            {
+                writer.WriteNil();
+                return;
+            }
+
+            writer.WriteArrayHeader(2);
+            writer.Write(value.timeRegistFlag);
+            writer.Write(value.ghostRegistFlag);
+        }
+
+        public global::Shared.Model.Entity.RegistResult Deserialize(ref global::MessagePack.MessagePackReader reader, global::MessagePack.MessagePackSerializerOptions options)
+        {
+            if (reader.TryReadNil())
+            {
+                return null;
+            }
+
+            options.Security.DepthStep(ref reader);
+            var length = reader.ReadArrayHeader();
+            var ____result = new global::Shared.Model.Entity.RegistResult();
+
+            for (int i = 0; i < length; i++)
+            {
+                switch (i)
+                {
+                    case 0:
+                        ____result.timeRegistFlag = reader.ReadBoolean();
+                        break;
+                    case 1:
+                        ____result.ghostRegistFlag = reader.ReadBoolean();
+                        break;
+                    default:
+                        reader.Skip();
+                        break;
+                }
+            }
+
+            reader.Depth--;
+            return ____result;
+        }
+    }
+
+    public sealed class SoloPlayDataFormatter : global::MessagePack.Formatters.IMessagePackFormatter<global::Shared.Model.Entity.SoloPlayData>
+    {
+
+        public void Serialize(ref global::MessagePack.MessagePackWriter writer, global::Shared.Model.Entity.SoloPlayData value, global::MessagePack.MessagePackSerializerOptions options)
         {
             if (value == null)
             {
@@ -576,17 +634,18 @@ namespace MessagePack.Formatters.Shared.Model.Entity
             }
 
             global::MessagePack.IFormatterResolver formatterResolver = options.Resolver;
-            writer.WriteArrayHeader(7);
+            writer.WriteArrayHeader(8);
             writer.Write(value.Id);
             writer.Write(value.Stage_Id);
             writer.Write(value.User_Id);
             writer.Write(value.Car_Type_Id);
             writer.Write(value.Clear_Time_Msec);
+            global::MessagePack.FormatterResolverExtensions.GetFormatterWithVerify<string>(formatterResolver).Serialize(ref writer, value.Ghost_Data, options);
             global::MessagePack.FormatterResolverExtensions.GetFormatterWithVerify<global::System.DateTime>(formatterResolver).Serialize(ref writer, value.Created_at, options);
             global::MessagePack.FormatterResolverExtensions.GetFormatterWithVerify<global::System.DateTime>(formatterResolver).Serialize(ref writer, value.Updated_at, options);
         }
 
-        public global::Shared.Model.Entity.SoloPlayLog Deserialize(ref global::MessagePack.MessagePackReader reader, global::MessagePack.MessagePackSerializerOptions options)
+        public global::Shared.Model.Entity.SoloPlayData Deserialize(ref global::MessagePack.MessagePackReader reader, global::MessagePack.MessagePackSerializerOptions options)
         {
             if (reader.TryReadNil())
             {
@@ -596,7 +655,7 @@ namespace MessagePack.Formatters.Shared.Model.Entity
             options.Security.DepthStep(ref reader);
             global::MessagePack.IFormatterResolver formatterResolver = options.Resolver;
             var length = reader.ReadArrayHeader();
-            var ____result = new global::Shared.Model.Entity.SoloPlayLog();
+            var ____result = new global::Shared.Model.Entity.SoloPlayData();
 
             for (int i = 0; i < length; i++)
             {
@@ -618,9 +677,12 @@ namespace MessagePack.Formatters.Shared.Model.Entity
                         ____result.Clear_Time_Msec = reader.ReadInt32();
                         break;
                     case 5:
-                        ____result.Created_at = global::MessagePack.FormatterResolverExtensions.GetFormatterWithVerify<global::System.DateTime>(formatterResolver).Deserialize(ref reader, options);
+                        ____result.Ghost_Data = global::MessagePack.FormatterResolverExtensions.GetFormatterWithVerify<string>(formatterResolver).Deserialize(ref reader, options);
                         break;
                     case 6:
+                        ____result.Created_at = global::MessagePack.FormatterResolverExtensions.GetFormatterWithVerify<global::System.DateTime>(formatterResolver).Deserialize(ref reader, options);
+                        break;
+                    case 7:
                         ____result.Updated_at = global::MessagePack.FormatterResolverExtensions.GetFormatterWithVerify<global::System.DateTime>(formatterResolver).Deserialize(ref reader, options);
                         break;
                     default:

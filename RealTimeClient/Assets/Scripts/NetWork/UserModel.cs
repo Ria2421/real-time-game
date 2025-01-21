@@ -2,7 +2,7 @@
 // ユーザーモデル [ UserModel.cs ]
 // Author:Kenta Nakamoto
 // Data:2024/11/12
-// Update:2025/01/16
+// Update:2025/01/21
 //---------------------------------------------------------------
 using Cysharp.Net.Http;
 using Cysharp.Threading.Tasks;
@@ -40,6 +40,11 @@ public class UserModel : BaseModel
     /// トークンID
     /// </summary>
     public string Token { get; set; }
+
+    /// <summary>
+    /// ゴーストデータ
+    /// </summary>
+    public string GhostData { get; set; } = "";
 
     /// <summary>
     /// getプロパティを呼び出した初回時にインスタンス生成してstaticで保持

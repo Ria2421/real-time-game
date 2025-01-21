@@ -70,7 +70,7 @@ public class TitleManager : MonoBehaviour
     /// </summary>
     void Start()
     {
-        Application.targetFrameRate = 60;
+        //Application.targetFrameRate = 60;
 
         // BGMçƒê∂
         BGMManager.Instance.Play(BGMPath.MAIN_BGM,0.75f,0,1,true,true);

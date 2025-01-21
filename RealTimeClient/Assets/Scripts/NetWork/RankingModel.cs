@@ -2,7 +2,7 @@
 // ランキングモデル [ RankingModel.cs ]
 // Author:Kenta Nakamoto
 // Data:2025/01/12
-// Update:2025/01/12
+// Update:2025/01/21
 //---------------------------------------------------------------
 using Cysharp.Net.Http;
 using Cysharp.Threading.Tasks;
@@ -53,22 +53,24 @@ public class RankingModel : BaseModel
     /// <param name="userID"> ユーザーID</param>
     /// <param name="time">   登録タイム</param>
     /// <returns></returns>
-    public async UniTask<bool> RegistClearTimeAsync(int stageID, int userID, int time)
+    public async UniTask<RegistResult> RegistClearTimeAsync(int stageID, int userID, int time, string ghostData)
     {
-        using var handler = new YetAnotherHttpHandler() { Http2Only = true };                                   // ハンドラーの設定
+        using var handler = new YetAnotherHttpHandler() { Http2Only = true };                                   // ハンドラーを設定
         var channel = GrpcChannel.ForAddress(ServerURL, new GrpcChannelOptions() { HttpHandler = handler });    // サーバーとのチャンネルを設定
         var client = MagicOnionClient.Create<ISoloService>(channel);
 
+        RegistResult result = new RegistResult();
+
         try
         {
-            bool isRegist = await client.RegistClearTimeAsync(stageID,userID,time);     // 記録登録
-            Debug.Log("タイム登録処理");
-            return isRegist;
+            result = await client.RegistClearTimeAsync(stageID,userID,time,ghostData);     // 記録登録 (30秒の記録で15KB程)
+            Debug.Log("クリアデータ登録処理");
+            return result;
         }
         catch (RpcException e)
         {
             Debug.Log(e);
-            return false;
+            return result;
         }
     }
 }
