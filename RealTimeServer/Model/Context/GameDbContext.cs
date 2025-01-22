@@ -9,6 +9,7 @@ namespace MagicOnionServer.Model.Context
         // テーブル(エンティティ) を追加したらここに追記していく
         public DbSet<User> Users { get; set; }
         public DbSet<SoloPlayData> Solo_Play_Data { get; set; }
+        public DbSet<SoloPlayLog> Solo_Play_Logs { get; set; }
 
         // 接続先のDB (ローカル・オンラインで "server="の接続先が変わる)
 #if DEBUG

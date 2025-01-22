@@ -32,9 +32,19 @@ namespace RealTimeServer.Services
                                                          .OrderBy(ranking => ranking.Clear_Time_Msec).FirstOrDefault();
 
             // 該当データが無いか検索
-            var soloPlayLog = context.Solo_Play_Data.Where(soloPlayLog => soloPlayLog.Stage_Id == stageID && soloPlayLog.User_Id == userID).FirstOrDefault();
+            var soloPlayData = context.Solo_Play_Data.Where(soloPlayLog => soloPlayLog.Stage_Id == stageID && soloPlayLog.User_Id == userID).FirstOrDefault();
 
-            if(soloPlayLog == null)
+            // ログ追加
+            SoloPlayLog soloLog = new SoloPlayLog();
+            soloLog.Stage_Id = stageID;
+            soloLog.User_Id = userID;
+            soloLog.Car_Type_Id = 1;
+            soloLog.Clear_Time_Msec = time;
+            soloLog.Created_at = DateTime.Now;
+            soloLog.Updated_at = DateTime.Now;
+            context.Solo_Play_Logs.Add(soloLog);
+
+            if (soloPlayData == null)
             {   // 初回登録
                 SoloPlayData solo = new SoloPlayData();
                 solo.Stage_Id = stageID;
@@ -66,23 +76,23 @@ namespace RealTimeServer.Services
             }
             else
             {
-                if(soloPlayLog.Clear_Time_Msec > time)
+                if(soloPlayData.Clear_Time_Msec > time)
                 {
                     // ベストタイム更新処理
-                    soloPlayLog.Clear_Time_Msec = time;     // タイム更新
-                    soloPlayLog.Updated_at = DateTime.Now;
+                    soloPlayData.Clear_Time_Msec = time;     // タイム更新
+                    soloPlayData.Updated_at = DateTime.Now;
                     Console.WriteLine("タイム更新");
 
                     // ゴーストデータ登録処理
-                    if (topData.Clear_Time_Msec > time)
+                    if (topData.Clear_Time_Msec >= time)
                     {
-                        soloPlayLog.Ghost_Data = ghostData;
+                        soloPlayData.Ghost_Data = ghostData;
                         registResult.ghostRegistFlag = true;
                         Console.WriteLine("ゴーストデータ登録");
                     }
                     else
                     {
-                        soloPlayLog.Ghost_Data = "";                // 自分の一番早いゴーストデータを表示できる仕様にするときは""にしない
+                        soloPlayData.Ghost_Data = "";                // 自分の一番早いゴーストデータを表示できる仕様にするときは""にしない
                         registResult.ghostRegistFlag = false;
                         Console.WriteLine("ゴーストデータ未登録");
                     }

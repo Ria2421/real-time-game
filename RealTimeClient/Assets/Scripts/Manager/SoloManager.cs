@@ -186,11 +186,11 @@ public class SoloManager : MonoBehaviour
         BGMManager.Instance.Pause(BGMPath.MAIN_BGM);
         BGMManager.Instance.Play(BGMPath.TIME_ATTACK);
 
-        // 変数初期化
+        // 変数初期化処理
         isCount = false;
         ghostCnt = 0;
 
-        // 再生するゴーストデータを取得
+        // 再生するゴーストデータを取得する
         if (UserModel.Instance.GhostData != "")
         {
             playGhost = JsonConvert.DeserializeObject<List<GhostData>>(UserModel.Instance.GhostData);
@@ -327,7 +327,7 @@ public class SoloManager : MonoBehaviour
                 standardInput.SetActive(true);
                 mobileInput.SetActive(true);
                 isCount = true;
-                InvokeRepeating("SaveGhost", 0, saveSpeed);
+                InvokeRepeating("SaveGhost", 0.1f, saveSpeed);
 
                 // カウント非表示
                 Invoke("HiddenCount", 0.6f);
@@ -384,7 +384,6 @@ public class SoloManager : MonoBehaviour
     {
         // SE再生
         SEManager.Instance.Play(SEPath.TAP_BUTTON);
-        UserModel.Instance.GhostData = "";
 
         SceneManager.LoadScene("02_MenuScene");
     }
@@ -409,5 +408,30 @@ public class SoloManager : MonoBehaviour
         SEManager.Instance.Play(SEPath.TAP_BUTTON);
 
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+    }
+
+    /// <summary>
+    /// パネル閉じる処理
+    /// </summary>
+    /// <param name="panel"></param>
+    public void OnCloseButton(GameObject panel)
+    {
+        panel.SetActive(false);
+    }
+
+    /// <summary>
+    /// メニューボタン押下時
+    /// </summary>
+    /// <param name="menuPanel"></param>
+    public void OnMenuButton(GameObject menuPanel)
+    {
+        if (menuPanel.activeSelf)
+        {
+            menuPanel.SetActive(false);
+        }
+        else
+        {
+            menuPanel.SetActive(true);
+        }
     }
 }

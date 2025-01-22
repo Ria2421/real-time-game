@@ -22,6 +22,11 @@ public class SoloSelectManager : MonoBehaviour
     // フィールド
 
     /// <summary>
+    /// 取得ゴーストデータ
+    /// </summary>
+    private string getGhostData;
+
+    /// <summary>
     /// ユーザー名格納用
     /// </summary>
     [SerializeField] private Text[] nameTexts;
@@ -35,6 +40,16 @@ public class SoloSelectManager : MonoBehaviour
     /// ランキングモデル格納用
     /// </summary>
     [SerializeField] private RankingModel rankingModel;
+
+    /// <summary>
+    /// ゴーストオンボタン
+    /// </summary>
+    [SerializeField] private GameObject onGhostButon;
+
+    /// <summary>
+    /// ゴーストオフボタン
+    /// </summary>
+    [SerializeField] private GameObject offGhostButon;
 
     //=====================================
     // メソッド
@@ -60,6 +75,7 @@ public class SoloSelectManager : MonoBehaviour
         // ランキング1位のゴーストデータを取得
         UserModel.Instance.GhostData = "";  // リセット
         UserModel.Instance.GhostData = rankingDatas[0].GhostData;
+        getGhostData = rankingDatas[0].GhostData;
 
         // 画面に反映
         for (int i = 0; i < rankingDatas.Count; i++)
@@ -95,5 +111,27 @@ public class SoloSelectManager : MonoBehaviour
 
         // メニューモード遷移
         SceneManager.LoadScene("02_MenuScene");
+    }
+
+    /// <summary>
+    /// ゴーストオンボタン
+    /// </summary>
+    public void OnGhostPlayButton()
+    {
+        UserModel.Instance.GhostData = getGhostData;
+
+        onGhostButon.SetActive(false);
+        offGhostButon.SetActive(true);
+    }
+
+    /// <summary>
+    /// ゴーストオフボタン
+    /// </summary>
+    public void OnGhostNotButton()
+    {
+        UserModel.Instance.GhostData = "";
+
+        offGhostButon.SetActive(false);
+        onGhostButon.SetActive(true);
     }
 }
