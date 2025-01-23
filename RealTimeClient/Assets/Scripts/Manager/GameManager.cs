@@ -2,7 +2,7 @@
 // ゲームマネージャー [ GameManager.cs ]
 // Author:Kenta Nakamoto
 // Data:2024/11/18
-// Update:2025/01/16
+// Update:2025/01/23
 //---------------------------------------------------------------
 using Shared.Interfaces.StreamingHubs;
 using System;
@@ -519,12 +519,19 @@ public class GameManager : MonoBehaviour
     /// プレイヤー撃破通知処理
     /// </summary>
     /// <param name="attackName">撃破した人のPL名</param>
-    /// <param name="cruchName"> 撃破された人のPL名</param>
+    /// <param name="crushName"> 撃破された人のPL名</param>
     /// <param name="crushID">   撃破された人の接続ID</param>
-    private void OnCrushingUser(string attackName, string cruchName, Guid crushID)
+    private void OnCrushingUser(string attackName, string crushName, Guid crushID, int deadNo)
     {
-        // 撃破通知テキストの内容変更・表示する
-        crushText.GetComponent<Text>().text = attackName + " が " + cruchName + "を撃破！";
+        // 撃破通知テキストの内容変更・表示する ()
+        if(deadNo == 1)
+        {
+            crushText.GetComponent<Text>().text = attackName + " が " + crushName + "を撃破！";
+        }
+        else if(deadNo == 2)
+        {
+            crushText.GetComponent<Text>().text = crushName + "が落下により爆破！";
+        }
 
         // 通知表示Sequenceを作成
         var sequence = DOTween.Sequence();
@@ -535,7 +542,7 @@ public class GameManager : MonoBehaviour
         // 撃破されたプレイヤーの名前を非表示
         foreach(GameObject nameObj in nameObjs)
         {
-            if(nameObj.GetComponent<Text>().text == cruchName)
+            if(nameObj.GetComponent<Text>().text == crushName)
             {
                 nameObj.SetActive(false);
             }

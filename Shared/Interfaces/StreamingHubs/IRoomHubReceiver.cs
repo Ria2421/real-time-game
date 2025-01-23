@@ -30,7 +30,7 @@ namespace Shared.Interfaces.StreamingHubs
         void OnEndGame(List<ResultData> result);
 
         // 撃破情報通知
-        void OnCrushing(string attackName, string cruchName, Guid crushID);
+        void OnCrushing(string attackName, string cruchName, Guid crushID, int deadNo);
 
         // 残タイム通知
         void OnTimeCount(int time);

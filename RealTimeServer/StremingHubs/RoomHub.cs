@@ -82,7 +82,7 @@ public class RoomHub:StreamingHubBase<IRoomHub,IRoomHubReceiver>,IRoomHub
 
             if (nowRoomDataList.Length == 0)
             {   // 誰もいない時
-                joinedUser = new JoinedUser() { ConnectionId = this.ConnectionId, UserData = user, JoinOrder = 1, GameState = 1 };
+                joinedUser = new JoinedUser() { ConnectionId = this.ConnectionId, UserData = user, JoinOrder = 1, GameState = 1,Ranking = 1 };
             }
             else
             {
@@ -97,7 +97,7 @@ public class RoomHub:StreamingHubBase<IRoomHub,IRoomHubReceiver>,IRoomHub
                 IEnumerable<int> result = noList.Except(numbers);
 
                 // 最小値のPLNoを適用したユーザーデータを作成
-                joinedUser = new JoinedUser() { ConnectionId = this.ConnectionId, UserData = user, JoinOrder = result.Min(), GameState = 1 };
+                joinedUser = new JoinedUser() { ConnectionId = this.ConnectionId, UserData = user, JoinOrder = result.Min(), GameState = 1,Ranking = 1 };
             }
 
             var roomData = new RoomData() { JoinedUser = joinedUser, GameState = 0 };
@@ -230,32 +230,30 @@ public class RoomHub:StreamingHubBase<IRoomHub,IRoomHubReceiver>,IRoomHub
     /// <param name="cruchName"> 撃破された人のPL名</param>
     /// <param name="crushID">   撃破された人の接続ID</param>
     /// <returns></returns>
-    public async Task CrushingPlayerAsync(string attackName, string cruchName, Guid crushID)
+    public async Task CrushingPlayerAsync(string attackName, string cruchName, Guid crushID, int deadNo)
     {
-        // 撃破された人のデータを取得
+        // 撃破された人のデータを取得する
         var roomStrage = this.room.GetInMemoryStorage<RoomData>();
         var roomData = roomStrage.Get(crushID);
 
         // 全員に撃破情報通知を送る
-        this.Broadcast(room).OnCrushing(attackName, cruchName, crushID);
+        this.Broadcast(room).OnCrushing(attackName, cruchName, crushID, deadNo);
 
         // 順位の計算
         RoomData[] roomDataList = roomStrage.AllValues.ToArray<RoomData>();
         int rankCnt = 0;
         foreach(RoomData data in roomDataList)
         {
-            if(data.JoinedUser.Ranking == 0) rankCnt++;
+            if(data.JoinedUser.Ranking == 1) rankCnt++;
         }
 
         roomData.JoinedUser.Ranking = rankCnt;  // 順位の保存
 
+        Console.WriteLine(cruchName + ":" + rankCnt + "位");
+
         if (rankCnt == 2)
         {
             using var context = new GameDbContext();
-
-            // 2位と同時に1位が確定
-            var data = roomStrage.Get(this.ConnectionId);
-            data.JoinedUser.Ranking = 1;
 
             // リザルトデータの作成
             List<ResultData> rank = new List<ResultData>();

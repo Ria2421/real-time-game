@@ -2,7 +2,7 @@
 // プレイヤーマネージャー [ PlayerManager.cs ]
 // Author:Kenta Nakamoto
 // Data:2024/12/05
-// Update:2024/12/05
+// Update:2025/01/23
 //---------------------------------------------------------------
 using DavidJalbert;
 using Shared.Interfaces.StreamingHubs;
@@ -22,7 +22,7 @@ public class PlayerManager : MonoBehaviour
     /// <summary>
     /// ゲーム終了フラグ
     /// </summary>
-    private bool endFlag = false;
+    private bool isDead = false;
 
     //=====================================
     // メソッド
@@ -41,36 +41,28 @@ public class PlayerManager : MonoBehaviour
     }
 
     // 撃破通知処理
-    private async void CrushingPlayerAsync(string attackName, string cruchName, Guid crushID)
+    private async void CrushingPlayerAsync(string attackName, string cruchName, Guid crushID, int deadNo)
     {
-        await roomModel.CrushingPlayerAsync(attackName, cruchName, crushID);
+        await roomModel.CrushingPlayerAsync(attackName, cruchName, crushID, deadNo);
     }
 
     // トリガーコライダー接触時処理
     private void OnTriggerEnter(Collider collision)
     {
-        if(endFlag) return;
+        if(isDead) return;
 
         // Tag毎の接触時処理
 
-        if (collision.gameObject.tag == "Goal")
-        {
-            endFlag = true;
-
-            // 全ユーザーにゲーム終了通知
-            SendEndGame();
-        }
-
         if(collision.gameObject.tag == "Trap")
-        {
-            // 爆発再生
-            transform.parent.gameObject.GetComponent<TinyCarExplosiveBody>().explode();
+        {   // 落下死
+            // 撃破通知 (倒したPL名,倒されたPL名,倒された人の接続ID,死亡要因ID)
+            isDead = true;
+            CrushingPlayerAsync("", roomModel.UserName, roomModel.ConnectionId, 2);
         }
 
         if(collision.gameObject.tag == "OtherPlayer")
-        {
-            // 撃破通知 (倒したPL名,倒されたPL名,倒された人の接続ID)
-            CrushingPlayerAsync(roomModel.UserName,collision.GetComponent<OtherPlayerManager>().UserName,collision.GetComponent<OtherPlayerManager>().ConnectionID);
+        {   // 他プレイヤーを撃破
+            CrushingPlayerAsync(roomModel.UserName,collision.GetComponent<OtherPlayerManager>().UserName,collision.GetComponent<OtherPlayerManager>().ConnectionID, 1);
         }
     }
 }

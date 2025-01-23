@@ -2,7 +2,7 @@
 // ルーム情報モデル [ RoomModel.cs ]
 // Author:Kenta Nakamoto
 // Data:2024/11/18
-// Update:2024/12/05
+// Update:2025/01/23
 //---------------------------------------------------------------
 using Cysharp.Net.Http;
 using Cysharp.Threading.Tasks;
@@ -84,7 +84,7 @@ public class RoomModel : BaseModel,IRoomHubReceiver
     /// <summary>
     /// ユーザー撃破通知
     /// </summary>
-    public Action<string,string,Guid> OnCrushingUser { get; set; }
+    public Action<string,string,Guid,int> OnCrushingUser { get; set; }
 
     /// <summary>
     /// 残タイム通知
@@ -179,9 +179,9 @@ public class RoomModel : BaseModel,IRoomHubReceiver
     }
 
     // 撃破通知処理
-    public async UniTask CrushingPlayerAsync(string attackName, string cruchName, Guid crushID)
+    public async UniTask CrushingPlayerAsync(string attackName, string cruchName, Guid crushID, int deadNo)
     {
-        await roomHub.CrushingPlayerAsync(attackName, cruchName, crushID);
+        await roomHub.CrushingPlayerAsync(attackName, cruchName, crushID, deadNo);
     }
 
     // 残タイム通知処理
@@ -242,10 +242,10 @@ public class RoomModel : BaseModel,IRoomHubReceiver
     }
 
     // 撃破通知処理
-    public void OnCrushing(string attackName, string cruchName, Guid crushID)
+    public void OnCrushing(string attackName, string cruchName, Guid crushID, int deadNo)
     {
         if (OnCrushingUser == null) return;
-        OnCrushingUser(attackName, cruchName, crushID);
+        OnCrushingUser(attackName, cruchName, crushID, deadNo);
     }
 
     // 残タイム通知処理

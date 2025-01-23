@@ -2,7 +2,7 @@
 // メニューマネージャー [ MenuManager.cs ]
 // Author:Kenta Nakamoto
 // Data:2024/12/10
-// Update:2024/12/10
+// Update:2025/01/17
 //---------------------------------------------------------------
 using KanKikuchi.AudioManager;
 using RealTimeServer.Model.Entity;
@@ -54,7 +54,6 @@ public class MenuManager : MonoBehaviour
             Destroy(GameObject.Find("RoomModel"));
         }
 
-        // BGM再生
         //再生中のBGMの名前を全て取得
         var currentBGMNames = BGMManager.Instance.GetCurrentAudioNames();
 
@@ -64,18 +63,6 @@ public class MenuManager : MonoBehaviour
             BGMManager.Instance.Stop(BGMPath.MULTI_PLAY);
             BGMManager.Instance.Play(BGMPath.MAIN_BGM, 0.75f, 0, 1, true, true);
         }
-
-        //++ プロフィール情報取得・UI反映
-
-        //++ ショップ情報取得・UI反映
-    }
-
-    /// <summary>
-    /// 更新処理
-    /// </summary>
-    void Update()
-    {
-        
     }
 
     //-----------------------------
