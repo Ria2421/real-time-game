@@ -32,18 +32,9 @@ public class GameManager : MonoBehaviour
     {
         None = 0,
         Join,
-        InGame
+        InGame,
+        Result
     }
-
-    /// <summary>
-    /// モバイルインプットスクリプト
-    /// </summary>
-    [SerializeField] private TinyCarMobileInput tinyCarMobileInput;
-
-    /// <summary>
-    /// モバイルインプットobj
-    /// </summary>
-    [SerializeField] private GameObject mobileInputObj;
 
     /// <summary>
     /// ルームモデル格納用
@@ -95,7 +86,34 @@ public class GameManager : MonoBehaviour
     /// </summary>
     private ParticleSystem playerDriftParticle;
 
+    /// <summary>
+    /// 参加順
+    /// </summary>
+    private int joinOrder = 0;
+
+    [Header("数値設定")]
+
+    /// <summary>
+    /// 通信速度
+    /// </summary>
+    [SerializeField] private float internetSpeed = 0.1f;
+
+    /// <summary>
+    /// 制限時間
+    /// </summary>
+    [SerializeField] private int timeLimit = 30;
+
     [Header("各種Objectをアタッチ")]
+
+    /// <summary>
+    /// モバイルインプットスクリプト
+    /// </summary>
+    [SerializeField] private TinyCarMobileInput tinyCarMobileInput;
+
+    /// <summary>
+    /// モバイルインプットobj
+    /// </summary>
+    [SerializeField] private GameObject mobileInputObj;
 
     /// <summary>
     /// 生成するプレイヤーのキャラクタープレハブ
@@ -128,16 +146,6 @@ public class GameManager : MonoBehaviour
     [SerializeField] private Transform[] respownList;
 
     /// <summary>
-    /// 通信速度
-    /// </summary>
-    [SerializeField] private float internetSpeed = 0.1f;
-
-    /// <summary>
-    /// 制限時間
-    /// </summary>
-    [SerializeField] private float timeLimit = 3.0f;
-
-    /// <summary>
     /// 爆発パーティクル
     /// </summary>
     [SerializeField] private GameObject explosionPrefab;
@@ -164,6 +172,11 @@ public class GameManager : MonoBehaviour
     [SerializeField] private GameObject crushText;
 
     /// <summary>
+    /// レート表示用オブジェ
+    /// </summary>
+    [SerializeField] private GameObject rateObjs;
+
+    /// <summary>
     /// レートテキスト
     /// </summary>
     [SerializeField] private Text rateText;
@@ -185,6 +198,16 @@ public class GameManager : MonoBehaviour
     /// リザルトパネル
     /// </summary>
     [SerializeField] private GameObject resultPanel;
+
+    /// <summary>
+    /// 切断表示パネル
+    /// </summary>
+    [SerializeField] private GameObject disconnectPanel;
+
+    /// <summary>
+    /// 残タイム表示パネル
+    /// </summary>
+    [SerializeField] private GameObject timerPanel;
 
     [Space(10)]
     [Header("---- Image ----")]
@@ -208,6 +231,11 @@ public class GameManager : MonoBehaviour
     /// カウントダウン画像
     /// </summary>
     [SerializeField] private Image countDownImage;
+
+    /// <summary>
+    /// 引き分け表示用オブジェ
+    /// </summary>
+    [SerializeField] private GameObject drawImageObj;
 
     [Space(10)]
     [Header("---- Sprit ----")]
@@ -240,21 +268,18 @@ public class GameManager : MonoBehaviour
         roomModel.OnStartGameUser += OnStartGameUser;   // ゲームスタート
         roomModel.OnEndGameUser += OnEndGameUser;       // ゲーム終了
         roomModel.OnCrushingUser += OnCrushingUser;     // 撃破
+        roomModel.OnTimeCountUser += OnTimeCountUser;   // タイムカウント
+        roomModel.OnTimeUpUser += OnTimeUpUser;         // タイムアップ
+
+        // 制限時間の初期化
+        timerText.text = timeLimit.ToString();
 
         // 接続
         await roomModel.ConnectAsync();
-        // 入室 (ルーム名とユーザーIDを渡して入室。最終的にはローカルデータのユーザーIDを使用
+        // 入室 (ルーム名とユーザーIDを渡して入室。最終的にはローカルデータのユーザーIDを使用する
         await roomModel.JoinAsync();
 
         Debug.Log("入室");
-    }
-
-    /// <summary>
-    /// 更新処理
-    /// </summary>
-    void Update()
-    {
-
     }
 
     /// <summary>
@@ -276,14 +301,6 @@ public class GameManager : MonoBehaviour
         };
 
         await roomModel.MoveAsync(moveData);
-    }
-
-    /// <summary>
-    /// 接続処理
-    /// </summary>
-    public async void OnConnect()
-    {
-
     }
 
     /// <summary>
@@ -330,6 +347,9 @@ public class GameManager : MonoBehaviour
         // 自分か他プレイヤーか
         if (user.ConnectionId == roomModel.ConnectionId)
         {
+            // 参加順の保存
+            joinOrder = user.JoinOrder;
+
             // 自機・操作用オブジェの生成
             characterObj = Instantiate(playerPrefab, respownList[user.JoinOrder - 1].position, Quaternion.Euler(0, 180, 0));
             inputController = Instantiate(inputPrefab, Vector3.zero, Quaternion.identity);
@@ -386,11 +406,18 @@ public class GameManager : MonoBehaviour
     /// <param name="user"></param>
     private void OnExitedUser(JoinedUser user)
     {
-        // 位置情報の更新
         if (!characterList.ContainsKey(user.ConnectionId)) return;  // 退出者オブジェの存在チェック
 
-        Destroy(characterList[user.ConnectionId]);   // オブジェクトの破棄
-        characterList.Remove(user.ConnectionId);     // リストから削除
+        if(gameState == GameState.Result)
+        {
+            Destroy(characterList[user.ConnectionId]);   // オブジェクトの破棄
+            characterList.Remove(user.ConnectionId);     // リストから削除
+        }
+        else
+        {
+            // 他プレイヤーの切断表示・押下でメニューに戻る
+            disconnectPanel.SetActive(true);
+        }
     }
 
     /// <summary>
@@ -436,12 +463,20 @@ public class GameManager : MonoBehaviour
         countDownImage.sprite = countSprits[0];
         StartCoroutine("HiddenText");
 
+        // 制限時間表示・ホストはカウント開始
+        timerPanel.transform.DOLocalMove(new Vector3(820, 450, 0), 0.6f);
+        if (joinOrder == 1)
+        {
+            InvokeRepeating("CountTime", 1, 1);
+        }
+
         // カメラをトップダウンに変更
         mainCamera.GetComponent<TinyCarCamera>().whatToFollow = playerController.transform;
         // 操作可能にする
         inputController.GetComponent<TinyCarStandardInput>().carController = playerController.GetComponent<TinyCarController>();
         mobileInputObj.SetActive(true);
-        
+
+        gameState = GameState.InGame;
     }
 
     /// <summary>
@@ -449,8 +484,10 @@ public class GameManager : MonoBehaviour
     /// </summary>
     private void OnEndGameUser(List<ResultData> result)
     {
+        gameState = GameState.Result;
+
         // 操作不能にする
-        playerController.GetComponent<Rigidbody>().isKinematic = true;
+        mobileInputObj.SetActive(false);
 
         // 終了SE再生
         SEManager.Instance.Play(SEPath.GOAL);
@@ -523,6 +560,45 @@ public class GameManager : MonoBehaviour
     }
 
     /// <summary>
+    /// 残タイム通知処理
+    /// </summary>
+    /// <param name="time"></param>
+    private void OnTimeCountUser(int time)
+    {   // 残タイムの反映
+        timerText.text = time.ToString();
+
+        if (3 >= time)
+        {
+            timerText.color = Color.yellow;
+        }
+    }
+
+    /// <summary>
+    /// タイムアップ通知
+    /// </summary>
+    private void OnTimeUpUser()
+    {
+        if (gameState == GameState.Result) return;
+
+        // 終了SE再生
+        SEManager.Instance.Play(SEPath.GOAL);
+
+        // 操作不能にする
+        mobileInputObj.SetActive(false);
+
+        // 名前非表示
+        foreach (GameObject obj in nameObjs)
+        {
+            obj.SetActive(false);
+        }
+
+        drawImageObj.SetActive(true);           // 引き分け表示
+        resultPanel.gameObject.SetActive(true); // リザルトパネル表示
+
+        gameState = GameState.Result;
+    }
+
+    /// <summary>
     /// ゲームカウント
     /// </summary>
     /// <returns></returns>
@@ -545,6 +621,21 @@ public class GameManager : MonoBehaviour
     }
 
     /// <summary>
+    /// 残タイムカウント処理
+    /// </summary>
+    private async void CountTime()
+    {
+        timeLimit--;
+
+        await roomModel.TimeCountAsync(timeLimit);
+
+        if(timeLimit <= 0)
+        {   // 0以下の時はカウント終了
+            CancelInvoke("CountTime");
+        }
+    } 
+
+    /// <summary>
     /// タイマーテキスト非表示処理
     /// </summary>
     /// <returns></returns>
@@ -554,7 +645,6 @@ public class GameManager : MonoBehaviour
         yield return new WaitForSeconds(0.8f);
 
         countDownImageObj.SetActive(false);
-        timerText.text = "";
     }
 
     /// <summary>
@@ -563,8 +653,10 @@ public class GameManager : MonoBehaviour
     /// <returns></returns>
     IEnumerator DisplayResult()
     {
+        CancelInvoke("CountTime");
+
         // 名前表示をすべてOFF
-        foreach(GameObject obj in nameObjs)
+        foreach (GameObject obj in nameObjs)
         {
             obj.SetActive(false);
         }
@@ -574,6 +666,7 @@ public class GameManager : MonoBehaviour
 
         mobileInputObj.SetActive(false);
         endImageObj.SetActive(false);
+        rateObjs.SetActive(true);               // レート表示
         resultPanel.gameObject.SetActive(true); // リザルトパネル表示
     }
 

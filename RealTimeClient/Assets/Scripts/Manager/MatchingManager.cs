@@ -87,6 +87,8 @@ public class MatchingManager : MonoBehaviour
     /// <param name="roomName"></param>
     private async void OnMatchingUser(string roomName)
     {
+        cancelButton.interactable = false;
+
         roomModel.RoomName = roomName;  // ”­s‚³‚ê‚½ƒ‹[ƒ€–¼‚ğ•Û‘¶
 
         // SEÄ¶

@@ -47,7 +47,7 @@ namespace MessagePack.Resolvers
 
         static GeneratedResolverGetFormatterHelper()
         {
-            lookup = new global::System.Collections.Generic.Dictionary<global::System.Type, int>(8)
+            lookup = new global::System.Collections.Generic.Dictionary<global::System.Type, int>(9)
             {
                 { typeof(global::RealTimeServer.Model.Entity.User), 0 },
                 { typeof(global::Shared.Interfaces.Services.IMyFirstService.Number), 1 },
@@ -57,6 +57,7 @@ namespace MessagePack.Resolvers
                 { typeof(global::Shared.Model.Entity.RankingData), 5 },
                 { typeof(global::Shared.Model.Entity.RegistResult), 6 },
                 { typeof(global::Shared.Model.Entity.SoloPlayData), 7 },
+                { typeof(global::Shared.Model.Entity.SoloPlayLog), 8 },
             };
         }
 
@@ -78,6 +79,7 @@ namespace MessagePack.Resolvers
                 case 5: return new MessagePack.Formatters.Shared.Model.Entity.RankingDataFormatter();
                 case 6: return new MessagePack.Formatters.Shared.Model.Entity.RegistResultFormatter();
                 case 7: return new MessagePack.Formatters.Shared.Model.Entity.SoloPlayDataFormatter();
+                case 8: return new MessagePack.Formatters.Shared.Model.Entity.SoloPlayLogFormatter();
                 default: return null;
             }
         }
@@ -683,6 +685,76 @@ namespace MessagePack.Formatters.Shared.Model.Entity
                         ____result.Created_at = global::MessagePack.FormatterResolverExtensions.GetFormatterWithVerify<global::System.DateTime>(formatterResolver).Deserialize(ref reader, options);
                         break;
                     case 7:
+                        ____result.Updated_at = global::MessagePack.FormatterResolverExtensions.GetFormatterWithVerify<global::System.DateTime>(formatterResolver).Deserialize(ref reader, options);
+                        break;
+                    default:
+                        reader.Skip();
+                        break;
+                }
+            }
+
+            reader.Depth--;
+            return ____result;
+        }
+    }
+
+    public sealed class SoloPlayLogFormatter : global::MessagePack.Formatters.IMessagePackFormatter<global::Shared.Model.Entity.SoloPlayLog>
+    {
+
+        public void Serialize(ref global::MessagePack.MessagePackWriter writer, global::Shared.Model.Entity.SoloPlayLog value, global::MessagePack.MessagePackSerializerOptions options)
+        {
+            if (value == null)
+            {
+                writer.WriteNil();
+                return;
+            }
+
+            global::MessagePack.IFormatterResolver formatterResolver = options.Resolver;
+            writer.WriteArrayHeader(7);
+            writer.Write(value.Id);
+            writer.Write(value.Stage_Id);
+            writer.Write(value.User_Id);
+            writer.Write(value.Car_Type_Id);
+            writer.Write(value.Clear_Time_Msec);
+            global::MessagePack.FormatterResolverExtensions.GetFormatterWithVerify<global::System.DateTime>(formatterResolver).Serialize(ref writer, value.Created_at, options);
+            global::MessagePack.FormatterResolverExtensions.GetFormatterWithVerify<global::System.DateTime>(formatterResolver).Serialize(ref writer, value.Updated_at, options);
+        }
+
+        public global::Shared.Model.Entity.SoloPlayLog Deserialize(ref global::MessagePack.MessagePackReader reader, global::MessagePack.MessagePackSerializerOptions options)
+        {
+            if (reader.TryReadNil())
+            {
+                return null;
+            }
+
+            options.Security.DepthStep(ref reader);
+            global::MessagePack.IFormatterResolver formatterResolver = options.Resolver;
+            var length = reader.ReadArrayHeader();
+            var ____result = new global::Shared.Model.Entity.SoloPlayLog();
+
+            for (int i = 0; i < length; i++)
+            {
+                switch (i)
+                {
+                    case 0:
+                        ____result.Id = reader.ReadInt32();
+                        break;
+                    case 1:
+                        ____result.Stage_Id = reader.ReadInt32();
+                        break;
+                    case 2:
+                        ____result.User_Id = reader.ReadInt32();
+                        break;
+                    case 3:
+                        ____result.Car_Type_Id = reader.ReadInt32();
+                        break;
+                    case 4:
+                        ____result.Clear_Time_Msec = reader.ReadInt32();
+                        break;
+                    case 5:
+                        ____result.Created_at = global::MessagePack.FormatterResolverExtensions.GetFormatterWithVerify<global::System.DateTime>(formatterResolver).Deserialize(ref reader, options);
+                        break;
+                    case 6:
                         ____result.Updated_at = global::MessagePack.FormatterResolverExtensions.GetFormatterWithVerify<global::System.DateTime>(formatterResolver).Deserialize(ref reader, options);
                         break;
                     default:

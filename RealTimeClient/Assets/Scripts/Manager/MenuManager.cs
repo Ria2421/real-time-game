@@ -49,6 +49,11 @@ public class MenuManager : MonoBehaviour
     /// </summary>
     void Start()
     {
+        if (GameObject.Find("RoomModel"))
+        {
+            Destroy(GameObject.Find("RoomModel"));
+        }
+
         // BGMÄ¶
         //Ä¶’†‚ÌBGM‚Ì–¼‘O‚ğ‘S‚Äæ“¾
         var currentBGMNames = BGMManager.Instance.GetCurrentAudioNames();

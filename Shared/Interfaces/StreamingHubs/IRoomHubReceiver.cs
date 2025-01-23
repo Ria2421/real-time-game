@@ -31,5 +31,11 @@ namespace Shared.Interfaces.StreamingHubs
 
         // 撃破情報通知
         void OnCrushing(string attackName, string cruchName, Guid crushID);
+
+        // 残タイム通知
+        void OnTimeCount(int time);
+
+        // タイムアップ通知
+        void OnTimeUp();
     }
 }

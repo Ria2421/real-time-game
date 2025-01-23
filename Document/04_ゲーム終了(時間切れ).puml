@@ -24,14 +24,13 @@ rnote over Client1,Client3 : 時間反映
 alt タイムアップ
 
 rnote over MagickOnion : 終了判定
-Client1 <- MagickOnion : リザルト通知
-Client2 <- MagickOnion : リザルト通知
-Client3 <- MagickOnion : リザルト通知
+Client1 <- MagickOnion : 引き分け通知
+Client2 <- MagickOnion : 引き分け通知
+Client3 <- MagickOnion : 引き分け通知
 
-rnote over Client1,Client3 : リザルト表示
+rnote over Client1,Client3 : 引き分け表示
 
 end
-
 end
 
 rnote over Client1,MagickOnion : 退室処理

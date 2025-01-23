@@ -122,7 +122,7 @@ public class RoomHub:StreamingHubBase<IRoomHub,IRoomHubReceiver>,IRoomHub
             // 4人揃ったら開始の合図を送る
             if (roomDataList.Length == MAX_PLAYER && roomName != LOBBY_NAME)
             {
-                Console.WriteLine("全員揃いました");
+                Console.WriteLine("ゲームカウント開始 (ルーム名:" + roomName + ")");
                 this.Broadcast(room).OnInGame();    // inGame通知処理
             }
 
@@ -197,20 +197,15 @@ public class RoomHub:StreamingHubBase<IRoomHub,IRoomHubReceiver>,IRoomHub
 
         // ゲーム終了通知 (順位と名前を渡す)
         Console.WriteLine("ゲーム終了\n\n");
-        //this.Broadcast(room).OnEndGame();
     }
 
     /// <summary>
     /// 切断時の退室処理
     /// </summary>
     /// <returns></returns>
-    protected override ValueTask OnDisconnected()
+    protected override async ValueTask OnDisconnected()
     {
-        // ルームデータを削除
-        this.room.GetInMemoryStorage<RoomData>().Remove(this.ConnectionId);
-        // ルーム内のメンバーから削除
-        room.RemoveAsync(this.Context);
-        return CompletedTask;
+        await ExitAsync();
     }
 
     /// <summary>
@@ -306,6 +301,22 @@ public class RoomHub:StreamingHubBase<IRoomHub,IRoomHubReceiver>,IRoomHub
 
             Console.WriteLine("ゲーム終了");
             this.Broadcast(room).OnEndGame(rank);
+        }
+    }
+
+    /// <summary>
+    /// 残タイム共有処理
+    /// </summary>
+    /// <param name="time"></param>
+    /// <returns></returns>
+    public async Task TimeCountAsync(int time)
+    {
+        // 全員に残り時間を通知
+        this.Broadcast(room).OnTimeCount(time);
+
+        if(time <= 0)
+        {   // タイムアップ通知 (引き分け表示)
+            this.Broadcast(room).OnTimeUp();
         }
     }
 }

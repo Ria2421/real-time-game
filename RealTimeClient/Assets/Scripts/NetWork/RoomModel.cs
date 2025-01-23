@@ -86,6 +86,16 @@ public class RoomModel : BaseModel,IRoomHubReceiver
     /// </summary>
     public Action<string,string,Guid> OnCrushingUser { get; set; }
 
+    /// <summary>
+    /// 残タイム通知
+    /// </summary>
+    public Action<int> OnTimeCountUser { get; set; }
+
+    /// <summary>
+    /// タイムアップ通知
+    /// </summary>
+    public Action OnTimeUpUser {  get; set; }
+
     //-------------------------------------------------------
     // メソッド
     void Start()
@@ -117,7 +127,7 @@ public class RoomModel : BaseModel,IRoomHubReceiver
     // 破棄処理
     async void OnDestroy()
     {
-        // 切断
+        // 切断処理
         await DisconnectionAsync();
     }
 
@@ -172,6 +182,12 @@ public class RoomModel : BaseModel,IRoomHubReceiver
     public async UniTask CrushingPlayerAsync(string attackName, string cruchName, Guid crushID)
     {
         await roomHub.CrushingPlayerAsync(attackName, cruchName, crushID);
+    }
+
+    // 残タイム通知処理
+    public async UniTask TimeCountAsync(int time)
+    {
+        await roomHub.TimeCountAsync(time);
     }
 
     //==================================================================
@@ -230,5 +246,19 @@ public class RoomModel : BaseModel,IRoomHubReceiver
     {
         if (OnCrushingUser == null) return;
         OnCrushingUser(attackName, cruchName, crushID);
+    }
+
+    // 残タイム通知処理
+    public void OnTimeCount(int time)
+    {
+        if (OnTimeCountUser == null) return;
+        OnTimeCountUser(time);
+    }
+
+    // タイムアップ通知処理
+    public void OnTimeUp()
+    {
+        if (OnTimeUpUser == null) return;
+        OnTimeUpUser();
     }
 }

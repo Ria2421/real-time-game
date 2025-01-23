@@ -52,5 +52,12 @@ namespace Shared.Interfaces.StreamingHubs
         /// </summary>
         /// <returns></returns>
         Task CrushingPlayerAsync(string attackName,string cruchName,Guid crushID);
+
+        /// <summary>
+        /// 残タイム同期処理
+        /// </summary>
+        /// <param name="time"></param>
+        /// <returns></returns>
+        Task TimeCountAsync(int time);
     }
 }
