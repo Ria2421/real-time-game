@@ -23,7 +23,7 @@ namespace DavidJalbert
             TinyCarExplosiveBody car = collider.GetComponentInParent<TinyCarExplosiveBody>();
             if (car != null && !car.hasExploded())
             {
-                car.explode();
+                //car.explode();
                 StartCoroutine(resetCar(car));
             }
         }

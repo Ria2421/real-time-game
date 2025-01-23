@@ -80,11 +80,12 @@ namespace DavidJalbert
                     RaycastHit hit;
                     if (Physics.Raycast(startCast, cameraWorldDirection, out hit, directionMagnitude))
                     {
-                        targetPosition = followPosition + directionVectorNormal * Mathf.Max(thirdPersonSkinWidth, hit.distance - thirdPersonSkinWidth);
+                        //targetPosition = followPosition + directionVectorNormal * Mathf.Max(thirdPersonSkinWidth, hit.distance - thirdPersonSkinWidth);
+                        targetPosition = directionVector + followPosition;
                     }
                     else
-                    {   // ブースト時のカメラ座標変更
-                        //targetPosition = directionVector + followPosition;
+                    {
+                        targetPosition = directionVector + followPosition;
                     }
                     break;
 

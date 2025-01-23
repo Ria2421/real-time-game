@@ -30445,13 +30445,13 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  maxAccelerationForward: 120
-  maxSpeedForward: 40
-  maxAccelerationReverse: 50
-  maxSpeedReverse: 20
-  brakeStrength: 100
+  maxAccelerationForward: 80
+  maxSpeedForward: 70
+  maxAccelerationReverse: 40
+  maxSpeedReverse: 25
+  brakeStrength: 20
   slopeFriction: 1
-  maxSteering: 135
+  maxSteering: 130
   steeringMultiplierInAir: 1
   steeringBySpeed:
     serializedVersion: 2
@@ -30486,8 +30486,8 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  forwardFriction: 40
-  lateralFriction: 65
+  forwardFriction: 30
+  lateralFriction: 80
 --- !u!1 &9119118491832856353
 GameObject:
   m_ObjectHideFlags: 0

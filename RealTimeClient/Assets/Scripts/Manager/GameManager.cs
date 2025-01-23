@@ -571,7 +571,7 @@ public class GameManager : MonoBehaviour
     /// </summary>
     /// <param name="time"></param>
     private void OnTimeCountUser(int time)
-    {   // 残タイムの反映
+    {   // 残タイムの反映処理
         timerText.text = time.ToString();
 
         if (3 >= time)
