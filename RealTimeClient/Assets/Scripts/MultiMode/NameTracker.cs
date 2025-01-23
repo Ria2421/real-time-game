@@ -27,7 +27,12 @@ public class NameTracker : MonoBehaviour
     /// <summary>
     /// 表示オフセット
     /// </summary>
-    private Vector3 offset = new Vector3(0, 1.5f, 0);
+    private Vector3 offset = new Vector3(0, 1.8f, 0);
+
+    /// <summary>
+    /// メインカメラ
+    /// </summary>
+    [SerializeField] Transform cameraTrs;
 
     //=====================================
     // メソッド
@@ -37,13 +42,14 @@ public class NameTracker : MonoBehaviour
         myRectTfm = GetComponent<RectTransform>();
     }
 
-    void Update()
+    void FixedUpdate()
     {
         if (targetTfm == null) return;
 
         // 表示位置を追従対象+ オフセットの座標に移動し続ける
-        myRectTfm.position
-            = RectTransformUtility.WorldToScreenPoint(Camera.main, targetTfm.position + offset);
+        myRectTfm.position = targetTfm.position + offset;
+
+        myRectTfm.rotation = cameraTrs.rotation; 
     }
 
     /// <summary>

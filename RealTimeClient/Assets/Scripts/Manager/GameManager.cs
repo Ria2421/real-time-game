@@ -191,6 +191,11 @@ public class GameManager : MonoBehaviour
     /// </summary>
     [SerializeField] private Text changeRateText;
 
+    /// <summary>
+    /// ユーザー名テキスト
+    /// </summary>
+    [SerializeField] private Text[] nameTexts;
+
     [Space(10)]
     [Header("---- Panel ----")]
 
@@ -370,7 +375,7 @@ public class GameManager : MonoBehaviour
 
             // ユーザー名UIの追従設定 & 名前反映
             nameObjs[user.JoinOrder - 1].GetComponent<NameTracker>().SetTarget(playerController.transform);
-            nameObjs[user.JoinOrder - 1].GetComponent<Text>().text = user.UserData.Name;
+            nameTexts[user.JoinOrder - 1].text = user.UserData.Name;
             nameObjs[user.JoinOrder - 1].SetActive(true);
 
             // UI変更
@@ -390,7 +395,7 @@ public class GameManager : MonoBehaviour
 
             // ユーザー名UIの追従設定 & 名前反映
             nameObjs[user.JoinOrder - 1].GetComponent<NameTracker>().SetTarget(characterObj.transform);
-            nameObjs[user.JoinOrder - 1].GetComponent<Text>().text = user.UserData.Name;
+            nameTexts[user.JoinOrder - 1].text = user.UserData.Name;
             nameObjs[user.JoinOrder - 1].SetActive(true);
         }
 
@@ -540,11 +545,11 @@ public class GameManager : MonoBehaviour
         sequence.Play();
         
         // 撃破されたプレイヤーの名前を非表示
-        foreach(GameObject nameObj in nameObjs)
+        foreach(Text name in nameTexts)
         {
-            if(nameObj.GetComponent<Text>().text == crushName)
+            if(name.text == crushName)
             {
-                nameObj.SetActive(false);
+                name.text = "";
             }
         }
 
