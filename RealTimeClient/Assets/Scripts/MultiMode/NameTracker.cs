@@ -108,7 +108,7 @@ public class NameTracker : MonoBehaviour
         // オフセット距離の変更
         if(no == 1)
         {
-            offset = new Vector3(0, 2.2f, 0);
+            offset = new Vector3(0, 2.3f, 0);
         }else if(no == 2)
         {
             offset = new Vector3(0, 3.5f, 0);
