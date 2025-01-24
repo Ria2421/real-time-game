@@ -349,7 +349,7 @@ public class GameManager : MonoBehaviour
 
         GameObject characterObj;    // 生成されるオブジェクト
 
-        // 自分か他プレイヤーか
+        // 自分か他プレイヤーか判断
         if (user.ConnectionId == roomModel.ConnectionId)
         {
             // 参加順の保存
@@ -374,7 +374,7 @@ public class GameManager : MonoBehaviour
             tinyCarMobileInput.carController = playerController.GetComponent<TinyCarController>();
 
             // ユーザー名UIの追従設定 & 名前反映
-            nameObjs[user.JoinOrder - 1].GetComponent<NameTracker>().SetTarget(playerController.transform);
+            nameObjs[user.JoinOrder - 1].GetComponent<NameTracker>().SetTarget(playerController.transform, 1);
             nameTexts[user.JoinOrder - 1].text = user.UserData.Name;
             nameObjs[user.JoinOrder - 1].SetActive(true);
 
@@ -394,7 +394,7 @@ public class GameManager : MonoBehaviour
             characterObj.GetComponent<OtherPlayerManager>().JoinOrder = user.JoinOrder;         // 参加順の保存
 
             // ユーザー名UIの追従設定 & 名前反映
-            nameObjs[user.JoinOrder - 1].GetComponent<NameTracker>().SetTarget(characterObj.transform);
+            nameObjs[user.JoinOrder - 1].GetComponent<NameTracker>().SetTarget(characterObj.transform, 2);
             nameTexts[user.JoinOrder - 1].text = user.UserData.Name;
             nameObjs[user.JoinOrder - 1].SetActive(true);
         }
