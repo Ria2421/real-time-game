@@ -122,18 +122,6 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
---- !u!134 &178646608
-PhysicMaterial:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_Name: DynamicMaterial
-  dynamicFriction: 0
-  staticFriction: 0
-  bounciness: 0
-  frictionCombine: 1
-  bounceCombine: 1
 --- !u!1001 &839705678
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -509,6 +497,18 @@ MonoBehaviour:
   m_LightCookieSize: {x: 1, y: 1}
   m_LightCookieOffset: {x: 0, y: 0}
   m_SoftShadowQuality: 0
+--- !u!134 &1991505512
+PhysicMaterial:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: DynamicMaterial
+  dynamicFriction: 0
+  staticFriction: 0
+  bounciness: 0
+  frictionCombine: 1
+  bounceCombine: 1
 --- !u!1 &1199066107335740857 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 5720190891298479839, guid: 039e0ad6598d72e4ab451ebf325d8402,
@@ -615,7 +615,7 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Material
       value: 
-      objectReference: {fileID: 178646608}
+      objectReference: {fileID: 1991505512}
     - target: {fileID: 5383173824546873518, guid: 683fce279a92d994b9449d3b29f858f0,
         type: 3}
       propertyPath: m_Name
@@ -670,6 +670,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6428431725835117568, guid: 683fce279a92d994b9449d3b29f858f0,
+        type: 3}
+      propertyPath: saveSpeed
+      value: 0.2
       objectReference: {fileID: 0}
     - target: {fileID: 6428431725835117568, guid: 683fce279a92d994b9449d3b29f858f0,
         type: 3}

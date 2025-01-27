@@ -195,6 +195,12 @@ public class RoomModel : BaseModel,IRoomHubReceiver
         await roomHub.TimeCountAsync(time);
     }
 
+    // 大砲射出処理
+    public async UniTask ShotCannonAsync()
+    { 
+        await roomHub.ShotCannonAsync();
+    }
+
     //==================================================================
     // IRoomHubReceiverインターフェースの実装
 

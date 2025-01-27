@@ -160,6 +160,11 @@ public class GameManager : MonoBehaviour
     /// </summary>
     [SerializeField] private GameObject[] nameObjs;
 
+    /// <summary>
+    /// 大砲スクリプト
+    /// </summary>
+    [SerializeField] private Cannon[] cannons;
+
     [Space (25)]
     [Header("===== UI関連 =====")]
 
@@ -285,6 +290,7 @@ public class GameManager : MonoBehaviour
         roomModel.OnCrushingUser += OnCrushingUser;     // 撃破
         roomModel.OnTimeCountUser += OnTimeCountUser;   // タイムカウント
         roomModel.OnTimeUpUser += OnTimeUpUser;         // タイムアップ
+        roomModel.OnShotUser += OnShotUser;             // 大砲発射
 
         // 制限時間の初期化
         timerText.text = timeLimit.ToString();
@@ -553,7 +559,7 @@ public class GameManager : MonoBehaviour
         }
         else if(deadNo == 2)
         {
-            crushText.GetComponent<Text>().text = crushName + "が落下により爆破！";
+            crushText.GetComponent<Text>().text = crushName + "が爆破！";
         }
 
         // 通知表示Sequenceを作成
@@ -629,6 +635,16 @@ public class GameManager : MonoBehaviour
     }
 
     /// <summary>
+    /// 大砲発射通知
+    /// </summary>
+    private void OnShotUser(int cannonID)
+    {
+        if (!isCannon) return;
+
+        cannons[cannonID - 1].ShotBullet();
+    }
+
+    /// <summary>
     /// ゲームカウント
     /// </summary>
     /// <returns></returns>
@@ -657,9 +673,9 @@ public class GameManager : MonoBehaviour
     {
         timeLimit--;
 
-        if(timeLimit / 10 == 0 && joinOrder == 1 && isCannon ==true)
+        if(timeLimit % 8 == 0 && joinOrder == 1 && isCannon ==true)
         {   // 10秒毎 && ホスト && 大砲ステージの時
-            //++ 発射通知
+            await roomModel.ShotCannonAsync();
         }
 
         await roomModel.TimeCountAsync(timeLimit);

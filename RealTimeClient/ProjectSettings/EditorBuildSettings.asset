@@ -29,4 +29,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/MultiStage/2_OnlinePlayScene.unity
     guid: 23619df3490c4e7458c445fd5ba409d5
+  - enabled: 1
+    path: Assets/Scenes/MultiStage/3_OnlinePlayScene.unity
+    guid: a673cd8e268d74742a0b6870f9f117eb
   m_configObjects: {}

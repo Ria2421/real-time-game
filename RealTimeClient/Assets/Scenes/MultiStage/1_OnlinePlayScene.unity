@@ -21637,7 +21637,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   internetSpeed: 0.1
-  timeLimit: 90
+  timeLimit: 60
   tinyCarMobileInput: {fileID: 520008200}
   mobileInputObj: {fileID: 520008199}
   playerPrefab: {fileID: 9119118491832856353, guid: a784eefdf96e44443998670f41b4aef4,
@@ -21660,6 +21660,7 @@ MonoBehaviour:
   - {fileID: 1416609859}
   - {fileID: 798429211}
   - {fileID: 271705981}
+  cannons: []
   timerText: {fileID: 755965341}
   crushText: {fileID: 111598433}
   rateObjs: {fileID: 357686387}
@@ -22102,12 +22103,12 @@ PrefabInstance:
     - target: {fileID: 7212105014225068744, guid: 518f59c4b30f2f641b99efc3573db898,
         type: 3}
       propertyPath: m_NormalizedViewPortRect.y
-      value: 0.25144142
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7212105014225068744, guid: 518f59c4b30f2f641b99efc3573db898,
         type: 3}
       propertyPath: m_NormalizedViewPortRect.height
-      value: 0.4971172
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8982755068004640379, guid: 518f59c4b30f2f641b99efc3573db898,
         type: 3}
@@ -58561,7 +58562,7 @@ RectTransform:
   m_GameObject: {fileID: 502851471742173600}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.4234375, y: 0.4234375, z: 0.4234375}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 340331340}
@@ -58576,7 +58577,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 1919.9999, y: 832.3686}
+  m_SizeDelta: {x: 1920, y: 1080}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &2846067114880685860
 CanvasRenderer:

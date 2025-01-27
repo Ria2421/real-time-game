@@ -27,11 +27,6 @@ public class Cannon : MonoBehaviour
     [SerializeField] private GameObject bulletprefab;
 
     /// <summary>
-    ///  ”­ËˆÊ’u
-    /// </summary>
-    [SerializeField] private Transform startPosition;
-
-    /// <summary>
     /// “’…ˆÊ’u
     /// </summary>
     [SerializeField] private Transform endPosition;
@@ -45,7 +40,7 @@ public class Cannon : MonoBehaviour
     public void ShotBullet()
     {
         // ’e‚Ì¶¬
-        var bulletObj = Instantiate(bulletprefab, startPosition.position, Quaternion.identity);
+        var bulletObj = Instantiate(bulletprefab, this.gameObject.transform.position, Quaternion.identity);
 
         // ’e‚ÌˆÚ“®
         bulletObj.transform.DOMove(endPosition.position, bulletSpeed).SetEase(Ease.Linear)

@@ -52,7 +52,7 @@ public class RoomHub:StreamingHubBase<IRoomHub,IRoomHubReceiver>,IRoomHub
         if(joinedUserList.Length == MAX_PLAYER)
         {   // とりあえず人数揃い次第マッチング完了
             Random rand = new Random();
-            int stageID = rand.Next(1, 3);
+            int stageID = rand.Next(1, 4);
             Console.WriteLine("マッチング完了");
             this.Broadcast(room).OnMatching(Guid.NewGuid().ToString("N"),stageID);
         }
