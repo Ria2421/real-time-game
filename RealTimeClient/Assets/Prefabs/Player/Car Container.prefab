@@ -30451,7 +30451,7 @@ MonoBehaviour:
   maxSpeedReverse: 25
   brakeStrength: 20
   slopeFriction: 1
-  maxSteering: 130
+  maxSteering: 135
   steeringMultiplierInAir: 1
   steeringBySpeed:
     serializedVersion: 2

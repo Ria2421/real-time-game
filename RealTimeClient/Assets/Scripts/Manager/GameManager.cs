@@ -2,7 +2,7 @@
 // ゲームマネージャー [ GameManager.cs ]
 // Author:Kenta Nakamoto
 // Data:2024/11/18
-// Update:2025/01/23
+// Update:2025/01/27
 //---------------------------------------------------------------
 using Shared.Interfaces.StreamingHubs;
 using System;
@@ -90,6 +90,11 @@ public class GameManager : MonoBehaviour
     /// 参加順
     /// </summary>
     private int joinOrder = 0;
+
+    /// <summary>
+    /// 大砲発射フラグ
+    /// </summary>
+    private bool isCannon = false;
 
     [Header("数値設定")]
 
@@ -262,6 +267,11 @@ public class GameManager : MonoBehaviour
         BGMManager.Instance.Pause(BGMPath.MAIN_BGM);
         BGMManager.Instance.Play(BGMPath.MULTI_PLAY);
 
+        if(SceneManager.GetActiveScene().name == "3_OnlinePlayScene")
+        {   // 大砲ステージの時に発射フラグOn
+            isCannon = true;
+        }
+
         // ルームモデルの取得
         roomModel = GameObject.Find("RoomModel").GetComponent<RoomModel>();
 
@@ -356,8 +366,16 @@ public class GameManager : MonoBehaviour
             joinOrder = user.JoinOrder;
 
             // 自機・操作用オブジェの生成
-            characterObj = Instantiate(playerPrefab, respownList[user.JoinOrder - 1].position, Quaternion.Euler(0, 180, 0));
-            inputController = Instantiate(inputPrefab, Vector3.zero, Quaternion.identity);
+            if(joinOrder == 1 || joinOrder == 3)
+            {
+                characterObj = Instantiate(playerPrefab, respownList[user.JoinOrder - 1].position, Quaternion.Euler(0, 0, 0));
+                inputController = Instantiate(inputPrefab, Vector3.zero, Quaternion.identity);
+            }
+            else
+            {
+                characterObj = Instantiate(playerPrefab, respownList[user.JoinOrder - 1].position, Quaternion.Euler(0, 180, 0));
+                inputController = Instantiate(inputPrefab, Vector3.zero, Quaternion.identity);
+            }
 
             // カーコントローラーの取得・反映
             playerController = characterObj.transform.GetChild(0).gameObject;
@@ -464,7 +482,7 @@ public class GameManager : MonoBehaviour
     {
         SEManager.Instance.Play(SEPath.START);
 
-        // テキスト変更
+        // テキストの変更
         countDownImage.sprite = countSprits[0];
         StartCoroutine("HiddenText");
 
@@ -639,6 +657,11 @@ public class GameManager : MonoBehaviour
     {
         timeLimit--;
 
+        if(timeLimit / 10 == 0 && joinOrder == 1 && isCannon ==true)
+        {   // 10秒毎 && ホスト && 大砲ステージの時
+            //++ 発射通知
+        }
+
         await roomModel.TimeCountAsync(timeLimit);
 
         if(timeLimit <= 0)
@@ -708,6 +731,6 @@ public class GameManager : MonoBehaviour
         Destroy(GameObject.Find("RoomModel"));
 
         // タイトルに戻る
-        SceneManager.LoadScene("02_MenuScene");
+        SceneManager.LoadScene("2_MenuScene");
     }
 }

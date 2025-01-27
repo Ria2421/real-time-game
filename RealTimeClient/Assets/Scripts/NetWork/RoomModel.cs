@@ -2,7 +2,7 @@
 // ルーム情報モデル [ RoomModel.cs ]
 // Author:Kenta Nakamoto
 // Data:2024/11/18
-// Update:2025/01/23
+// Update:2025/01/27
 //---------------------------------------------------------------
 using Cysharp.Net.Http;
 using Cysharp.Threading.Tasks;
@@ -49,7 +49,7 @@ public class RoomModel : BaseModel,IRoomHubReceiver
     /// <summary>
     /// マッチング完了通知
     /// </summary>
-    public Action<string> OnMatchingUser { get; set; }
+    public Action<string,int> OnMatchingUser { get; set; }
 
     /// <summary>
     /// ユーザー接続通知
@@ -95,6 +95,11 @@ public class RoomModel : BaseModel,IRoomHubReceiver
     /// タイムアップ通知
     /// </summary>
     public Action OnTimeUpUser {  get; set; }
+
+    /// <summary>
+    ///  発射通知
+    /// </summary>
+    public Action<int> OnShotUser { get; set; }
 
     //-------------------------------------------------------
     // メソッド
@@ -194,9 +199,9 @@ public class RoomModel : BaseModel,IRoomHubReceiver
     // IRoomHubReceiverインターフェースの実装
 
     // マッチング完了通知
-    public void OnMatching(string roomName)
+    public void OnMatching(string roomName, int stageID)
     {
-        OnMatchingUser(roomName);
+        OnMatchingUser(roomName,stageID);
     }
 
     // 入室通知
@@ -260,5 +265,12 @@ public class RoomModel : BaseModel,IRoomHubReceiver
     {
         if (OnTimeUpUser == null) return;
         OnTimeUpUser();
+    }
+
+    // 発射通知処理
+    public void OnShot(int cannonID)
+    {
+        if (OnShotUser == null) return;
+        OnShotUser(cannonID);
     }
 }

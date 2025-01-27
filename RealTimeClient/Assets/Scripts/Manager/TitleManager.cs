@@ -70,7 +70,7 @@ public class TitleManager : MonoBehaviour
     /// </summary>
     void Start()
     {
-        //Application.targetFrameRate = 60;
+        Application.targetFrameRate = 60;
 
         // BGMçƒê∂
         BGMManager.Instance.Play(BGMPath.MAIN_BGM,0.75f,0,1,true,true);
@@ -124,7 +124,7 @@ public class TitleManager : MonoBehaviour
         {
             case UserModel.Status.True:
                 Debug.Log("ìoò^ê¨å˜");
-                SceneManager.LoadScene("02_MenuScene");
+                SceneManager.LoadScene("2_MenuScene");
                 break;
 
             case UserModel.Status.False:
@@ -171,7 +171,7 @@ public class TitleManager : MonoBehaviour
 
         UserModel.Instance.UserId = int.Parse(debugIDText.text);
 
-        SceneManager.LoadScene("02_MenuScene");
+        SceneManager.LoadScene("2_MenuScene");
     }
 
     /// <summary>

@@ -9,7 +9,7 @@ namespace Shared.Interfaces.StreamingHubs
         // [ここにサーバー側からクライアント側を呼び出す関数を定義する]
 
         // マッチング完了通知
-        void OnMatching(string roomName);
+        void OnMatching(string roomName,int stageID);
 
         // ユーザーの入室通知
         void OnJoin(JoinedUser user);
@@ -37,5 +37,8 @@ namespace Shared.Interfaces.StreamingHubs
 
         // タイムアップ通知
         void OnTimeUp();
+
+        // 発射通知
+        void OnShot(int cannonID);
     }
 }

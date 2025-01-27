@@ -1,0 +1,21 @@
+@startuml
+'https://plantuml.com/sequence-diagram
+
+participant Client1
+participant Client2
+participant Client3
+participant MagickOnion
+
+autonumber
+
+rnote over Client1 : ホスト
+Client1 -[#blue]> MagickOnion : 発射通知
+
+rnote over MagickOnion : 発射大砲の抽選
+
+Client1 <- MagickOnion : 発射通知\n(発射する大砲の指定ID)
+Client2 <- MagickOnion : 発射通知\n(発射する大砲の指定ID)
+Client3 <- MagickOnion : 発射通知\n(発射する大砲の指定ID)
+rnote over Client1,Client3 : 指定IDの大砲発射処理
+
+@enduml

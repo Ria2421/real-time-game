@@ -63342,24 +63342,6 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: 3320184997738873532, guid: 4e630d52eb0a7c94d81a76c596960e1a, type: 3}
---- !u!114 &1224068577 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 8885252036053026858, guid: a784eefdf96e44443998670f41b4aef4,
-    type: 3}
-  m_PrefabInstance: {fileID: 559289865}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 13eb19281dc5d514782f46c6e58033b1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!4 &1224068580 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 1166447759541644564, guid: a784eefdf96e44443998670f41b4aef4,
-    type: 3}
-  m_PrefabInstance: {fileID: 559289865}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1227049066
 GameObject:
   m_ObjectHideFlags: 0
@@ -90824,7 +90806,7 @@ PrefabInstance:
         type: 3}
       propertyPath: whatToFollow
       value: 
-      objectReference: {fileID: 1224068580}
+      objectReference: {fileID: 0}
     - target: {fileID: 8695779579030290518, guid: 518f59c4b30f2f641b99efc3573db898,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -107050,7 +107032,7 @@ PrefabInstance:
         type: 3}
       propertyPath: carController
       value: 
-      objectReference: {fileID: 1224068577}
+      objectReference: {fileID: 0}
     - target: {fileID: 8478323093751117174, guid: a62455488d048f348a8f566984c2f304,
         type: 3}
       propertyPath: m_Name

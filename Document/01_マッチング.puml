@@ -26,11 +26,11 @@ MagickOnion -> DB : 対戦情報登録
 rnote over DB : レコード追加
 MagickOnion <- DB : レコードID
 
-Client1 <- MagickOnion : マッチング完了 (ルーム名)
-Client2 <- MagickOnion : マッチング完了 (ルーム名)
-Client3 <- MagickOnion : マッチング完了 (ルーム名)
+Client1 <- MagickOnion : マッチング完了 (ルーム名・ステージID)
+Client2 <- MagickOnion : マッチング完了 (ルーム名・ステージID)
+Client3 <- MagickOnion : マッチング完了 (ルーム名・ステージID)
 
-rnote over Client1,Client3 : ルーム名保存
+rnote over Client1,Client3 : ルーム名・ステージ保存
 
 Client1 -> MagickOnion : ロビー退出
 Client2 -> MagickOnion : ロビー退出

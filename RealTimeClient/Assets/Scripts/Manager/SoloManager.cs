@@ -2,7 +2,7 @@
 // ソロマネージャー [ SoloManager.cs ]
 // Author:Kenta Nakamoto
 // Data:2024/12/10
-// Update:2025/01/16
+// Update:2025/01/27
 //---------------------------------------------------------------
 using DavidJalbert;
 using DG.Tweening;
@@ -190,7 +190,9 @@ public class SoloManager : MonoBehaviour
         isCount = false;
         ghostCnt = 0;
 
-        // 再生するゴーストデータを取得する
+        rapText.text = currentRapNum.ToString() + " / " + maxRapNum.ToString();
+
+        // 再生するゴーストデータを取得
         if (UserModel.Instance.GhostData != "")
         {
             playGhost = JsonConvert.DeserializeObject<List<GhostData>>(UserModel.Instance.GhostData);
@@ -385,7 +387,7 @@ public class SoloManager : MonoBehaviour
         // SE再生
         SEManager.Instance.Play(SEPath.TAP_BUTTON);
 
-        SceneManager.LoadScene("02_MenuScene");
+        SceneManager.LoadScene("2_MenuScene");
     }
 
     /// <summary>
@@ -396,7 +398,7 @@ public class SoloManager : MonoBehaviour
         // SE再生
         SEManager.Instance.Play(SEPath.TAP_BUTTON);
 
-        SceneManager.LoadScene("03_SoloSelectScene");
+        SceneManager.LoadScene("3_SoloSelectScene");
     }
 
     /// <summary>

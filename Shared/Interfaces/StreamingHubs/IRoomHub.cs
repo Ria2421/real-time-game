@@ -59,5 +59,11 @@ namespace Shared.Interfaces.StreamingHubs
         /// <param name="time"></param>
         /// <returns></returns>
         Task TimeCountAsync(int time);
+
+        /// <summary>
+        /// 大砲発射処理
+        /// </summary>
+        /// <returns></returns>
+        Task ShotCannonAsync();
     }
 }

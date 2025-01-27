@@ -12,6 +12,11 @@ public class MatchingManager : MonoBehaviour
     // フィールド
 
     /// <summary>
+    /// プレイステージID
+    /// </summary>
+    private int playStageID = 0;
+
+    /// <summary>
     /// マッチングテキストオブジェ
     /// </summary>
     [SerializeField] private GameObject matchingTextObj;
@@ -76,7 +81,7 @@ public class MatchingManager : MonoBehaviour
         await roomModel.DisconnectionAsync();
 
         // メニューシーンに遷移
-        SceneManager.LoadScene("02_MenuScene");
+        SceneManager.LoadScene("2_MenuScene");
 
         Debug.Log("マッチングキャンセル");
     }
@@ -85,11 +90,12 @@ public class MatchingManager : MonoBehaviour
     /// マッチング完了通知受信時の処理
     /// </summary>
     /// <param name="roomName"></param>
-    private async void OnMatchingUser(string roomName)
+    private async void OnMatchingUser(string roomName,int stageID)
     {
         cancelButton.interactable = false;
 
         roomModel.RoomName = roomName;  // 発行されたルーム名を保存
+        playStageID = stageID;          // ステージIDを保存
 
         // SE再生
         SEManager.Instance.Play(SEPath.MATCHING_COMPLETE);
@@ -111,7 +117,7 @@ public class MatchingManager : MonoBehaviour
         // 1秒待ってコルーチン中断
         yield return new WaitForSeconds(1.2f);
 
-        // ゲームシーンに遷移
-        SceneManager.LoadScene("06_OnlinePlayScene");
+        // playStageIDに応じて対応するゲームシーンに遷移
+        SceneManager.LoadScene(playStageID.ToString() + "_OnlinePlayScene");
     }
 }

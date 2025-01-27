@@ -51,8 +51,10 @@ public class RoomHub:StreamingHubBase<IRoomHub,IRoomHubReceiver>,IRoomHub
         // マッチングが完了していたらクライアント側のマッチング処理を呼び出す
         if(joinedUserList.Length == MAX_PLAYER)
         {   // とりあえず人数揃い次第マッチング完了
+            Random rand = new Random();
+            int stageID = rand.Next(1, 3);
             Console.WriteLine("マッチング完了");
-            this.Broadcast(room).OnMatching(Guid.NewGuid().ToString("N"));
+            this.Broadcast(room).OnMatching(Guid.NewGuid().ToString("N"),stageID);
         }
     }
 
@@ -316,5 +318,18 @@ public class RoomHub:StreamingHubBase<IRoomHub,IRoomHubReceiver>,IRoomHub
         {   // タイムアップ通知 (引き分け表示)
             this.Broadcast(room).OnTimeUp();
         }
+    }
+
+    /// <summary>
+    /// 大砲発射処理
+    /// </summary>
+    /// <returns></returns>
+    public async Task ShotCannonAsync()
+    {
+        Random rand = new Random();
+        int cannonID = rand.Next(1, 5);
+
+        // 発射通知 (発射する大砲ID)
+        this.Broadcast(room).OnShot(cannonID);
     }
 }
