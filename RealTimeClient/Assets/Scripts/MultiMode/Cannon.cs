@@ -2,7 +2,7 @@
 // ‘å–CƒXƒNƒŠƒvƒg [ Cannon.cs ]
 // Author:Kenta Nakamoto
 // Data:2025/01/27
-// Update:2025/01/27
+// Update:2025/01/28
 //---------------------------------------------------------------
 using DG.Tweening;
 using RealTimeServer.Model.Entity;
@@ -10,6 +10,7 @@ using Shared.Interfaces.StreamingHubs;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using KanKikuchi.AudioManager;
 
 public class Cannon : MonoBehaviour
 {
@@ -41,6 +42,9 @@ public class Cannon : MonoBehaviour
     {
         // ’e‚Ì¶¬
         var bulletObj = Instantiate(bulletprefab, this.gameObject.transform.position, Quaternion.identity);
+
+        // SEÄ¶
+        SEManager.Instance.Play(SEPath.CANNON);
 
         // ’e‚ÌˆÚ“®
         bulletObj.transform.DOMove(endPosition.position, bulletSpeed).SetEase(Ease.Linear)

@@ -6,6 +6,7 @@
 public static class SEPath{
 
 	public const string BOOM              = "SE/boom";
+	public const string CANNON            = "SE/cannon";
 	public const string COUNT             = "SE/count";
 	public const string GOAL              = "SE/goal";
 	public const string MATCHING_COMPLETE = "SE/matching_complete";
