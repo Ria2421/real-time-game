@@ -2,7 +2,7 @@
 // ゲームマネージャー [ GameManager.cs ]
 // Author:Kenta Nakamoto
 // Data:2024/11/18
-// Update:2025/01/27
+// Update:2025/01/28
 //---------------------------------------------------------------
 using Shared.Interfaces.StreamingHubs;
 using System;
@@ -107,6 +107,11 @@ public class GameManager : MonoBehaviour
     /// 制限時間
     /// </summary>
     [SerializeField] private int timeLimit = 30;
+
+    /// <summary>
+    /// 大砲発射間隔
+    /// </summary>
+    [SerializeField] private int shotInterval = 10;
 
     [Header("各種Objectをアタッチ")]
 
@@ -628,8 +633,9 @@ public class GameManager : MonoBehaviour
             obj.SetActive(false);
         }
 
-        drawImageObj.SetActive(true);           // 引き分け表示
-        resultPanel.gameObject.SetActive(true); // リザルトパネル表示
+        // リザルト表示
+        drawImageObj.SetActive(true);
+        resultPanel.gameObject.SetActive(true);
 
         gameState = GameState.Result;
     }
@@ -641,6 +647,7 @@ public class GameManager : MonoBehaviour
     {
         if (!isCannon) return;
 
+        // 発射処理の呼び出し
         cannons[cannonID - 1].ShotBullet();
     }
 
@@ -673,8 +680,8 @@ public class GameManager : MonoBehaviour
     {
         timeLimit--;
 
-        if(timeLimit % 8 == 0 && joinOrder == 1 && isCannon ==true)
-        {   // 10秒毎 && ホスト && 大砲ステージの時
+        if(timeLimit % shotInterval == 0 && joinOrder == 1 && isCannon ==true)
+        {   // 発射間隔 && ホスト && 大砲ステージの時
             await roomModel.ShotCannonAsync();
         }
 
