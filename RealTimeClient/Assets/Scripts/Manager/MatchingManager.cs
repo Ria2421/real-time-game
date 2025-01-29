@@ -84,7 +84,7 @@ public class MatchingManager : MonoBehaviour
         // メニューシーンに遷移
         SceneManager.LoadScene("2_MenuScene");
 
-        Debug.Log("マッチングキャンセル");
+        Debug.Log("マッチング中止");
     }
 
     /// <summary>
