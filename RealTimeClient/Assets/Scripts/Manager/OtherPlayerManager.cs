@@ -53,7 +53,7 @@ public class OtherPlayerManager : MonoBehaviour
     /// </summary>
     void Start()
     {
-        if(SceneManager.GetActiveScene().name == "01_TitleScene")
+        if(SceneManager.GetActiveScene().name == "1_TitleScene")
         {   // タイトルシーンのみ有効
             titleCollider.SetActive(true);
         }

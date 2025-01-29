@@ -64,6 +64,7 @@ public class MatchingManager : MonoBehaviour
     /// </summary>
     private void FixedUpdate()
     {
+        // ŽÔ‰æ‘œ‚ð‰ñ‚·
         carBG.localEulerAngles += new Vector3(0,0,1.0f);
     }
 

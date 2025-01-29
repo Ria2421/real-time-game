@@ -5692,7 +5692,7 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   forwardFriction: 20
-  lateralFriction: 80
+  lateralFriction: 85
 --- !u!114 &7698701966217038670
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -27263,7 +27263,7 @@ RectTransform:
   m_GameObject: {fileID: 8046195619094512335}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.24947914, y: 0.24947914, z: 0.24947914}
+  m_LocalScale: {x: 0.41296297, y: 0.41296297, z: 0.41296297}
   m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 2938634867355540998}
@@ -27278,7 +27278,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 1920, y: 1080.0001}
+  m_SizeDelta: {x: 1920, y: 1079.9999}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &4800257035396852337
 CanvasRenderer:
@@ -27383,7 +27383,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   stageID: 1
   maxRapNum: 3
-  saveSpeed: 0.1
+  saveSpeed: 0.2
   standardInput: {fileID: 9187015659602704469}
   mobileInput: {fileID: 2894299472654769473}
   boomManager: {fileID: 2460978490519911838}
@@ -27468,10 +27468,10 @@ Camera:
   m_LensShift: {x: 0, y: 0}
   m_NormalizedViewPortRect:
     serializedVersion: 2
-    x: 0
-    y: 0.25144142
-    width: 1
-    height: 0.4971172
+    x: 0.0006996691
+    y: 0
+    width: 0.99860066
+    height: 1
   near clip plane: 0.3
   far clip plane: 1000
   field of view: 60
@@ -27517,9 +27517,9 @@ MonoBehaviour:
   topDownDistance: 16
   topDownAngle: {x: 50, y: 0, z: 0}
   topDownInterpolation: 10
-  thirdPersonOffset: {x: 0, y: 2, z: -10}
-  thirdPersonAngle: {x: 15, y: 0, z: 0}
-  thirdPersonSkinWidth: -6.5
+  thirdPersonOffset: {x: 0, y: 2, z: -8}
+  thirdPersonAngle: {x: 5, y: 0, z: 0}
+  thirdPersonSkinWidth: 5
   thirdPersonInterpolation: 10
 --- !u!114 &6261195044597564731
 MonoBehaviour:
@@ -38156,9 +38156,24 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 850384899648396461, guid: 3fedefb2614a3c64a90416c04f4976b9,
         type: 3}
+      propertyPath: boostCoolOff
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 850384899648396461, guid: 3fedefb2614a3c64a90416c04f4976b9,
+        type: 3}
+      propertyPath: boostDuration
+      value: 3.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 850384899648396461, guid: 3fedefb2614a3c64a90416c04f4976b9,
+        type: 3}
       propertyPath: carController
       value: 
       objectReference: {fileID: 6450981632950339938}
+    - target: {fileID: 850384899648396461, guid: 3fedefb2614a3c64a90416c04f4976b9,
+        type: 3}
+      propertyPath: boostMultiplier
+      value: 1.8
+      objectReference: {fileID: 0}
     - target: {fileID: 4539572954198347042, guid: 3fedefb2614a3c64a90416c04f4976b9,
         type: 3}
       propertyPath: m_Pivot.x

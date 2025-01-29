@@ -74,6 +74,11 @@ public class SoloManager : MonoBehaviour
     /// </summary>
     private int ghostCnt = 0;
 
+    /// <summary>
+    /// ゴースト表示補正座標
+    /// </summary>
+    private Vector3 ghostCorrection;
+
     [Space(25)]
     [Header("===== DataObject =====")]
 
@@ -189,6 +194,7 @@ public class SoloManager : MonoBehaviour
         // 変数初期化処理
         isCount = false;
         ghostCnt = 0;
+        ghostCorrection = new Vector3(0, -0.74f, 0);
 
         rapText.text = currentRapNum.ToString() + " / " + maxRapNum.ToString();
 
@@ -214,8 +220,6 @@ public class SoloManager : MonoBehaviour
     void Update()
     {
         if (!isCount) return;
-
-
 
         // timerを利用して経過時間を計測・表示
         timer += Time.deltaTime;
@@ -351,7 +355,7 @@ public class SoloManager : MonoBehaviour
         GhostData ghostData = new GhostData();
         ghostData.Pos = visualObj.position;        // 位置
         ghostData.Rot = visualObj.eulerAngles;     // 角度
-        ghostData.WRot = wheelRot.eulerAngles.y;   // タイヤ角
+        ghostData.WRot = wheelRot.localEulerAngles.y;   // タイヤ角
 
         ghostList.Add(ghostData);
     }
@@ -362,13 +366,12 @@ public class SoloManager : MonoBehaviour
     private void PlayGhost()
     {
         // 本体位置の更新
-
-        ghostCarObj.transform.DOMove(new Vector3(playGhost[ghostCnt].Pos.x, 0, playGhost[ghostCnt].Pos.z), saveSpeed).SetEase(Ease.Linear).SetUpdate(UpdateType.Fixed, true);
+        ghostCarObj.transform.DOMove(playGhost[ghostCnt].Pos + ghostCorrection, saveSpeed).SetEase(Ease.Linear).SetUpdate(UpdateType.Fixed, true);
         ghostCarObj.transform.DORotate(playGhost[ghostCnt].Rot, saveSpeed).SetEase(Ease.Linear).SetUpdate(UpdateType.Fixed, true);
 
         // タイヤ角の更新
-        ghostWheelL.DOLocalRotate(new Vector3(0, playGhost[ghostCnt].WRot, 0), saveSpeed).SetEase(Ease.Linear).SetUpdate(UpdateType.Fixed, true);
-        ghostWheelR.DOLocalRotate(new Vector3(0, playGhost[ghostCnt].WRot, 0), saveSpeed).SetEase(Ease.Linear).SetUpdate(UpdateType.Fixed, true);
+        ghostWheelL.transform.localEulerAngles = new Vector3 (ghostWheelL.transform.localEulerAngles.x,playGhost[ghostCnt].WRot,0);
+        ghostWheelR.transform.localEulerAngles = new Vector3(ghostWheelR.transform.localEulerAngles.x, playGhost[ghostCnt].WRot, 0);
 
         ghostCnt++;
 

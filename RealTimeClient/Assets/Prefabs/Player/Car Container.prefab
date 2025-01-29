@@ -20266,7 +20266,7 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 3.75, y: 2.5, z: 7}
+  m_Size: {x: 3.3, y: 1.5, z: 5}
   m_Center: {x: 0, y: 2.5, z: 0}
 --- !u!114 &3257436765599027505
 MonoBehaviour:
@@ -30344,7 +30344,7 @@ Transform:
   m_GameObject: {fileID: 8333425423693157747}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 2, z: 0}
+  m_LocalPosition: {x: 0, y: 2.28, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -30396,7 +30396,7 @@ SphereCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Radius: 1.8
+  m_Radius: 1.9
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &4094961997749659567
 MonoBehaviour:
@@ -30410,7 +30410,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 13eb19281dc5d514782f46c6e58033b1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  colliderRadius: 1.8
+  colliderRadius: 1.9
   bodyMass: 20
   gravityMode: 1
   gravityVelocity: 70
@@ -30459,14 +30459,14 @@ MonoBehaviour:
     - serializedVersion: 3
       time: 0
       value: -0.014587402
-      inSlope: 2.5120306
-      outSlope: 2.5120306
+      inSlope: 3.3767362
+      outSlope: 3.3767362
       tangentMode: 34
       weightedMode: 0
       inWeight: 0
       outWeight: 0.33333334
     - serializedVersion: 3
-      time: 0.4035208
+      time: 0.30018827
       value: 0.9990692
       inSlope: 0
       outSlope: 0
@@ -30477,8 +30477,8 @@ MonoBehaviour:
     - serializedVersion: 3
       time: 1
       value: 1
-      inSlope: 0.0015604671
-      outSlope: 0.0015604671
+      inSlope: 0.0013300523
+      outSlope: 0.0013300523
       tangentMode: 34
       weightedMode: 0
       inWeight: 0.33333334
@@ -30487,7 +30487,7 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   forwardFriction: 30
-  lateralFriction: 80
+  lateralFriction: 85
 --- !u!1 &9119118491832856353
 GameObject:
   m_ObjectHideFlags: 0

@@ -37,6 +37,11 @@ public class GameManager : MonoBehaviour
     }
 
     /// <summary>
+    /// デスマッチ開始タイム
+    /// </summary>
+    private const int DEATH_MATCH_TIME = 10;
+
+    /// <summary>
     /// ルームモデル格納用
     /// </summary>
     private RoomModel roomModel;
@@ -95,6 +100,11 @@ public class GameManager : MonoBehaviour
     /// 大砲発射フラグ
     /// </summary>
     private bool isCannon = false;
+
+    /// <summary>
+    /// デスマッチフラグ
+    /// </summary>
+    private bool isDeathMatch = false;
 
     [Header("数値設定")]
 
@@ -321,7 +331,7 @@ public class GameManager : MonoBehaviour
             ConnectionId = roomModel.ConnectionId,
             Position = playerController.transform.position + posCorrection,
             Rotation = visualTransform.eulerAngles,
-            WheelAngle = wheelAngle.eulerAngles.y,
+            WheelAngle = wheelAngle.localEulerAngles.y,
             IsTurbo = playerTurboParticle.isPlaying,
             IsDrift = playerDriftParticle.isPlaying
         };
@@ -468,8 +478,10 @@ public class GameManager : MonoBehaviour
         characterList[moveData.ConnectionId].transform.DORotate(moveData.Rotation, internetSpeed).SetEase(Ease.Linear).SetUpdate(UpdateType.Fixed, true);
 
         // タイヤ角の更新
-        characterList[moveData.ConnectionId].transform.Find("wheels/wheel front right").transform.DORotate(new Vector3(0,moveData.WheelAngle,0),internetSpeed).SetEase(Ease.Linear).SetUpdate(UpdateType.Fixed, true);
-        characterList[moveData.ConnectionId].transform.Find("wheels/wheel front left").transform.DORotate(new Vector3(0, moveData.WheelAngle, 0), internetSpeed).SetEase(Ease.Linear).SetUpdate(UpdateType.Fixed, true);
+        Transform wheelR = characterList[moveData.ConnectionId].transform.Find("wheels/wheel front right").transform;
+        Transform wheelL = characterList[moveData.ConnectionId].transform.Find("wheels/wheel front left").transform;
+        wheelR.localEulerAngles = new Vector3(wheelR.localEulerAngles.x, moveData.WheelAngle, 0);
+        wheelL.localEulerAngles = new Vector3(wheelL.localEulerAngles.x, moveData.WheelAngle, 0);
 
         // パーティクルの取得・更新
         characterList[moveData.ConnectionId].GetComponent<OtherPlayerManager>().playDrift(moveData.IsDrift);
@@ -608,6 +620,11 @@ public class GameManager : MonoBehaviour
     {   // 残タイムの反映処理
         timerText.text = time.ToString();
 
+        if(time <= DEATH_MATCH_TIME && !isDeathMatch)
+        {
+            isDeathMatch = true;
+        }
+
         if (3 >= time)
         {
             timerText.color = Color.yellow;
@@ -648,7 +665,23 @@ public class GameManager : MonoBehaviour
         if (!isCannon) return;
 
         // 発射処理の呼び出し
-        cannons[cannonID - 1].ShotBullet();
+        if (isDeathMatch)
+        {   // デスマッチ時は対角線2つの大砲を使用する
+            if(cannonID == 1 || cannonID == 4)
+            {
+                cannons[0].ShotBullet();
+                cannons[3].ShotBullet();
+            }
+            else
+            {
+                cannons[1].ShotBullet();
+                cannons[2].ShotBullet();
+            }
+        }
+        else
+        {
+            cannons[cannonID - 1].ShotBullet();
+        }
     }
 
     /// <summary>

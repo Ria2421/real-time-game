@@ -122,18 +122,6 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
---- !u!134 &78363377
-PhysicMaterial:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_Name: DynamicMaterial
-  dynamicFriction: 0
-  staticFriction: 0
-  bounciness: 0
-  frictionCombine: 1
-  bounceCombine: 1
 --- !u!43 &92736721
 Mesh:
   m_ObjectHideFlags: 0
@@ -1334,6 +1322,18 @@ Mesh:
     offset: 0
     size: 0
     path: 
+--- !u!134 &2088216925
+PhysicMaterial:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: DynamicMaterial
+  dynamicFriction: 0
+  staticFriction: 0
+  bounciness: 0
+  frictionCombine: 1
+  bounceCombine: 1
 --- !u!1 &1199066107335740857 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 4354387581190715502, guid: bc2e40c6a3733cd498dd3f00fc658153,
@@ -1352,7 +1352,22 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Material
       value: 
-      objectReference: {fileID: 78363377}
+      objectReference: {fileID: 2088216925}
+    - target: {fileID: 2588478146558661055, guid: 683fce279a92d994b9449d3b29f858f0,
+        type: 3}
+      propertyPath: boostCoolOff
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2588478146558661055, guid: 683fce279a92d994b9449d3b29f858f0,
+        type: 3}
+      propertyPath: boostDuration
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 2588478146558661055, guid: 683fce279a92d994b9449d3b29f858f0,
+        type: 3}
+      propertyPath: boostMultiplier
+      value: 1.8
+      objectReference: {fileID: 0}
     - target: {fileID: 5383173824546873518, guid: 683fce279a92d994b9449d3b29f858f0,
         type: 3}
       propertyPath: m_Name
@@ -1436,12 +1451,12 @@ PrefabInstance:
     - target: {fileID: 6428431725835117568, guid: 683fce279a92d994b9449d3b29f858f0,
         type: 3}
       propertyPath: maxRapNum
-      value: 2
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 6428431725835117568, guid: 683fce279a92d994b9449d3b29f858f0,
         type: 3}
       propertyPath: saveSpeed
-      value: 0.2
+      value: 0.15
       objectReference: {fileID: 0}
     - target: {fileID: 6428431725835117568, guid: 683fce279a92d994b9449d3b29f858f0,
         type: 3}
@@ -1465,23 +1480,28 @@ PrefabInstance:
       objectReference: {fileID: 839705682}
     - target: {fileID: 6740968277452223485, guid: 683fce279a92d994b9449d3b29f858f0,
         type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 1919.9999
+      objectReference: {fileID: 0}
+    - target: {fileID: 6740968277452223485, guid: 683fce279a92d994b9449d3b29f858f0,
+        type: 3}
       propertyPath: m_SizeDelta.y
       value: 1080
       objectReference: {fileID: 0}
     - target: {fileID: 6740968277452223485, guid: 683fce279a92d994b9449d3b29f858f0,
         type: 3}
       propertyPath: m_LocalScale.x
-      value: 1
+      value: 0.41354167
       objectReference: {fileID: 0}
     - target: {fileID: 6740968277452223485, guid: 683fce279a92d994b9449d3b29f858f0,
         type: 3}
       propertyPath: m_LocalScale.y
-      value: 1
+      value: 0.41354167
       objectReference: {fileID: 0}
     - target: {fileID: 6740968277452223485, guid: 683fce279a92d994b9449d3b29f858f0,
         type: 3}
       propertyPath: m_LocalScale.z
-      value: 1
+      value: 0.41354167
       objectReference: {fileID: 0}
     - target: {fileID: 7698701966217038670, guid: 683fce279a92d994b9449d3b29f858f0,
         type: 3}
@@ -1506,12 +1526,12 @@ PrefabInstance:
     - target: {fileID: 7811555893709244649, guid: 683fce279a92d994b9449d3b29f858f0,
         type: 3}
       propertyPath: m_NormalizedViewPortRect.y
-      value: 0
+      value: 0.13270968
       objectReference: {fileID: 0}
     - target: {fileID: 7811555893709244649, guid: 683fce279a92d994b9449d3b29f858f0,
         type: 3}
       propertyPath: m_NormalizedViewPortRect.height
-      value: 1
+      value: 0.73458064
       objectReference: {fileID: 0}
     - target: {fileID: 8536971421514188064, guid: 683fce279a92d994b9449d3b29f858f0,
         type: 3}
@@ -1661,11 +1681,61 @@ PrefabInstance:
       propertyPath: m_Mesh
       value: 
       objectReference: {fileID: 293115839}
+    - target: {fileID: 1370050623066055731, guid: bc2e40c6a3733cd498dd3f00fc658153,
+        type: 3}
+      propertyPath: parameters.speedMultiplier
+      value: 0.3
+      objectReference: {fileID: 0}
+    - target: {fileID: 1370050623066055731, guid: bc2e40c6a3733cd498dd3f00fc658153,
+        type: 3}
+      propertyPath: parameters.steeringMultiplier
+      value: 0.4
+      objectReference: {fileID: 0}
+    - target: {fileID: 1370050623066055731, guid: bc2e40c6a3733cd498dd3f00fc658153,
+        type: 3}
+      propertyPath: parameters.accelerationMultiplier
+      value: 0.3
+      objectReference: {fileID: 0}
     - target: {fileID: 1717985718574215248, guid: bc2e40c6a3733cd498dd3f00fc658153,
         type: 3}
       propertyPath: m_Mesh
       value: 
       objectReference: {fileID: 2078922527}
+    - target: {fileID: 1761375574493902237, guid: bc2e40c6a3733cd498dd3f00fc658153,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -1.938
+      objectReference: {fileID: 0}
+    - target: {fileID: 2699093522507913568, guid: bc2e40c6a3733cd498dd3f00fc658153,
+        type: 3}
+      propertyPath: parameters.speedMultiplier
+      value: 0.3
+      objectReference: {fileID: 0}
+    - target: {fileID: 2699093522507913568, guid: bc2e40c6a3733cd498dd3f00fc658153,
+        type: 3}
+      propertyPath: parameters.steeringMultiplier
+      value: 0.4
+      objectReference: {fileID: 0}
+    - target: {fileID: 2699093522507913568, guid: bc2e40c6a3733cd498dd3f00fc658153,
+        type: 3}
+      propertyPath: parameters.accelerationMultiplier
+      value: 0.3
+      objectReference: {fileID: 0}
+    - target: {fileID: 3011270927420296205, guid: bc2e40c6a3733cd498dd3f00fc658153,
+        type: 3}
+      propertyPath: parameters.speedMultiplier
+      value: 0.3
+      objectReference: {fileID: 0}
+    - target: {fileID: 3011270927420296205, guid: bc2e40c6a3733cd498dd3f00fc658153,
+        type: 3}
+      propertyPath: parameters.steeringMultiplier
+      value: 0.4
+      objectReference: {fileID: 0}
+    - target: {fileID: 3011270927420296205, guid: bc2e40c6a3733cd498dd3f00fc658153,
+        type: 3}
+      propertyPath: parameters.accelerationMultiplier
+      value: 0.3
+      objectReference: {fileID: 0}
     - target: {fileID: 3086779666492358230, guid: bc2e40c6a3733cd498dd3f00fc658153,
         type: 3}
       propertyPath: m_Mesh
@@ -1681,6 +1751,56 @@ PrefabInstance:
       propertyPath: m_Mesh
       value: 
       objectReference: {fileID: 293115839}
+    - target: {fileID: 3251626588214786048, guid: bc2e40c6a3733cd498dd3f00fc658153,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -34.57122
+      objectReference: {fileID: 0}
+    - target: {fileID: 3251626588214786048, guid: bc2e40c6a3733cd498dd3f00fc658153,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 7.873378
+      objectReference: {fileID: 0}
+    - target: {fileID: 3251626588214786048, guid: bc2e40c6a3733cd498dd3f00fc658153,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -43.146435
+      objectReference: {fileID: 0}
+    - target: {fileID: 3251626588214786048, guid: bc2e40c6a3733cd498dd3f00fc658153,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: -0.6503317
+      objectReference: {fileID: 0}
+    - target: {fileID: 3251626588214786048, guid: bc2e40c6a3733cd498dd3f00fc658153,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0.6570494
+      objectReference: {fileID: 0}
+    - target: {fileID: 3251626588214786048, guid: bc2e40c6a3733cd498dd3f00fc658153,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0.25437483
+      objectReference: {fileID: 0}
+    - target: {fileID: 3251626588214786048, guid: bc2e40c6a3733cd498dd3f00fc658153,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0.28398633
+      objectReference: {fileID: 0}
+    - target: {fileID: 3251626588214786048, guid: bc2e40c6a3733cd498dd3f00fc658153,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 87.539
+      objectReference: {fileID: 0}
+    - target: {fileID: 3251626588214786048, guid: bc2e40c6a3733cd498dd3f00fc658153,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: -440.401
+      objectReference: {fileID: 0}
+    - target: {fileID: 3251626588214786048, guid: bc2e40c6a3733cd498dd3f00fc658153,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: -125.163
+      objectReference: {fileID: 0}
     - target: {fileID: 3354680740824492498, guid: bc2e40c6a3733cd498dd3f00fc658153,
         type: 3}
       propertyPath: m_Mesh
@@ -1741,6 +1861,21 @@ PrefabInstance:
       propertyPath: m_Mesh
       value: 
       objectReference: {fileID: 2078922527}
+    - target: {fileID: 5913148315042163779, guid: bc2e40c6a3733cd498dd3f00fc658153,
+        type: 3}
+      propertyPath: parameters.speedMultiplier
+      value: 0.3
+      objectReference: {fileID: 0}
+    - target: {fileID: 5913148315042163779, guid: bc2e40c6a3733cd498dd3f00fc658153,
+        type: 3}
+      propertyPath: parameters.steeringMultiplier
+      value: 0.4
+      objectReference: {fileID: 0}
+    - target: {fileID: 5913148315042163779, guid: bc2e40c6a3733cd498dd3f00fc658153,
+        type: 3}
+      propertyPath: parameters.accelerationMultiplier
+      value: 0.3
+      objectReference: {fileID: 0}
     - target: {fileID: 6261875018984830103, guid: bc2e40c6a3733cd498dd3f00fc658153,
         type: 3}
       propertyPath: m_Mesh
@@ -1815,6 +1950,21 @@ PrefabInstance:
         type: 3}
       propertyPath: m_VersionIndex
       value: 2873
+      objectReference: {fileID: 0}
+    - target: {fileID: 7787425233715818902, guid: bc2e40c6a3733cd498dd3f00fc658153,
+        type: 3}
+      propertyPath: parameters.speedMultiplier
+      value: 0.3
+      objectReference: {fileID: 0}
+    - target: {fileID: 7787425233715818902, guid: bc2e40c6a3733cd498dd3f00fc658153,
+        type: 3}
+      propertyPath: parameters.steeringMultiplier
+      value: 0.4
+      objectReference: {fileID: 0}
+    - target: {fileID: 7787425233715818902, guid: bc2e40c6a3733cd498dd3f00fc658153,
+        type: 3}
+      propertyPath: parameters.accelerationMultiplier
+      value: 0.3
       objectReference: {fileID: 0}
     - target: {fileID: 8251059684118637559, guid: bc2e40c6a3733cd498dd3f00fc658153,
         type: 3}

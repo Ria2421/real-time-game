@@ -325,7 +325,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: " 8\u6587\u5B57\u307E\u3067"
+  m_Text: " 6\u6587\u5B57\u307E\u3067"
 --- !u!222 &41072803
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -927,22 +927,27 @@ PrefabInstance:
     - target: {fileID: 8389795037963917432, guid: 0ebf7aa7988226544b8b9e9905cbbe43,
         type: 3}
       propertyPath: m_SizeDelta.y
-      value: 1080
+      value: 1079.9999
       objectReference: {fileID: 0}
     - target: {fileID: 8389795037963917432, guid: 0ebf7aa7988226544b8b9e9905cbbe43,
         type: 3}
       propertyPath: m_LocalScale.x
-      value: 0.40885416
+      value: 0.41296297
       objectReference: {fileID: 0}
     - target: {fileID: 8389795037963917432, guid: 0ebf7aa7988226544b8b9e9905cbbe43,
         type: 3}
       propertyPath: m_LocalScale.y
-      value: 0.40885416
+      value: 0.41296297
       objectReference: {fileID: 0}
     - target: {fileID: 8389795037963917432, guid: 0ebf7aa7988226544b8b9e9905cbbe43,
         type: 3}
       propertyPath: m_LocalScale.z
-      value: 0.40885416
+      value: 0.41296297
+      objectReference: {fileID: 0}
+    - target: {fileID: 8831035786632015400, guid: 0ebf7aa7988226544b8b9e9905cbbe43,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -1061,7 +1066,7 @@ MonoBehaviour:
   m_LineType: 2
   m_HideMobileInput: 0
   m_CharacterValidation: 0
-  m_CharacterLimit: 8
+  m_CharacterLimit: 6
   m_OnSubmit:
     m_PersistentCalls:
       m_Calls: []
@@ -1488,7 +1493,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1090515750
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1779,8 +1784,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: -60}
-  m_SizeDelta: {x: 1920, y: 1000}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 1920, y: 1080}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1512342945
 MonoBehaviour:
@@ -10915,13 +10920,23 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1370143537521595239, guid: c4ea05584aafdb9459ab6148c81e25d6,
         type: 3}
+      propertyPath: m_NormalizedViewPortRect.x
+      value: 0.0006996691
+      objectReference: {fileID: 0}
+    - target: {fileID: 1370143537521595239, guid: c4ea05584aafdb9459ab6148c81e25d6,
+        type: 3}
       propertyPath: m_NormalizedViewPortRect.y
-      value: 0.10645056
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1370143537521595239, guid: c4ea05584aafdb9459ab6148c81e25d6,
+        type: 3}
+      propertyPath: m_NormalizedViewPortRect.width
+      value: 0.99860066
       objectReference: {fileID: 0}
     - target: {fileID: 1370143537521595239, guid: c4ea05584aafdb9459ab6148c81e25d6,
         type: 3}
       propertyPath: m_NormalizedViewPortRect.height
-      value: 0.7870989
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2082045909801449065, guid: c4ea05584aafdb9459ab6148c81e25d6,
         type: 3}

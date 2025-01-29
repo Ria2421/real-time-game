@@ -2,7 +2,7 @@
 // タイトルマネージャー [ TitleManager.cs ]
 // Author:Kenta Nakamoto
 // Data:2024/12/05
-// Update:2025/01/16
+// Update:2025/01/29
 //---------------------------------------------------------------
 using DG.Tweening;
 using KanKikuchi.AudioManager;
@@ -98,9 +98,9 @@ public class TitleManager : MonoBehaviour
             registPanel.SetActive(true);
         }
         else
-        {   // シーン遷移
+        {   // シーン遷移処理
             Debug.Log("データあり");
-            SceneManager.LoadScene("02_MenuScene");
+            SceneManager.LoadScene("2_MenuScene");
         }
     }
 

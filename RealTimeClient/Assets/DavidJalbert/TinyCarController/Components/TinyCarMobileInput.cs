@@ -149,23 +149,38 @@ namespace DavidJalbert
                 if (brakePedalGraphic != null) brakePedalGraphic.color = carController.getMotor() < 0 ? colorTouched : colorIdle;
             }
 
+            //-------------------
+            // ブースト関連
+
             if (boostButtonTouched)
             {
-                if (boostButtonGraphic != null) boostButtonGraphic.color = colorTouched;
+                //if (boostButtonGraphic != null) boostButtonGraphic.color = colorTouched;    // タッチ時の色変更
+
                 if (boostTimer == 0)
-                {
+                {   // ブースト不使用時、ブーストタイマーセット
                     boostTimer = boostDuration + boostCoolOff;
                 }
             }
             else
-            {
-                if (boostButtonGraphic != null) boostButtonGraphic.color = colorIdle;
+            {   // アイドル時
+                if (boostButtonGraphic != null) boostButtonGraphic.color = Color.yellow;
             }
 
             if (boostTimer > 0)
             {
+                // タイマーを毎フレームの経過時間分減算する
                 boostTimer = Mathf.Max(boostTimer - Time.deltaTime, 0);
-                carController.setBoostMultiplier(boostTimer > boostCoolOff ? boostMultiplier : 1);
+
+                if(boostTimer > boostCoolOff)
+                {   // クールダウン外の時
+                    if (boostButtonGraphic != null) boostButtonGraphic.color = Color.red;
+                    carController.setBoostMultiplier(boostMultiplier);
+                }
+                else
+                {   // クールダウン時
+                    if (boostButtonGraphic != null) boostButtonGraphic.color = Color.blue;
+                    carController.setBoostMultiplier(1);
+                }
             }
         }
     }

@@ -9,21 +9,11 @@ class UsersTableSeeder extends Seeder
 {
     public function run(): void
     {
-        User::create([
-            'name' => 'jobi1',
-            'token' => "test"
-        ]);
-        User::create([
-            'name' => 'jobi2',
-            'token' => "test"
-        ]);
-        User::create([
-            'name' => 'jobi3',
-            'token' => "test"
-        ]);
-        User::create([
-            'name' => 'jobi4',
-            'token' => "test"
-        ]);
+        for ($i = 0; $i < 10; $i++) {
+            User::create([
+                'name' => 'Jobi' . ($i + 1),
+                'token' => "test"
+            ]);
+        }
     }
 }

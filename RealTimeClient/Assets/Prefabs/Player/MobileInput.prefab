@@ -373,7 +373,7 @@ MonoBehaviour:
   carController: {fileID: 0}
   simulateTouchWithMouse: 1
   boostDuration: 1
-  boostCoolOff: 0
+  boostCoolOff: 6
   boostMultiplier: 2
   colorIdle: {r: 1, g: 1, b: 1, a: 0.5}
   colorTouched: {r: 1, g: 1, b: 1, a: 1}
@@ -492,7 +492,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0}
   m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: -350, y: 150}
+  m_AnchoredPosition: {x: -360, y: 150}
   m_SizeDelta: {x: 178, y: 178}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &733218928674872011
@@ -605,7 +605,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0}
   m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: -150, y: 150}
+  m_AnchoredPosition: {x: -140, y: 150}
   m_SizeDelta: {x: 191, y: 238}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &4547607702434774763
