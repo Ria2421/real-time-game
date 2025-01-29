@@ -78,11 +78,11 @@ public class MatchingManager : MonoBehaviour
 
         cancelButton.interactable = false;
 
-        // 切断
+        // 切断 (鯖から帰ってきたらシーン移動にする)
         await roomModel.DisconnectionAsync();
 
         // メニューシーンに遷移
-        SceneManager.LoadScene("2_MenuScene");
+        Initiate.Fade("2_MenuScene", Color.white, 2.5f);
 
         Debug.Log("マッチング中止");
     }

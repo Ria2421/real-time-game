@@ -390,7 +390,7 @@ public class SoloManager : MonoBehaviour
         // SEçƒê∂
         SEManager.Instance.Play(SEPath.TAP_BUTTON);
 
-        SceneManager.LoadScene("2_MenuScene");
+        Initiate.Fade("2_MenuScene", Color.white, 2.5f);
     }
 
     /// <summary>
@@ -401,7 +401,7 @@ public class SoloManager : MonoBehaviour
         // SEçƒê∂
         SEManager.Instance.Play(SEPath.TAP_BUTTON);
 
-        SceneManager.LoadScene("3_SoloSelectScene");
+        Initiate.Fade("3_SoloSelectScene", Color.white, 2.5f);
     }
 
     /// <summary>

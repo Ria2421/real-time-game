@@ -222,7 +222,7 @@ public class SoloSelectManager : MonoBehaviour
         SEManager.Instance.Play(SEPath.TAP_BUTTON);
 
         // メニューモード遷移
-        SceneManager.LoadScene("2_MenuScene");
+        Initiate.Fade("2_MenuScene", Color.white, 2.5f);
     }
 
     /// <summary>

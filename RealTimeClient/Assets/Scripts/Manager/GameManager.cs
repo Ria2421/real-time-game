@@ -787,6 +787,6 @@ public class GameManager : MonoBehaviour
         Destroy(GameObject.Find("RoomModel"));
 
         // ƒ^ƒCƒgƒ‹‚É–ß‚é
-        SceneManager.LoadScene("2_MenuScene");
+        Initiate.Fade("2_MenuScene", Color.white, 2.5f);
     }
 }

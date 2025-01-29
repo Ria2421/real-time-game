@@ -100,7 +100,7 @@ public class TitleManager : MonoBehaviour
         else
         {   // ƒV[ƒ“‘JˆÚˆ—
             Debug.Log("ƒf[ƒ^‚ ‚è");
-            SceneManager.LoadScene("2_MenuScene");
+            Initiate.Fade("2_MenuScene", Color.white, 2.5f);
         }
     }
 
@@ -124,7 +124,7 @@ public class TitleManager : MonoBehaviour
         {
             case UserModel.Status.True:
                 Debug.Log("“o˜^¬Œ÷");
-                SceneManager.LoadScene("2_MenuScene");
+                Initiate.Fade("2_MenuScene", Color.white, 2.5f);
                 break;
 
             case UserModel.Status.False:
@@ -171,7 +171,7 @@ public class TitleManager : MonoBehaviour
 
         UserModel.Instance.UserId = int.Parse(debugIDText.text);
 
-        SceneManager.LoadScene("2_MenuScene");
+        Initiate.Fade("2_MenuScene", Color.white, 2.5f);
     }
 
     /// <summary>

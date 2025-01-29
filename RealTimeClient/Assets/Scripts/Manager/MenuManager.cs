@@ -77,7 +77,7 @@ public class MenuManager : MonoBehaviour
         SEManager.Instance.Play(SEPath.TAP_BUTTON);
 
         // ソロ選択モード遷移
-        SceneManager.LoadScene("3_SoloSelectScene");
+        Initiate.Fade("3_SoloSelectScene", Color.white, 2.5f);
     }
 
     /// <summary>
@@ -89,7 +89,7 @@ public class MenuManager : MonoBehaviour
         SEManager.Instance.Play(SEPath.TAP_BUTTON);
 
         // オンラインモード遷移
-        SceneManager.LoadScene("4_MatchingScene");
+        Initiate.Fade("4_MatchingScene", Color.white, 2.5f);
     }
 
     /// <summary>
@@ -101,7 +101,7 @@ public class MenuManager : MonoBehaviour
         SEManager.Instance.Play(SEPath.TAP_BUTTON);
 
         // オンラインモード遷移
-        SceneManager.LoadScene("1_TitleScene");
+        Initiate.Fade("1_TitleScene", Color.white, 2.5f);
     }
 
     /// <summary>
