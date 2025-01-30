@@ -581,8 +581,8 @@ public class GameManager : MonoBehaviour
 
         // 通知表示Sequenceを作成
         var sequence = DOTween.Sequence();
-        sequence.Append(crushText.transform.DOLocalMove(new Vector3(0f, 450f, 0f), 1.5f));
-        sequence.Append(crushText.transform.DOLocalMove(new Vector3(0f, 625f, 0f), 0.5f));
+        sequence.Append(crushText.transform.DOLocalMove(new Vector3(0f, 450f, 0f), 2.5f));
+        sequence.Append(crushText.transform.DOLocalMove(new Vector3(0f, 830f, 0f), 0.5f));
         sequence.Play();
         
         // 撃破されたプレイヤーの名前を非表示

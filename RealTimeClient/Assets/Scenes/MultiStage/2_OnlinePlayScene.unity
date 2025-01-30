@@ -268,7 +268,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 625}
+  m_AnchoredPosition: {x: 0, y: 830}
   m_SizeDelta: {x: 1500, y: 150}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &111598435
@@ -5938,12 +5938,12 @@ PrefabInstance:
     - target: {fileID: 7212105014225068744, guid: 518f59c4b30f2f641b99efc3573db898,
         type: 3}
       propertyPath: m_NormalizedViewPortRect.y
-      value: 0
+      value: 0.12499997
       objectReference: {fileID: 0}
     - target: {fileID: 7212105014225068744, guid: 518f59c4b30f2f641b99efc3573db898,
         type: 3}
       propertyPath: m_NormalizedViewPortRect.height
-      value: 1
+      value: 0.75000006
       objectReference: {fileID: 0}
     - target: {fileID: 8982755068004640379, guid: 518f59c4b30f2f641b99efc3573db898,
         type: 3}
@@ -8464,7 +8464,7 @@ RectTransform:
   m_GameObject: {fileID: 502851471742173600}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 1.0666667, y: 1.0666667, z: 1.0666667}
   m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 340331340}
@@ -8479,7 +8479,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 1920, y: 1080}
+  m_SizeDelta: {x: 1919.9999, y: 1080}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!23 &821722302319936508
 MeshRenderer:
