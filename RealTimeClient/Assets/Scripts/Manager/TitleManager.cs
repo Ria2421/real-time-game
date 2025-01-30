@@ -1,5 +1,5 @@
 //---------------------------------------------------------------
-// ƒ^ƒCƒgƒ‹ƒ}ƒl[ƒWƒƒ[ [ TitleManager.cs ]
+// ã‚¿ã‚¤ãƒˆãƒ«ãƒãƒãƒ¼ã‚¸ãƒ£ãƒ¼ [ TitleManager.cs ]
 // Author:Kenta Nakamoto
 // Data:2024/12/05
 // Update:2025/01/30
@@ -18,124 +18,124 @@ using static UnityEngine.GraphicsBuffer;
 public class TitleManager : MonoBehaviour
 {
     //=====================================
-    // ƒtƒB[ƒ‹ƒh
+    // ãƒ•ã‚£ãƒ¼ãƒ«ãƒ‰
 
     /// <summary>
-    /// ƒ^ƒCƒgƒ‹‰æ‘œ
+    /// ã‚¿ã‚¤ãƒˆãƒ«ç”»åƒ
     /// </summary>
     [SerializeField] private GameObject titleImage;
 
     /// <summary>
-    /// ƒ^ƒbƒ`‰æ‘œ
+    /// ã‚¿ãƒƒãƒç”»åƒ
     /// </summary>
     [SerializeField] private GameObject touchImage;
 
     /// <summary>
-    /// ƒ†[ƒU[“o˜^ƒpƒlƒ‹
+    /// ãƒ¦ãƒ¼ã‚¶ãƒ¼ç™»éŒ²ãƒ‘ãƒãƒ«
     /// </summary>
     [SerializeField] private GameObject registPanel;
 
     /// <summary>
-    /// “o˜^ƒ†[ƒU[–¼
+    /// ç™»éŒ²ãƒ¦ãƒ¼ã‚¶ãƒ¼å
     /// </summary>
     [SerializeField] private Text nameText;
 
     /// <summary>
-    /// “o˜^ƒ{ƒ^ƒ“
+    /// ç™»éŒ²ãƒœã‚¿ãƒ³
     /// </summary>
     [SerializeField] private Button registButton;
 
     /// <summary>
-    /// ƒGƒ‰[ƒ{ƒ^ƒ“
+    /// ã‚¨ãƒ©ãƒ¼ãƒœã‚¿ãƒ³
     /// </summary>
     [SerializeField] private GameObject errorButton;
 
-    // ƒfƒoƒbƒO—p *******************************
+    // ãƒ‡ãƒãƒƒã‚°ç”¨ *******************************
 
     /// <summary>
-    /// ƒfƒoƒbƒO—pID
+    /// ãƒ‡ãƒãƒƒã‚°ç”¨ID
     /// </summary>
     [SerializeField] private Text debugIDText;
 
     /// <summary>
-    /// ƒfƒoƒbƒO—pƒ{ƒ^ƒ“
+    /// ãƒ‡ãƒãƒƒã‚°ç”¨ãƒœã‚¿ãƒ³
     /// </summary>
     [SerializeField] private Button debugButton;
 
     //=====================================
-    // ƒƒ\ƒbƒh
+    // ãƒ¡ã‚½ãƒƒãƒ‰
 
     /// <summary>
-    /// ‰Šúˆ—
+    /// åˆæœŸå‡¦ç†
     /// </summary>
     void Start()
     {
         Application.targetFrameRate = 60;
 
-        // BGMÄ¶
+        // BGMå†ç”Ÿ
         BGMManager.Instance.Play(BGMPath.MAIN_BGM,0.75f,0,1,true,true);
 
-        // ƒ^ƒCƒgƒ‹‰æ‘œƒAƒjƒ[ƒVƒ‡ƒ“
+        // ã‚¿ã‚¤ãƒˆãƒ«ç”»åƒã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³
         titleImage.transform.DOScale(0.9f, 1.3f).SetEase(Ease.InCubic).SetLoops(-1,LoopType.Yoyo);
         InvokeRepeating("BlinkingImage", 0, 0.8f);
     }
 
     /// <summary>
-    /// ƒXƒ^[ƒgƒ{ƒ^ƒ“‰Ÿ‰º
+    /// ã‚¹ã‚¿ãƒ¼ãƒˆãƒœã‚¿ãƒ³æŠ¼ä¸‹æ™‚
     /// </summary>
     public void OnStartButton()
     {
-        // SEÄ¶
+        // SEå†ç”Ÿ
         SEManager.Instance.Play(SEPath.TAP_BUTTON);
 
-        // ƒ†[ƒU[ƒf[ƒ^‚Ì“Çˆ—EŒ‹‰Ê‚ğæ“¾
+        // ãƒ¦ãƒ¼ã‚¶ãƒ¼ãƒ‡ãƒ¼ã‚¿ã®èª­è¾¼å‡¦ç†ãƒ»çµæœã‚’å–å¾—
         bool isSuccess = UserModel.Instance.LoadUserData();
 
         if (!isSuccess)
         {
-            // “o˜^—pƒpƒlƒ‹•\¦
-            Debug.Log("ƒf[ƒ^‚È‚µ");
+            // ç™»éŒ²ç”¨ãƒ‘ãƒãƒ«è¡¨ç¤º
+            Debug.Log("ãƒ‡ãƒ¼ã‚¿ãªã—");
             registPanel.SetActive(true);
         }
         else
-        {   // ƒV[ƒ“‘JˆÚˆ—
-            Debug.Log("ƒf[ƒ^‚ ‚è");
+        {   // ã‚·ãƒ¼ãƒ³é·ç§»å‡¦ç†
+            Debug.Log("ãƒ‡ãƒ¼ã‚¿ã‚ã‚Š");
             Initiate.DoneFading();
             Initiate.Fade("2_MenuScene", Color.white, 2.5f);
         }
     }
 
     /// <summary>
-    /// “o˜^ƒ{ƒ^ƒ“‰Ÿ‰º
+    /// ç™»éŒ²ãƒœã‚¿ãƒ³æŠ¼ä¸‹æ™‚
     /// </summary>
     public async void OnRegistUser()
     {
         if (nameText.text == "") return;
 
-        // SEÄ¶
+        // SEå†ç”Ÿ
         SEManager.Instance.Play(SEPath.MENU_SELECT);
 
-        // ƒ{ƒ^ƒ“–³Œø
+        // ãƒœã‚¿ãƒ³ç„¡åŠ¹
         registButton.interactable = false;
 
-        // “o˜^ˆ—
+        // ç™»éŒ²å‡¦ç†
         UserModel.Status statusCode = await UserModel.Instance.RegistUserAsync(nameText.text);
 
         switch (statusCode)
         {
             case UserModel.Status.True:
-                Debug.Log("“o˜^¬Œ÷");
+                Debug.Log("ç™»éŒ²æˆåŠŸ");
                 Initiate.DoneFading();
                 Initiate.Fade("2_MenuScene", Color.white, 2.5f);
                 break;
 
             case UserModel.Status.False:
-                Debug.Log("’ÊM¸”s");
+                Debug.Log("é€šä¿¡å¤±æ•—");
                 registButton.interactable = true;
                 break;
 
             case UserModel.Status.SameName:
-                Debug.Log("–¼‘O”í‚è");
+                Debug.Log("åå‰è¢«ã‚Š");
                 errorButton.SetActive(true);
                 break;
 
@@ -145,7 +145,7 @@ public class TitleManager : MonoBehaviour
     }
 
     /// <summary>
-    /// ‰æ‘œ“_–Åˆ—
+    /// ç”»åƒç‚¹æ»…å‡¦ç†
     /// </summary>
     private void BlinkingImage()
     {
@@ -159,10 +159,10 @@ public class TitleManager : MonoBehaviour
         }
     }
 
-    // ƒfƒoƒbƒO—p ********************
+    // ãƒ‡ãƒãƒƒã‚°ç”¨ ********************
 
     /// <summary>
-    /// ID•Û‘¶ˆ—
+    /// IDä¿å­˜å‡¦ç†
     /// </summary>
     public void DebugOnSaveID()
     {
@@ -177,13 +177,13 @@ public class TitleManager : MonoBehaviour
     }
 
     /// <summary>
-    /// ƒGƒ‰[ƒ{ƒ^ƒ“‰Ÿ‰º
+    /// ã‚¨ãƒ©ãƒ¼ãƒœã‚¿ãƒ³æŠ¼ä¸‹æ™‚
     /// </summary>
     public void OnErrorButton()
     {
         errorButton.SetActive(false);
 
-        // “o˜^ƒ{ƒ^ƒ“‚Ì—LŒø‰»
+        // ç™»éŒ²ãƒœã‚¿ãƒ³ã®æœ‰åŠ¹åŒ–
         registButton.interactable = true;
     }
 }

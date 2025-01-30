@@ -7,28 +7,28 @@ public class CameraManager : MonoBehaviour
     private Transform _camera;
 
     /// <summary>
-    /// ’‹‘ÎÛ
-    /// À•W‚ğCameraParent‚ÌÀ•W‚É‘ã“ü
+    /// æ³¨è¦–å¯¾è±¡
+    /// åº§æ¨™ã‚’CameraParentã®åº§æ¨™ã«ä»£å…¥
     /// </summary>
     public Transform LookTarget;
 
     /// <summary>
-    /// ’‹“_‚©‚ç‚Ì‹——£iCameraChild‚Ìƒ[ƒJƒ‹ZÀ•Wj
+    /// æ³¨è¦–ç‚¹ã‹ã‚‰ã®è·é›¢ï¼ˆCameraChildã®ãƒ­ãƒ¼ã‚«ãƒ«Zåº§æ¨™ï¼‰
     /// </summary>
     public float Distance;
 
     /// <summary>
-    /// ’‹“_‚Ö‚Ì‰ñ‚è‚İŠp“xiCameraParent‚ÌŠp“xj
+    /// æ³¨è¦–ç‚¹ã¸ã®å›ã‚Šè¾¼ã¿è§’åº¦ï¼ˆCameraParentã®è§’åº¦ï¼‰
     /// </summary>
     public Vector2 LookAngles;
 
     /// <summary>
-    /// ‹ŠEƒIƒtƒZƒbƒgÀ•WiMain Camera‚Ìƒ[ƒJƒ‹À•Wj
+    /// è¦–ç•Œã‚ªãƒ•ã‚»ãƒƒãƒˆåº§æ¨™ï¼ˆMain Cameraã®ãƒ­ãƒ¼ã‚«ãƒ«åº§æ¨™ï¼‰
     /// </summary>
     public Vector2 OffsetPosition;
 
     /// <summary>
-    /// ƒJƒƒ‰À•W•âŠ®ŒW”
+    /// ã‚«ãƒ¡ãƒ©åº§æ¨™è£œå®Œä¿‚æ•°
     /// </summary>
     public float posComp;
 
@@ -43,7 +43,7 @@ public class CameraManager : MonoBehaviour
     void LateUpdate()
     {
         _cameraParent.position = Vector3.Lerp(_cameraParent.position, LookTarget.position, posComp * Time.deltaTime);
-        _cameraChild.localPosition = new Vector3(0, 0, -Distance); // •‰”‚É‚·‚é
+        _cameraChild.localPosition = new Vector3(0, 0, -Distance); // è² æ•°ã«ã™ã‚‹
         _cameraParent.eulerAngles = new Vector2 (LookAngles.x,LookTarget.eulerAngles.y);
         _camera.localPosition = OffsetPosition;
     }

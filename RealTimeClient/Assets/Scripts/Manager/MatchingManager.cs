@@ -1,5 +1,5 @@
 //---------------------------------------------------------------
-// ƒ^ƒCƒgƒ‹ƒ}ƒl[ƒWƒƒ[ [ MatchingManager.cs ]
+// ã‚¿ã‚¤ãƒˆãƒ«ãƒãƒãƒ¼ã‚¸ãƒ£ãƒ¼ [ MatchingManager.cs ]
 // Author:Kenta Nakamoto
 // Data:2024/12/10
 // Update:2025/01/30
@@ -15,135 +15,135 @@ using UnityEngine.UI;
 public class MatchingManager : MonoBehaviour
 {
     //-------------------------------------------------------
-    // ƒtƒB[ƒ‹ƒh
+    // ãƒ•ã‚£ãƒ¼ãƒ«ãƒ‰
 
     /// <summary>
-    /// ƒvƒŒƒCƒXƒe[ƒWID
+    /// ãƒ—ãƒ¬ã‚¤ã‚¹ãƒ†ãƒ¼ã‚¸ID
     /// </summary>
     private int playStageID = 0;
 
     /// <summary>
-    /// ƒ}ƒbƒ`ƒ“ƒOƒeƒLƒXƒgƒIƒuƒWƒF
+    /// ãƒãƒƒãƒãƒ³ã‚°ãƒ†ã‚­ã‚¹ãƒˆã‚ªãƒ–ã‚¸ã‚§
     /// </summary>
     [SerializeField] private GameObject matchingTextObj;
 
     /// <summary>
-    /// ƒ}ƒbƒ`ƒ“ƒOŠ®—¹ƒeƒLƒXƒgƒIƒuƒWƒF
+    /// ãƒãƒƒãƒãƒ³ã‚°å®Œäº†ãƒ†ã‚­ã‚¹ãƒˆã‚ªãƒ–ã‚¸ã‚§
     /// </summary>
     [SerializeField] private GameObject completeTextObj;
 
     /// <summary>
-    /// ƒ‹[ƒ€ƒ‚ƒfƒ‹Ši”[—p
+    /// ãƒ«ãƒ¼ãƒ ãƒ¢ãƒ‡ãƒ«æ ¼ç´ç”¨
     /// </summary>
     [SerializeField] private RoomModel roomModel;
 
     /// <summary>
-    /// ƒLƒƒƒ“ƒZƒ‹ƒ{ƒ^ƒ“ƒIƒuƒWƒF
+    /// ã‚­ãƒ£ãƒ³ã‚»ãƒ«ãƒœã‚¿ãƒ³ã‚ªãƒ–ã‚¸ã‚§
     /// </summary>
     [SerializeField] private GameObject cancelObj;
 
     /// <summary>
-    /// ƒLƒƒƒ“ƒZƒ‹ƒ{ƒ^ƒ“
+    /// ã‚­ãƒ£ãƒ³ã‚»ãƒ«ãƒœã‚¿ãƒ³
     /// </summary>
     [SerializeField] private Button cancelButton;
 
     /// <summary>
-    /// Ô”wŒi
+    /// è»ŠèƒŒæ™¯
     /// </summary>
     [SerializeField] private Transform carBG;
 
     //-------------------------------------------------------
-    // ƒƒ\ƒbƒh
+    // ãƒ¡ã‚½ãƒƒãƒ‰
 
     /// <summary>
-    /// ‰Šúˆ—
+    /// åˆæœŸå‡¦ç†
     /// </summary>
     async void Start()
     {
-        roomModel.OnMatchingUser += OnMatchingUser;     // ƒ}ƒbƒ`ƒ“ƒOŠ®—¹’Ê’m
+        roomModel.OnMatchingUser += OnMatchingUser;     // ãƒãƒƒãƒãƒ³ã‚°å®Œäº†é€šçŸ¥
 
         Invoke("StartMatching",2.0f);
     }
 
     /// <summary>
-    /// ’èŠúXVˆ—
+    /// å®šæœŸæ›´æ–°å‡¦ç†
     /// </summary>
     private void FixedUpdate()
     {
-        // Ô‰æ‘œ‚ğ‰ñ‚·
+        // è»Šç”»åƒã‚’å›ã™
         carBG.localEulerAngles += new Vector3(0,0,1.0f);
     }
 
     /// <summary>
-    /// ƒLƒƒƒ“ƒZƒ‹ƒ{ƒ^ƒ“
+    /// ã‚­ãƒ£ãƒ³ã‚»ãƒ«ãƒœã‚¿ãƒ³
     /// </summary>
     public async void OnCancelButton()
     {
-        // SEÄ¶
+        // SEå†ç”Ÿ
         SEManager.Instance.Play(SEPath.TAP_BUTTON);
 
         cancelButton.interactable = false;
 
-        // Ø’f (I‚©‚ç‹A‚Á‚Ä‚«‚½‚çƒV[ƒ“ˆÚ“®‚É‚·‚é)
+        // åˆ‡æ–­ (é¯–ã‹ã‚‰å¸°ã£ã¦ããŸã‚‰ã‚·ãƒ¼ãƒ³ç§»å‹•ã«ã™ã‚‹)
         await roomModel.DisconnectionAsync();
 
-        // ƒƒjƒ…[ƒV[ƒ“‚É‘JˆÚ
+        // ãƒ¡ãƒ‹ãƒ¥ãƒ¼ã‚·ãƒ¼ãƒ³ã«é·ç§»
         Initiate.DoneFading();
         Initiate.Fade("2_MenuScene", Color.white, 2.5f);
 
-        Debug.Log("ƒ}ƒbƒ`ƒ“ƒO’†~");
+        Debug.Log("ãƒãƒƒãƒãƒ³ã‚°ä¸­æ­¢");
     }
 
     /// <summary>
-    /// ƒ}ƒbƒ`ƒ“ƒOŠ®—¹’Ê’móM‚Ìˆ—
+    /// ãƒãƒƒãƒãƒ³ã‚°å®Œäº†é€šçŸ¥å—ä¿¡æ™‚ã®å‡¦ç†
     /// </summary>
     /// <param name="roomName"></param>
     private async void OnMatchingUser(string roomName,int stageID)
     {
-        roomModel.RoomName = roomName;  // ”­s‚³‚ê‚½ƒ‹[ƒ€–¼‚ğ•Û‘¶
-        playStageID = stageID;          // ƒXƒe[ƒWID‚ğ•Û‘¶
+        roomModel.RoomName = roomName;  // ç™ºè¡Œã•ã‚ŒãŸãƒ«ãƒ¼ãƒ åã‚’ä¿å­˜
+        playStageID = stageID;          // ã‚¹ãƒ†ãƒ¼ã‚¸IDã‚’ä¿å­˜
 
-        // SEÄ¶
+        // SEå†ç”Ÿ
         SEManager.Instance.Play(SEPath.MATCHING_COMPLETE);
-        // •\¦Ø‘Ö
+        // è¡¨ç¤ºåˆ‡æ›¿
         cancelObj.SetActive(false);
         matchingTextObj.SetActive(false);
         completeTextObj.SetActive(true);
 
-        // ‘Şo
+        // é€€å‡º
         await roomModel.ExitAsync();
 
         StartCoroutine("TransGmaeScene");
 
-        Debug.Log("ƒ}ƒbƒ`ƒ“ƒOŠ®—¹");
+        Debug.Log("ãƒãƒƒãƒãƒ³ã‚°å®Œäº†");
     }
 
     /// <summary>
-    /// ƒQ[ƒ€ƒV[ƒ“‘JˆÚ
+    /// ã‚²ãƒ¼ãƒ ã‚·ãƒ¼ãƒ³é·ç§»
     /// </summary>
     /// <returns></returns>
     private IEnumerator TransGmaeScene()
     {
-        // 1•b‘Ò‚Á‚ÄƒRƒ‹[ƒ`ƒ“’†’f
+        // 1ç§’å¾…ã£ã¦ã‚³ãƒ«ãƒ¼ãƒãƒ³ä¸­æ–­
         yield return new WaitForSeconds(1.2f);
 
-        // playStageID‚É‰‚¶‚Ä‘Î‰‚·‚éƒQ[ƒ€ƒV[ƒ“‚É‘JˆÚ
+        // playStageIDã«å¿œã˜ã¦å¯¾å¿œã™ã‚‹ã‚²ãƒ¼ãƒ ã‚·ãƒ¼ãƒ³ã«é·ç§»
         Initiate.DoneFading();
         Initiate.Fade(playStageID.ToString() + "_OnlinePlayScene", Color.white, 2.5f);
     }
 
     /// <summary>
-    /// ƒ}ƒbƒ`ƒ“ƒOŠJnˆ—
+    /// ãƒãƒƒãƒãƒ³ã‚°é–‹å§‹å‡¦ç†
     /// </summary>
     private async void StartMatching()
     {
-        // Ú‘±
+        // æ¥ç¶š
         await roomModel.ConnectAsync();
-        // ƒ}ƒbƒ`ƒ“ƒO
+        // ãƒãƒƒãƒãƒ³ã‚°
         await roomModel.JoinLobbyAsync(UserModel.Instance.UserId);
-        // ƒLƒƒƒ“ƒZƒ‹ƒ{ƒ^ƒ“—LŒø‰»
+        // ã‚­ãƒ£ãƒ³ã‚»ãƒ«ãƒœã‚¿ãƒ³æœ‰åŠ¹åŒ–
         cancelButton.interactable = true;
 
-        Debug.Log("ƒ}ƒbƒ`ƒ“ƒOŠJn");
+        Debug.Log("ãƒãƒƒãƒãƒ³ã‚°é–‹å§‹");
     }
 }

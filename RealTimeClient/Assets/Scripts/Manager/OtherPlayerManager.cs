@@ -1,5 +1,5 @@
 //---------------------------------------------------------------
-// ‘¼ƒvƒŒƒCƒ„[ƒ}ƒl[ƒWƒƒ[ [ OtherPlayerManager.cs ]
+// ä»–ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ãƒãƒãƒ¼ã‚¸ãƒ£ãƒ¼ [ OtherPlayerManager.cs ]
 // Author:Kenta Nakamoto
 // Data:2024/12/09
 // Update:2024/12/16
@@ -13,54 +13,54 @@ using UnityEngine.SceneManagement;
 public class OtherPlayerManager : MonoBehaviour
 {
     //=====================================
-    // ƒtƒB[ƒ‹ƒh
+    // ãƒ•ã‚£ãƒ¼ãƒ«ãƒ‰
 
     /// <summary>
-    /// ‹@‘Ì‚ÉŠÖ˜A‚·‚éÚ‘±ID
+    /// æ©Ÿä½“ã«é–¢é€£ã™ã‚‹æ¥ç¶šID
     /// </summary>
     public Guid ConnectionID { get; set; }
 
     /// <summary>
-    /// ‹@‘Ì‚ÉŠÖ˜A‚·‚éƒ†[ƒU[–¼
+    /// æ©Ÿä½“ã«é–¢é€£ã™ã‚‹ãƒ¦ãƒ¼ã‚¶ãƒ¼å
     /// </summary>
     public string UserName { get; set; }
 
     /// <summary>
-    /// Q‰Á‡
+    /// å‚åŠ é †
     /// </summary>
     public int JoinOrder { get; set; }
 
     /// <summary>
-    /// ƒ^[ƒ{ƒp[ƒeƒBƒNƒ‹
+    /// ã‚¿ãƒ¼ãƒœãƒ‘ãƒ¼ãƒ†ã‚£ã‚¯ãƒ«
     /// </summary>
     [SerializeField] private ParticleSystem turboParticle;
 
     /// <summary>
-    /// ƒhƒŠƒtƒgƒp[ƒeƒBƒNƒ‹
+    /// ãƒ‰ãƒªãƒ•ãƒˆãƒ‘ãƒ¼ãƒ†ã‚£ã‚¯ãƒ«
     /// </summary>
     [SerializeField] private ParticleSystem driftParticle;
 
     /// <summary>
-    /// ƒ^ƒCƒgƒ‹ƒV[ƒ“—pƒRƒ‰ƒCƒ_[
+    /// ã‚¿ã‚¤ãƒˆãƒ«ã‚·ãƒ¼ãƒ³ç”¨ã‚³ãƒ©ã‚¤ãƒ€ãƒ¼
     /// </summary>
     [SerializeField] private GameObject titleCollider;
 
     //=====================================
-    // ƒƒ\ƒbƒh
+    // ãƒ¡ã‚½ãƒƒãƒ‰
 
     /// <summary>
-    /// ‰Šúˆ—
+    /// åˆæœŸå‡¦ç†
     /// </summary>
     void Start()
     {
         if(SceneManager.GetActiveScene().name == "1_TitleScene")
-        {   // ƒ^ƒCƒgƒ‹ƒV[ƒ“‚Ì‚İ—LŒø
+        {   // ã‚¿ã‚¤ãƒˆãƒ«ã‚·ãƒ¼ãƒ³ã®ã¿æœ‰åŠ¹
             titleCollider.SetActive(true);
         }
     }
 
     /// <summary>
-    /// ˆê’èXVˆ—
+    /// ä¸€å®šæ›´æ–°å‡¦ç†
     /// </summary>
     void FixedUpdate()
     {
@@ -68,23 +68,23 @@ public class OtherPlayerManager : MonoBehaviour
     }
 
     /// <summary>
-    /// ƒ^[ƒ{Ä¶ˆ—
+    /// ã‚¿ãƒ¼ãƒœå†ç”Ÿå‡¦ç†
     /// </summary>
     /// <param name="flag"></param>
     public void playTurbo(bool flag)
     {
         if (flag)
-        {   // Ä¶
+        {   // å†ç”Ÿ
             if(!turboParticle.isPlaying) turboParticle.Play();
         }
         else
-        {   // ’â~
+        {   // åœæ­¢
             if(turboParticle.isPlaying) turboParticle.Stop();
         }
     }
 
     /// <summary>
-    /// ƒhƒŠƒtƒgÄ¶ˆ—
+    /// ãƒ‰ãƒªãƒ•ãƒˆå†ç”Ÿå‡¦ç†
     /// </summary>
     /// <param name="flag"></param>
     public void playDrift(bool flag)
@@ -100,14 +100,14 @@ public class OtherPlayerManager : MonoBehaviour
     }
 
     /// <summary>
-    /// ƒRƒ‰ƒCƒ_[ÚGˆ—
+    /// ã‚³ãƒ©ã‚¤ãƒ€ãƒ¼æ¥è§¦æ™‚å‡¦ç†
     /// </summary>
     /// <param name="collision"></param>
     private void OnTriggerEnter(Collider collision)
     {
         if (collision.gameObject.tag == "TitleObj")
         {
-            // ©g‚ğíœ
+            // è‡ªèº«ã‚’å‰Šé™¤
             Destroy(this.gameObject);
         }
 

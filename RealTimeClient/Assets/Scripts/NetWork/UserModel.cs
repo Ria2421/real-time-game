@@ -1,5 +1,5 @@
 //---------------------------------------------------------------
-// ƒ†[ƒU[ƒ‚ƒfƒ‹ [ UserModel.cs ]
+// ãƒ¦ãƒ¼ã‚¶ãƒ¼ãƒ¢ãƒ‡ãƒ« [ UserModel.cs ]
 // Author:Kenta Nakamoto
 // Data:2024/11/12
 // Update:2025/01/21
@@ -22,42 +22,42 @@ using UnityEngine;
 public class UserModel : BaseModel
 {
     //-------------------------------------------------------
-    // ƒtƒB[ƒ‹ƒh
+    // ãƒ•ã‚£ãƒ¼ãƒ«ãƒ‰
 
     public enum Status
     {
-        True = 0,   // ¬Œ÷
-        False,      // ¸”s
-        SameName,   // –¼‘O”í‚è
+        True = 0,   // æˆåŠŸ
+        False,      // å¤±æ•—
+        SameName,   // åå‰è¢«ã‚Š
     }
 
     /// <summary>
-    /// ƒ†[ƒU[ID
+    /// ãƒ¦ãƒ¼ã‚¶ãƒ¼ID
     /// </summary>
     public int UserId { get; set; }
 
     /// <summary>
-    /// ƒg[ƒNƒ“ID
+    /// ãƒˆãƒ¼ã‚¯ãƒ³ID
     /// </summary>
     public string Token { get; set; }
 
     /// <summary>
-    /// ƒ`ƒ…[ƒgƒŠƒAƒ‹ƒtƒ‰ƒO
+    /// ãƒãƒ¥ãƒ¼ãƒˆãƒªã‚¢ãƒ«ãƒ•ãƒ©ã‚°
     /// </summary>
     public bool TutorialFlag { get; set; }
 
     /// <summary>
-    /// ƒS[ƒXƒgƒf[ƒ^
+    /// ã‚´ãƒ¼ã‚¹ãƒˆãƒ‡ãƒ¼ã‚¿
     /// </summary>
     public string GhostData { get; set; } = "";
 
     /// <summary>
-    /// getƒvƒƒpƒeƒB‚ğŒÄ‚Ño‚µ‚½‰‰ñ‚ÉƒCƒ“ƒXƒ^ƒ“ƒX¶¬‚µ‚Ästatic‚Å•Û
+    /// getãƒ—ãƒ­ãƒ‘ãƒ†ã‚£ã‚’å‘¼ã³å‡ºã—ãŸåˆå›æ™‚ã«ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ç”Ÿæˆã—ã¦staticã§ä¿æŒ
     /// </summary>
     private static UserModel instance;
 
     /// <summary>
-    /// NetworkManagerƒvƒƒpƒeƒB
+    /// NetworkManagerãƒ—ãƒ­ãƒ‘ãƒ†ã‚£
     /// </summary>
     public static UserModel Instance
     {
@@ -65,11 +65,11 @@ public class UserModel : BaseModel
         {
             if (instance == null)
             {
-                // GameObject‚ğ¶¬‚µAUserModel‚ğ’Ç‰Á
+                // GameObjectã‚’ç”Ÿæˆã—ã€UserModelã‚’è¿½åŠ 
                 GameObject gameObject = new GameObject("UserModel");
                 instance = gameObject.AddComponent<UserModel>();
 
-                // ƒV[ƒ“‘JˆÚ‚Å”jŠü‚³‚ê‚È‚¢‚æ‚¤‚Éİ’è
+                // ã‚·ãƒ¼ãƒ³é·ç§»ã§ç ´æ£„ã•ã‚Œãªã„ã‚ˆã†ã«è¨­å®š
                 DontDestroyOnLoad(gameObject);
             }
 
@@ -78,101 +78,101 @@ public class UserModel : BaseModel
     }
 
     //-------------------------------------------------------
-    // ƒƒ\ƒbƒh
+    // ãƒ¡ã‚½ãƒƒãƒ‰
 
     /// <summary>
-    /// ƒ†[ƒU[ƒf[ƒ^•Û‘¶ˆ—
+    /// ãƒ¦ãƒ¼ã‚¶ãƒ¼ãƒ‡ãƒ¼ã‚¿ä¿å­˜å‡¦ç†
     /// </summary>
     public void SaveUserData()
     {
-        // ƒZ[ƒuƒf[ƒ^ƒNƒ‰ƒX‚Ì¶¬
+        // ã‚»ãƒ¼ãƒ–ãƒ‡ãƒ¼ã‚¿ã‚¯ãƒ©ã‚¹ã®ç”Ÿæˆ
         SaveData saveData = new SaveData();
         saveData.UserID = this.UserId;
         saveData.Token = this.Token;
         saveData.TutorialFlag = this.TutorialFlag;
 
-        // ƒf[ƒ^‚ğJSONƒVƒŠƒAƒ‰ƒCƒY
+        // ãƒ‡ãƒ¼ã‚¿ã‚’JSONã‚·ãƒªã‚¢ãƒ©ã‚¤ã‚º
         string json = JsonConvert.SerializeObject(saveData);
 
-        // w’è‚µ‚½â‘ÎƒpƒX‚É"saveData.json"‚ğ•Û‘¶
+        // æŒ‡å®šã—ãŸçµ¶å¯¾ãƒ‘ã‚¹ã«"saveData.json"ã‚’ä¿å­˜
         var writer = new StreamWriter(Application.persistentDataPath + "/saveData.json");
-        writer.Write(json); // ‘‚«o‚µ
-        writer.Flush();     // ƒoƒbƒtƒ@‚Éc‚Á‚Ä‚¢‚é’l‚ğ‘S‚Ä‘‚«o‚µ
-        writer.Close();     // ƒtƒ@ƒCƒ‹•Â
+        writer.Write(json); // æ›¸ãå‡ºã—
+        writer.Flush();     // ãƒãƒƒãƒ•ã‚¡ã«æ®‹ã£ã¦ã„ã‚‹å€¤ã‚’å…¨ã¦æ›¸ãå‡ºã—
+        writer.Close();     // ãƒ•ã‚¡ã‚¤ãƒ«é–‰
     }
 
     /// <summary>
-    /// ƒ†[ƒU[ƒf[ƒ^“Ç‚İ‚İˆ—
+    /// ãƒ¦ãƒ¼ã‚¶ãƒ¼ãƒ‡ãƒ¼ã‚¿èª­ã¿è¾¼ã¿å‡¦ç†
     /// </summary>
     /// <returns></returns>
     public bool LoadUserData()
     {
         if (!File.Exists(Application.persistentDataPath + "/saveData.json"))
-        {   // w’è‚ÌƒpƒX‚Ìƒtƒ@ƒCƒ‹‚ª‘¶İ‚µ‚È‚©‚Á‚½A‘ŠúƒŠƒ^[ƒ“
+        {   // æŒ‡å®šã®ãƒ‘ã‚¹ã®ãƒ•ã‚¡ã‚¤ãƒ«ãŒå­˜åœ¨ã—ãªã‹ã£ãŸæ™‚ã€æ—©æœŸãƒªã‚¿ãƒ¼ãƒ³
             return false;
         }
 
-        //  ƒ[ƒJƒ‹ƒtƒ@ƒCƒ‹‚©‚çƒ†[ƒU[ƒf[ƒ^‚Ì“Çˆ—
+        //  ãƒ­ãƒ¼ã‚«ãƒ«ãƒ•ã‚¡ã‚¤ãƒ«ã‹ã‚‰ãƒ¦ãƒ¼ã‚¶ãƒ¼ãƒ‡ãƒ¼ã‚¿ã®èª­è¾¼å‡¦ç†
         var reader = new StreamReader(Application.persistentDataPath + "/saveData.json");
         string json = reader.ReadToEnd();
         reader.Close();
 
-        // ƒZ[ƒuƒf[ƒ^JSON‚ğƒfƒVƒŠƒAƒ‰ƒCƒY‚µ‚Äæ“¾
+        // ã‚»ãƒ¼ãƒ–ãƒ‡ãƒ¼ã‚¿JSONã‚’ãƒ‡ã‚·ãƒªã‚¢ãƒ©ã‚¤ã‚ºã—ã¦å–å¾—
         SaveData saveData = JsonConvert.DeserializeObject<SaveData>(json);
         this.UserId = saveData.UserID;
         this.Token = saveData.Token;
         this.TutorialFlag = saveData.TutorialFlag;
 
-        // “Ç‚İ‚İŒ‹‰Ê‚ğƒŠƒ^[ƒ“
+        // èª­ã¿è¾¼ã¿çµæœã‚’ãƒªã‚¿ãƒ¼ãƒ³
         return true;
     }
 
     /// <summary>
-    /// ƒ†[ƒU[ƒf[ƒ^“o˜^ˆ—
+    /// ãƒ¦ãƒ¼ã‚¶ãƒ¼ãƒ‡ãƒ¼ã‚¿ç™»éŒ²å‡¦ç†
     /// </summary>
-    /// <param name="name">ƒ†[ƒU[–¼</param>
-    /// <returns> [true]¬Œ÷ , [false]¸”s </returns>
+    /// <param name="name">ãƒ¦ãƒ¼ã‚¶ãƒ¼å</param>
+    /// <returns> [true]æˆåŠŸ , [false]å¤±æ•— </returns>
     public async UniTask<Status> RegistUserAsync(string name)
     {
-        using var handler = new YetAnotherHttpHandler() { Http2Only = true };   // ƒnƒ“ƒhƒ‰[‚Ìİ’è
-        var channel = GrpcChannel.ForAddress(ServerURL, new GrpcChannelOptions() { HttpHandler = handler });    // ƒT[ƒo[‚Æ‚Ìƒ`ƒƒƒ“ƒlƒ‹‚ğİ’è
-        var client = MagicOnionClient.Create<IUserService>(channel);    // ƒT[ƒo[‚Æ‚ÌÚ‘±
+        using var handler = new YetAnotherHttpHandler() { Http2Only = true };   // ãƒãƒ³ãƒ‰ãƒ©ãƒ¼ã®è¨­å®š
+        var channel = GrpcChannel.ForAddress(ServerURL, new GrpcChannelOptions() { HttpHandler = handler });    // ã‚µãƒ¼ãƒãƒ¼ã¨ã®ãƒãƒ£ãƒ³ãƒãƒ«ã‚’è¨­å®š
+        var client = MagicOnionClient.Create<IUserService>(channel);    // ã‚µãƒ¼ãƒãƒ¼ã¨ã®æ¥ç¶š
 
         try
         {
-            this.Token = Guid.NewGuid().ToString();                     // ƒg[ƒNƒ“¶¬
-            this.UserId = await client.RegistUserAsync(name, Token);    // ŠÖ”ŒÄ‚Ño‚µ
-            SaveUserData();                                             // ƒ[ƒJƒ‹‚É•Û‘¶
+            this.Token = Guid.NewGuid().ToString();                     // ãƒˆãƒ¼ã‚¯ãƒ³ç”Ÿæˆ
+            this.UserId = await client.RegistUserAsync(name, Token);    // é–¢æ•°å‘¼ã³å‡ºã—
+            SaveUserData();                                             // ãƒ­ãƒ¼ã‚«ãƒ«ã«ä¿å­˜
             return Status.True;
         }catch(RpcException e)
         {
             Debug.Log(e);
             if (e.Status.Detail == "SameName")
-            {   // –¼‘O”í‚è
+            {   // åå‰è¢«ã‚Š
                 return Status.SameName;
             }
             else
-            {   // ’ÊM¸”s
+            {   // é€šä¿¡å¤±æ•—
                 return Status.False;
             }
         }
     }
 
     /// <summary>
-    /// ƒ†[ƒU[‚ğIDw’è‚ÅŒŸõ
-    /// [return : ƒ†[ƒU[î•ñ]
+    /// ãƒ¦ãƒ¼ã‚¶ãƒ¼ã‚’IDæŒ‡å®šã§æ¤œç´¢
+    /// [return : ãƒ¦ãƒ¼ã‚¶ãƒ¼æƒ…å ±]
     /// </summary>
-    /// <param name="id">ƒ†[ƒU[ID</param>
+    /// <param name="id">ãƒ¦ãƒ¼ã‚¶ãƒ¼ID</param>
     /// <returns></returns>
     public async UniTask<User> SearchUserID(int id)
     {
-        using var handler = new YetAnotherHttpHandler() { Http2Only = true };   // ƒnƒ“ƒhƒ‰[‚Ìİ’è
-        var channel = GrpcChannel.ForAddress(ServerURL, new GrpcChannelOptions() { HttpHandler = handler });    // ƒT[ƒo[‚Æ‚Ìƒ`ƒƒƒ“ƒlƒ‹‚ğİ’è
-        var client = MagicOnionClient.Create<IUserService>(channel);    // ƒT[ƒo[‚Æ‚ÌÚ‘±
+        using var handler = new YetAnotherHttpHandler() { Http2Only = true };   // ãƒãƒ³ãƒ‰ãƒ©ãƒ¼ã®è¨­å®š
+        var channel = GrpcChannel.ForAddress(ServerURL, new GrpcChannelOptions() { HttpHandler = handler });    // ã‚µãƒ¼ãƒãƒ¼ã¨ã®ãƒãƒ£ãƒ³ãƒãƒ«ã‚’è¨­å®š
+        var client = MagicOnionClient.Create<IUserService>(channel);    // ã‚µãƒ¼ãƒãƒ¼ã¨ã®æ¥ç¶š
 
         try
         {
-            var userData = await client.SearchUserID(id);    // ŠÖ”ŒÄ‚Ño‚µ
+            var userData = await client.SearchUserID(id);    // é–¢æ•°å‘¼ã³å‡ºã—
             return userData;
         }
         catch(RpcException e)
@@ -183,17 +183,17 @@ public class UserModel : BaseModel
     }
 
     /// <summary>
-    /// w’èID‚Ìƒ†[ƒU[–¼XV
-    /// [return : ^‹U]
+    /// æŒ‡å®šIDã®ãƒ¦ãƒ¼ã‚¶ãƒ¼åæ›´æ–°
+    /// [return : çœŸå½]
     /// </summary>
-    /// <param name="id">  ƒ†[ƒU[ID</param>
-    /// <param name="name">ƒ†[ƒU[–¼</param>
+    /// <param name="id">  ãƒ¦ãƒ¼ã‚¶ãƒ¼ID</param>
+    /// <param name="name">ãƒ¦ãƒ¼ã‚¶ãƒ¼å</param>
     /// <returns></returns>
     public async UniTask<Status> UpdateUserName(int id, string name)
     {
-        using var handler = new YetAnotherHttpHandler() { Http2Only = true };   // ƒnƒ“ƒhƒ‰[‚Ìİ’è
-        var channel = GrpcChannel.ForAddress(ServerURL, new GrpcChannelOptions() { HttpHandler = handler });    // ƒT[ƒo[‚Æ‚Ìƒ`ƒƒƒ“ƒlƒ‹‚ğİ’è
-        var client = MagicOnionClient.Create<IUserService>(channel);    // ƒT[ƒo[‚Æ‚ÌÚ‘±
+        using var handler = new YetAnotherHttpHandler() { Http2Only = true };   // ãƒãƒ³ãƒ‰ãƒ©ãƒ¼ã®è¨­å®š
+        var channel = GrpcChannel.ForAddress(ServerURL, new GrpcChannelOptions() { HttpHandler = handler });    // ã‚µãƒ¼ãƒãƒ¼ã¨ã®ãƒãƒ£ãƒ³ãƒãƒ«ã‚’è¨­å®š
+        var client = MagicOnionClient.Create<IUserService>(channel);    // ã‚µãƒ¼ãƒãƒ¼ã¨ã®æ¥ç¶š
 
         try
         {
@@ -203,11 +203,11 @@ public class UserModel : BaseModel
         catch (RpcException e)
         {
             if (e.Status.Detail == "SameName")
-            {   // –¼‘O”í‚è
+            {   // åå‰è¢«ã‚Š
                 return Status.SameName;
             }
             else
-            {   // ’ÊM¸”s
+            {   // é€šä¿¡å¤±æ•—
                 return Status.False;
             }
         }

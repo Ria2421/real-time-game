@@ -1,5 +1,5 @@
 //---------------------------------------------------------------
-// ‘å–CƒXƒNƒŠƒvƒg [ Cannon.cs ]
+// å¤§ç ²ã‚¹ã‚¯ãƒªãƒ—ãƒˆ [ Cannon.cs ]
 // Author:Kenta Nakamoto
 // Data:2025/01/27
 // Update:2025/01/28
@@ -15,42 +15,42 @@ using KanKikuchi.AudioManager;
 public class Cannon : MonoBehaviour
 {
     //-------------------------------------------------------
-    // ƒtƒB[ƒ‹ƒh
+    // ãƒ•ã‚£ãƒ¼ãƒ«ãƒ‰
 
     /// <summary>
-    /// ’e‚Ì‘¬“x
+    /// å¼¾ã®é€Ÿåº¦
     /// </summary>
     [SerializeField] private float bulletSpeed = 4.0f;
 
     /// <summary>
-    /// ’eƒvƒŒƒnƒu
+    /// å¼¾ãƒ—ãƒ¬ãƒãƒ–
     /// </summary>
     [SerializeField] private GameObject bulletprefab;
 
     /// <summary>
-    /// “’…ˆÊ’u
+    /// åˆ°ç€ä½ç½®
     /// </summary>
     [SerializeField] private Transform endPosition;
 
     //-------------------------------------------------------
-    // ƒƒ\ƒbƒh
+    // ãƒ¡ã‚½ãƒƒãƒ‰
 
     /// <summary>
-    /// ’e”­Ëˆ—
+    /// å¼¾ç™ºå°„å‡¦ç†
     /// </summary>
     public void ShotBullet()
     {
-        // ’e‚Ì¶¬
+        // å¼¾ã®ç”Ÿæˆ
         var bulletObj = Instantiate(bulletprefab, this.gameObject.transform.position, Quaternion.identity);
 
-        // SEÄ¶
+        // SEå†ç”Ÿ
         SEManager.Instance.Play(SEPath.CANNON);
 
-        // ’e‚ÌˆÚ“®
+        // å¼¾ã®ç§»å‹•
         bulletObj.transform.DOMove(endPosition.position, bulletSpeed).SetEase(Ease.Linear)
             .SetUpdate(UpdateType.Fixed, true).OnComplete(() =>
             {
-                // ˆÚ“®Š®—¹Œã‚ÉÁ‹
+                // ç§»å‹•å®Œäº†å¾Œã«æ¶ˆå»
                 Destroy(bulletObj);
             });
     }

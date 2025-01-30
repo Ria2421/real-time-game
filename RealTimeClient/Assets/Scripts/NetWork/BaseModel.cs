@@ -1,5 +1,5 @@
 //---------------------------------------------------------------
-// ƒx[ƒXƒ‚ƒfƒ‹ [ BaseModel.cs ]
+// ãƒ™ãƒ¼ã‚¹ãƒ¢ãƒ‡ãƒ« [ BaseModel.cs ]
 // Author:Kenta Nakamoto
 // Data:2024/11/12
 // Update:2024/11/12
@@ -10,7 +10,7 @@ using UnityEngine;
 
 public class BaseModel : MonoBehaviour
 {
-    //Ú‘±ƒT[ƒo[
-    //public const string ServerURL = "http://localhost:7000";  // ƒ[ƒJƒ‹
+    //æŽ¥ç¶šã‚µãƒ¼ãƒãƒ¼
+    //public const string ServerURL = "http://localhost:7000";  // ãƒ­ãƒ¼ã‚«ãƒ«
     public const string ServerURL = "http://car-boom-crash.japaneast.cloudapp.azure.com:7000";
 }

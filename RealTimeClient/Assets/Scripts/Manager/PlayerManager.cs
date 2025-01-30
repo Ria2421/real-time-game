@@ -1,5 +1,5 @@
 //---------------------------------------------------------------
-// ƒvƒŒƒCƒ„[ƒ}ƒl[ƒWƒƒ[ [ PlayerManager.cs ]
+// ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ãƒãƒãƒ¼ã‚¸ãƒ£ãƒ¼ [ PlayerManager.cs ]
 // Author:Kenta Nakamoto
 // Data:2024/12/05
 // Update:2025/01/23
@@ -12,56 +12,56 @@ using UnityEngine;
 public class PlayerManager : MonoBehaviour
 {
     //=====================================
-    // ƒtƒB[ƒ‹ƒh
+    // ãƒ•ã‚£ãƒ¼ãƒ«ãƒ‰
 
     /// <summary>
-    /// ƒ‹[ƒ€ƒ‚ƒfƒ‹Ši”[—p
+    /// ãƒ«ãƒ¼ãƒ ãƒ¢ãƒ‡ãƒ«æ ¼ç´ç”¨
     /// </summary>
     private RoomModel roomModel;
 
     /// <summary>
-    /// ƒQ[ƒ€I—¹ƒtƒ‰ƒO
+    /// ã‚²ãƒ¼ãƒ çµ‚äº†ãƒ•ãƒ©ã‚°
     /// </summary>
     private bool isDead = false;
 
     //=====================================
-    // ƒƒ\ƒbƒh
+    // ãƒ¡ã‚½ãƒƒãƒ‰
 
-    // ‰Šúˆ—
+    // åˆæœŸå‡¦ç†
     void Start()
     {
-        // ƒ‹[ƒ€ƒ‚ƒfƒ‹‚Ìæ“¾
+        // ãƒ«ãƒ¼ãƒ ãƒ¢ãƒ‡ãƒ«ã®å–å¾—
         roomModel = GameObject.Find("RoomModel").GetComponent<RoomModel>();
     }
 
-    // ƒQ[ƒ€I—¹’Ê’m‘—Mˆ—
+    // ã‚²ãƒ¼ãƒ çµ‚äº†é€šçŸ¥é€ä¿¡å‡¦ç†
     private async void SendEndGame()
     {
         await roomModel.GameEndAsync();
     }
 
-    // Œ‚”j’Ê’mˆ—
+    // æ’ƒç ´é€šçŸ¥å‡¦ç†
     private async void CrushingPlayerAsync(string attackName, string cruchName, Guid crushID, int deadNo)
     {
         await roomModel.CrushingPlayerAsync(attackName, cruchName, crushID, deadNo);
     }
 
-    // ƒgƒŠƒK[ƒRƒ‰ƒCƒ_[ÚGˆ—
+    // ãƒˆãƒªã‚¬ãƒ¼ã‚³ãƒ©ã‚¤ãƒ€ãƒ¼æ¥è§¦æ™‚å‡¦ç†
     private void OnTriggerEnter(Collider collision)
     {
         if(isDead) return;
 
-        // Tag–ˆ‚ÌÚGˆ—
+        // Tagæ¯ã®æ¥è§¦æ™‚å‡¦ç†
 
         if(collision.gameObject.tag == "Trap")
-        {   // —‰º€
-            // Œ‚”j’Ê’m (“|‚µ‚½PL–¼,“|‚³‚ê‚½PL–¼,“|‚³‚ê‚½l‚ÌÚ‘±ID,€–S—vˆöID)
+        {   // è½ä¸‹æ­»
+            // æ’ƒç ´é€šçŸ¥ (å€’ã—ãŸPLå,å€’ã•ã‚ŒãŸPLå,å€’ã•ã‚ŒãŸäººã®æ¥ç¶šID,æ­»äº¡è¦å› ID)
             isDead = true;
             CrushingPlayerAsync("", roomModel.UserName, roomModel.ConnectionId, 2);
         }
 
         if(collision.gameObject.tag == "OtherPlayer")
-        {   // ‘¼ƒvƒŒƒCƒ„[‚ğŒ‚”j
+        {   // ä»–ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã‚’æ’ƒç ´
             CrushingPlayerAsync(roomModel.UserName,collision.GetComponent<OtherPlayerManager>().UserName,collision.GetComponent<OtherPlayerManager>().ConnectionID, 1);
         }
     }

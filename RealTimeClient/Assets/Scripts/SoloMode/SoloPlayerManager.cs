@@ -1,5 +1,5 @@
 //---------------------------------------------------------------
-// ƒ\ƒƒvƒŒƒCƒ„[ƒ}ƒl[ƒWƒƒ[ [ SoloPlayerManager.cs ]
+// ã‚½ãƒ­ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ãƒãƒãƒ¼ã‚¸ãƒ£ãƒ¼ [ SoloPlayerManager.cs ]
 // Author:Kenta Nakamoto
 // Data:2024/12/18
 // Update:2024/12/18
@@ -11,28 +11,28 @@ using UnityEngine;
 public class SoloPlayerManager : MonoBehaviour
 {
     //=====================================
-    // ƒtƒB[ƒ‹ƒh
+    // ãƒ•ã‚£ãƒ¼ãƒ«ãƒ‰
 
     /// <summary>
-    /// Œ»ƒ`ƒFƒbƒNƒ|ƒCƒ“ƒg”
+    /// ç¾ãƒã‚§ãƒƒã‚¯ãƒã‚¤ãƒ³ãƒˆæ•°
     /// </summary>
     private int currentCheckPointCnt = 1;
 
     /// <summary>
-    /// ƒ`ƒFƒbƒNƒ|ƒCƒ“ƒgƒIƒuƒWƒFŠi”[—p
+    /// ãƒã‚§ãƒƒã‚¯ãƒã‚¤ãƒ³ãƒˆã‚ªãƒ–ã‚¸ã‚§æ ¼ç´ç”¨
     /// </summary>
     [SerializeField] private GameObject[] checkPoints;
 
     /// <summary>
-    /// ƒQ[ƒ€ƒ}ƒl[ƒWƒƒ[
+    /// ã‚²ãƒ¼ãƒ ãƒãƒãƒ¼ã‚¸ãƒ£ãƒ¼
     /// </summary>
     [SerializeField] private SoloManager soloManager;
 
     //=====================================
-    // ƒƒ\ƒbƒh
+    // ãƒ¡ã‚½ãƒƒãƒ‰
 
     /// <summary>
-    /// ‰Šúˆ—
+    /// åˆæœŸå‡¦ç†
     /// </summary>
     void Start()
     {
@@ -40,7 +40,7 @@ public class SoloPlayerManager : MonoBehaviour
     }
 
     /// <summary>
-    /// XVˆ—
+    /// æ›´æ–°å‡¦ç†
     /// </summary>
     void Update()
     {
@@ -48,20 +48,20 @@ public class SoloPlayerManager : MonoBehaviour
     }
 
     /// <summary>
-    /// ƒRƒ‰ƒCƒ_[ÚGˆ—
+    /// ã‚³ãƒ©ã‚¤ãƒ€ãƒ¼æ¥è§¦æ™‚å‡¦ç†
     /// </summary>
     /// <param name="collision"></param>
     private void OnTriggerEnter(Collider collision)
     {
         if (collision.gameObject.name == "CheckPoint" + currentCheckPointCnt.ToString())
         {
-            Debug.Log(currentCheckPointCnt.ToString() + "”Ô‚ğ’Ê‰ß");
+            Debug.Log(currentCheckPointCnt.ToString() + "ç•ªã‚’é€šé");
 
             if (currentCheckPointCnt == checkPoints.Length)
-            {   // ÅŒã‚Ìƒ`ƒFƒbƒNƒ|ƒCƒ“ƒg‚ğ’Ê‰ß‚µ‚½‚ç
-                currentCheckPointCnt = 1;   // ƒ`ƒFƒbƒNƒ|ƒCƒ“ƒgƒJƒEƒ“ƒg‚ÌƒŠƒZƒbƒg
+            {   // æœ€å¾Œã®ãƒã‚§ãƒƒã‚¯ãƒã‚¤ãƒ³ãƒˆã‚’é€šéã—ãŸã‚‰
+                currentCheckPointCnt = 1;   // ãƒã‚§ãƒƒã‚¯ãƒã‚¤ãƒ³ãƒˆã‚«ã‚¦ãƒ³ãƒˆã®ãƒªã‚»ãƒƒãƒˆ
 
-                // ƒ‰ƒbƒv”XVˆ—‚ÌŒÄ‚Ño‚µ
+                // ãƒ©ãƒƒãƒ—æ•°æ›´æ–°å‡¦ç†ã®å‘¼ã³å‡ºã—
                 soloManager.AddRapCnt();
             }
             else

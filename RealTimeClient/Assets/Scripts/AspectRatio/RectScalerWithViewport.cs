@@ -1,6 +1,6 @@
 //---------------------------------------------------------------
 //
-// アスペクト比対応UIスケーラー [ RectScalerWithViewport.cs ]
+// 繧｢繧ｹ繝壹け繝域ｯ泌ｯｾ蠢弑I繧ｹ繧ｱ繝ｼ繝ｩ繝ｼ [ RectScalerWithViewport.cs ]
 // Author:Kenta Nakamoto
 // Data:2024/07/17
 // Update:2024/07/17
@@ -10,7 +10,7 @@ using UnityEngine;
 
 namespace TedLab
 {
-    [ExecuteAlways] // 再生時以外でも動作する
+    [ExecuteAlways] // 蜀咲函譎ゆｻ･螟悶〒繧ょ虚菴懊☆繧�
     public class RectScalerWithViewport : MonoBehaviour
     {
         private const float LogBase = 2;
@@ -63,7 +63,7 @@ namespace TedLab
 
         private Camera GetTargetCamera()
         {
-            // 設定があればそちらを優先
+            // 險ｭ螳壹′縺ゅｌ縺ｰ縺昴■繧峨ｒ蜆ｪ蜈�
             return refCamera != null ? refCamera : Camera.main;
         }
 
@@ -87,7 +87,7 @@ namespace TedLab
                 return;
             }
 
-            // canvas scalerから引用
+            // canvas scaler縺九ｉ蠑慕畑
             var logWidth = Mathf.Log(width / referenceResolution.x, LogBase);
             var logHeight = Mathf.Log(height / referenceResolution.y, LogBase);
             var logWeightedAverage = Mathf.Lerp(logWidth, logHeight, matchWidthOrHeight);
@@ -100,7 +100,7 @@ namespace TedLab
 
             refRect.localScale = new Vector3(scale, scale, scale);
 
-            // スケールで縮まるので領域だけ広げる
+            // 繧ｹ繧ｱ繝ｼ繝ｫ縺ｧ邵ｮ縺ｾ繧九��縺ｧ鬆伜沺縺�縺大ｺ��￡繧�
             var revScale = 1f / scale;
             refRect.sizeDelta = new Vector2(width * revScale, height * revScale);
 

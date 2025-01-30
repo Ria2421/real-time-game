@@ -1,5 +1,5 @@
 //---------------------------------------------------------------
-// ƒ^ƒCƒgƒ‹ƒIƒuƒWƒF—pƒXƒNƒŠƒvƒg [ TitleObj.cs ]
+// ã‚¿ã‚¤ãƒˆãƒ«ã‚ªãƒ–ã‚¸ã‚§ç”¨ã‚¹ã‚¯ãƒªãƒ—ãƒˆ [ TitleObj.cs ]
 // Author:Kenta Nakamoto
 // Data:2024/12/16
 // Update:2024/12/16
@@ -11,25 +11,25 @@ using UnityEngine;
 public class TitlrObj : MonoBehaviour
 {
     //-------------------------------------------------------
-    // ƒtƒB[ƒ‹ƒh
+    // ãƒ•ã‚£ãƒ¼ãƒ«ãƒ‰
 
     /// <summary>
-    /// ”š”­ƒGƒtƒFƒNƒg
+    /// çˆ†ç™ºã‚¨ãƒ•ã‚§ã‚¯ãƒˆ
     /// </summary>
     [SerializeField] GameObject boomEffect;
 
     //-------------------------------------------------------
-    // ƒƒ\ƒbƒh
+    // ãƒ¡ã‚½ãƒƒãƒ‰
 
     /// <summary>
-    /// ƒgƒŠƒK[ƒRƒ‰ƒCƒ_[ÚGˆ—
+    /// ãƒˆãƒªã‚¬ãƒ¼ã‚³ãƒ©ã‚¤ãƒ€ãƒ¼æ¥è§¦æ™‚å‡¦ç†
     /// </summary>
     /// <param name="collision"></param>
     private void OnTriggerEnter(Collider collision)
     {
         if (collision.gameObject.tag == "OtherPlayer")
         {
-            // ”š”­ƒGƒtƒFƒNƒg
+            // çˆ†ç™ºã‚¨ãƒ•ã‚§ã‚¯ãƒˆ
             Instantiate(boomEffect, collision.gameObject.transform.position,Quaternion.identity);
         }
     }

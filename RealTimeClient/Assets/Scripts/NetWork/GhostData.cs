@@ -1,5 +1,5 @@
 //---------------------------------------------------------------
-// ÉSÅ[ÉXÉgÉfÅ[É^ÉNÉâÉX [ GhostData.cs ]
+// „Ç¥„Éº„Çπ„Éà„Éá„Éº„Çø„ÇØ„É©„Çπ [ GhostData.cs ]
 // Author:Kenta Nakamoto
 // Data:2025/01/21
 // Update:2025/01/21
@@ -11,17 +11,17 @@ using UnityEngine;
 public class GhostData
 {
     /// <summary>
-    /// à íu
+    /// ‰ΩçÁΩÆ
     /// </summary>
     public Vector3 Pos { get; set; }
 
     /// <summary>
-    /// äpìx
+    /// ËßíÂ∫¶
     /// </summary>
     public Vector3 Rot { get; set; }
 
     /// <summary>
-    /// É^ÉCÉÑäp
+    /// „Çø„Ç§„É§Ëßí
     /// </summary>
     public float WRot { get; set; }
 }

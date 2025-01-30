@@ -1,5 +1,5 @@
 //---------------------------------------------------------------
-// ƒ‰ƒ“ƒLƒ“ƒOƒ‚ƒfƒ‹ [ RankingModel.cs ]
+// ãƒ©ãƒ³ã‚­ãƒ³ã‚°ãƒ¢ãƒ‡ãƒ« [ RankingModel.cs ]
 // Author:Kenta Nakamoto
 // Data:2025/01/12
 // Update:2025/01/21
@@ -18,24 +18,24 @@ using UnityEngine;
 public class RankingModel : BaseModel
 {
     //-------------------------------------------------------
-    // ƒƒ\ƒbƒh
+    // ãƒ¡ã‚½ãƒƒãƒ‰
 
     /// <summary>
-    /// w’èƒXƒe[ƒWƒ‰ƒ“ƒLƒ“ƒO‚Ìæ“¾
+    /// æŒ‡å®šã‚¹ãƒ†ãƒ¼ã‚¸ãƒ©ãƒ³ã‚­ãƒ³ã‚°ã®å–å¾—
     /// </summary>
-    /// <param name="stageID">ƒXƒe[ƒWID</param>
+    /// <param name="stageID">ã‚¹ãƒ†ãƒ¼ã‚¸ID</param>
     /// <returns></returns>
     public async UniTask<List<RankingData>> GetRankingAsync(int stageID)
     {
         List<RankingData> result = new List<RankingData>();
 
-        using var handler = new YetAnotherHttpHandler() { Http2Only = true };                                   // ƒnƒ“ƒhƒ‰[‚Ìİ’è
-        var channel = GrpcChannel.ForAddress(ServerURL, new GrpcChannelOptions() { HttpHandler = handler });    // ƒT[ƒo[‚Æ‚Ìƒ`ƒƒƒ“ƒlƒ‹‚ğİ’è
-        var client = MagicOnionClient.Create<ISoloService>(channel);                                            // ƒT[ƒo[‚Æ‚ÌÚ‘±
+        using var handler = new YetAnotherHttpHandler() { Http2Only = true };                                   // ãƒãƒ³ãƒ‰ãƒ©ãƒ¼ã®è¨­å®š
+        var channel = GrpcChannel.ForAddress(ServerURL, new GrpcChannelOptions() { HttpHandler = handler });    // ã‚µãƒ¼ãƒãƒ¼ã¨ã®ãƒãƒ£ãƒ³ãƒãƒ«ã‚’è¨­å®š
+        var client = MagicOnionClient.Create<ISoloService>(channel);                                            // ã‚µãƒ¼ãƒãƒ¼ã¨ã®æ¥ç¶š
 
         try
         {
-            result = await client.GetRankingAsync(stageID);     // ƒ‰ƒ“ƒLƒ“ƒOæ“¾
+            result = await client.GetRankingAsync(stageID);     // ãƒ©ãƒ³ã‚­ãƒ³ã‚°å–å¾—
             return result;
         }
         catch (RpcException e)
@@ -46,25 +46,25 @@ public class RankingModel : BaseModel
     }
 
     /// <summary>
-    /// ƒ^ƒCƒ€“o˜^
-    /// [return:¬”Û]
+    /// ã‚¿ã‚¤ãƒ ç™»éŒ²
+    /// [return:æˆå¦]
     /// </summary>
-    /// <param name="stageID">ƒvƒŒƒC‚µ‚½ƒXƒe[ƒWNo</param>
-    /// <param name="userID"> ƒ†[ƒU[ID</param>
-    /// <param name="time">   “o˜^ƒ^ƒCƒ€</param>
+    /// <param name="stageID">ãƒ—ãƒ¬ã‚¤ã—ãŸã‚¹ãƒ†ãƒ¼ã‚¸No</param>
+    /// <param name="userID"> ãƒ¦ãƒ¼ã‚¶ãƒ¼ID</param>
+    /// <param name="time">   ç™»éŒ²ã‚¿ã‚¤ãƒ </param>
     /// <returns></returns>
     public async UniTask<RegistResult> RegistClearTimeAsync(int stageID, int userID, int time, string ghostData)
     {
-        using var handler = new YetAnotherHttpHandler() { Http2Only = true };                                   // ƒnƒ“ƒhƒ‰[‚ğİ’è
-        var channel = GrpcChannel.ForAddress(ServerURL, new GrpcChannelOptions() { HttpHandler = handler });    // ƒT[ƒo[‚Æ‚Ìƒ`ƒƒƒ“ƒlƒ‹‚ğİ’è
+        using var handler = new YetAnotherHttpHandler() { Http2Only = true };                                   // ãƒãƒ³ãƒ‰ãƒ©ãƒ¼ã‚’è¨­å®š
+        var channel = GrpcChannel.ForAddress(ServerURL, new GrpcChannelOptions() { HttpHandler = handler });    // ã‚µãƒ¼ãƒãƒ¼ã¨ã®ãƒãƒ£ãƒ³ãƒãƒ«ã‚’è¨­å®š
         var client = MagicOnionClient.Create<ISoloService>(channel);
 
         RegistResult result = new RegistResult();
 
         try
         {
-            result = await client.RegistClearTimeAsync(stageID,userID,time,ghostData);     // ‹L˜^“o˜^ (30•b‚Ì‹L˜^‚Å15KB’ö)
-            Debug.Log("ƒNƒŠƒAƒf[ƒ^“o˜^ˆ—");
+            result = await client.RegistClearTimeAsync(stageID,userID,time,ghostData);     // è¨˜éŒ²ç™»éŒ² (30ç§’ã®è¨˜éŒ²ã§15KBç¨‹)
+            Debug.Log("ã‚¯ãƒªã‚¢ãƒ‡ãƒ¼ã‚¿ç™»éŒ²å‡¦ç†");
             return result;
         }
         catch (RpcException e)

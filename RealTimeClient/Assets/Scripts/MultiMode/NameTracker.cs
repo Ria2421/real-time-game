@@ -1,9 +1,9 @@
 //---------------------------------------------------------------
-// ƒ†[ƒU[–¼’Ç] [ NameTracker.cs ]
+// ãƒ¦ãƒ¼ã‚¶ãƒ¼åè¿½å¾“ [ NameTracker.cs ]
 // Author:Kenta Nakamoto
 // Data:2025/01/16
 // Update:2025/01/16
-// QlURL:https://tech.pjin.jp/blog/2017/07/14/unity_ugui_sync_rendermode/
+// å‚è€ƒURL:https://tech.pjin.jp/blog/2017/07/14/unity_ugui_sync_rendermode/
 //---------------------------------------------------------------
 using DavidJalbert;
 using System.Collections;
@@ -14,58 +14,58 @@ using UnityEngine.UI;
 public class NameTracker : MonoBehaviour
 {
     //=====================================
-    // ƒtƒB[ƒ‹ƒh
+    // ãƒ•ã‚£ãƒ¼ãƒ«ãƒ‰
 
     /// <summary>
-    /// ’Ç]‘ÎÛ
+    /// è¿½å¾“å¯¾è±¡
     /// </summary>
     private Transform targetTfm;
 
     /// <summary>
-    /// •\¦UI‚ÌRectTransform
+    /// è¡¨ç¤ºUIã®RectTransform
     /// </summary>
     private RectTransform myRectTfm;
 
     /// <summary>
-    /// •\¦ƒIƒtƒZƒbƒg
+    /// è¡¨ç¤ºã‚ªãƒ•ã‚»ãƒƒãƒˆ
     /// </summary>
     private Vector3 offset;
 
     /// <summary>
-    /// –¼‘OƒtƒHƒ“ƒgƒTƒCƒY
+    /// åå‰ãƒ•ã‚©ãƒ³ãƒˆã‚µã‚¤ã‚º
     /// </summary>
     private int fontSize;
 
     /// <summary>
-    /// ˜ëáÕ‹“_‚ÌƒtƒHƒ“ƒgƒTƒCƒY
+    /// ä¿¯ç°è¦–ç‚¹æ™‚ã®ãƒ•ã‚©ãƒ³ãƒˆã‚µã‚¤ã‚º
     /// </summary>
     private const int topFontSize = 120;
 
     /// <summary>
-    /// ‘æOÒ‹“_‚ÌƒtƒHƒ“ƒgƒTƒCƒY
+    /// ç¬¬ä¸‰è€…è¦–ç‚¹æ™‚ã®ãƒ•ã‚©ãƒ³ãƒˆã‚µã‚¤ã‚º
     /// </summary>
     private const int thirdFontSize = 85;
 
     /// <summary>
-    /// ƒƒCƒ“ƒJƒƒ‰
+    /// ãƒ¡ã‚¤ãƒ³ã‚«ãƒ¡ãƒ©
     /// </summary>
     [SerializeField] private Transform cameraTrs;
 
     /// <summary>
-    /// ƒJƒƒ‰ƒXƒNƒŠƒvƒg
+    /// ã‚«ãƒ¡ãƒ©ã‚¹ã‚¯ãƒªãƒ—ãƒˆ
     /// </summary>
     [SerializeField] private TinyCarCamera tinyCarCamera;
 
     /// <summary>
-    /// nameƒeƒLƒXƒg
+    /// nameãƒ†ã‚­ã‚¹ãƒˆ
     /// </summary>
     [SerializeField] private Text nameText;
 
     //=====================================
-    // ƒƒ\ƒbƒh
+    // ãƒ¡ã‚½ãƒƒãƒ‰
 
     /// <summary>
-    /// ‰Šúˆ—
+    /// åˆæœŸå‡¦ç†
     /// </summary>
     void Start()
     {
@@ -73,18 +73,18 @@ public class NameTracker : MonoBehaviour
     }
 
     /// <summary>
-    /// ’èŠúXVˆ—
+    /// å®šæœŸæ›´æ–°å‡¦ç†
     /// </summary>
     void FixedUpdate()
     {
         if (targetTfm == null) return;
 
-        //++ •\¦ˆÊ’u‚ğ’Ç]‘ÎÛ+ ƒIƒtƒZƒbƒg‚ÌÀ•W‚ÉˆÚ“®‚µ‘±‚¯‚é
+        //++ è¡¨ç¤ºä½ç½®ã‚’è¿½å¾“å¯¾è±¡+ ã‚ªãƒ•ã‚»ãƒƒãƒˆã®åº§æ¨™ã«ç§»å‹•ã—ç¶šã‘ã‚‹
         myRectTfm.position = targetTfm.position + offset;
 
         myRectTfm.rotation = cameraTrs.rotation; 
 
-        // ƒJƒƒ‰ƒ‚[ƒh‚É‚æ‚Á‚ÄƒtƒHƒ“ƒgƒTƒCƒY‚ğ•ÏX‚·‚é
+        // ã‚«ãƒ¡ãƒ©ãƒ¢ãƒ¼ãƒ‰ã«ã‚ˆã£ã¦ãƒ•ã‚©ãƒ³ãƒˆã‚µã‚¤ã‚ºã‚’å¤‰æ›´ã™ã‚‹
         if(tinyCarCamera.viewMode == TinyCarCamera.CAMERA_MODE.ThirdPerson)
         {
             fontSize = thirdFontSize;
@@ -98,14 +98,14 @@ public class NameTracker : MonoBehaviour
     }
 
     /// <summary>
-    /// ’Ç]‘ÎÛİ’èˆ—
+    /// è¿½å¾“å¯¾è±¡è¨­å®šå‡¦ç†
     /// </summary>
     /// <param name="target"></param>
     public void SetTarget(Transform target,int no)
     {
         targetTfm = target;
 
-        // ƒIƒtƒZƒbƒg‹——£‚Ì•ÏX
+        // ã‚ªãƒ•ã‚»ãƒƒãƒˆè·é›¢ã®å¤‰æ›´
         if(no == 1)
         {
             offset = new Vector3(0, 2.3f, 0);

@@ -1,5 +1,5 @@
 //---------------------------------------------------------------
-// Ô¶¬ [ CarSpawn.cs ]
+// è»Šç”Ÿæˆ [ CarSpawn.cs ]
 // Author:Kenta Nakamoto
 // Data:2024/12/16
 // Update:2024/12/16
@@ -13,40 +13,40 @@ using UnityEngine;
 public class CarSpawn : MonoBehaviour
 {
     //=====================================
-    // ƒtƒB[ƒ‹ƒh
+    // ãƒ•ã‚£ãƒ¼ãƒ«ãƒ‰
 
     /// <summary>
-    /// n”­“_
+    /// å§‹ç™ºç‚¹
     /// </summary>
     [SerializeField] private GameObject startObj;
 
     /// <summary>
-    /// I’…“_
+    /// çµ‚ç€ç‚¹
     /// </summary>
     [SerializeField] private GameObject goalObj;
 
     /// <summary>
-    /// ¶¬‚·‚éÔ
+    /// ç”Ÿæˆã™ã‚‹è»Š
     /// </summary>
     [SerializeField] private GameObject[] spawnObj;
 
     /// <summary>
-    /// ¶¬Šp“xY
+    /// ç”Ÿæˆè§’åº¦Y
     /// </summary>
     [SerializeField] private float spawnAngleY;
 
     /// <summary>
-    /// Å’áˆÚ“®•b”
+    /// æœ€ä½ç§»å‹•ç§’æ•°
     /// </summary>
     [SerializeField] private float minMoveSecond;
 
     /// <summary>
-    /// Å‚ˆÚ“®•b”
+    /// æœ€é«˜ç§»å‹•ç§’æ•°
     /// </summary>
     [SerializeField] private float maxMoveSecond;
 
     //=====================================
-    // ƒƒ\ƒbƒh
+    // ãƒ¡ã‚½ãƒƒãƒ‰
 
     // Start is called before the first frame update
     void Start()
@@ -54,7 +54,7 @@ public class CarSpawn : MonoBehaviour
         InvokeRepeating("SpawnCar",0.5f, 1.5f);
     }
 
-    // Ô¶¬ˆ—
+    // è»Šç”Ÿæˆå‡¦ç†
     private void SpawnCar()
     {
         GameObject carObj = Instantiate(spawnObj[Random.Range(0, spawnObj.Length)], startObj.transform.position, Quaternion.Euler(0, spawnAngleY, 0));

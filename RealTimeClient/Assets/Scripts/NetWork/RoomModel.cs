@@ -1,5 +1,5 @@
 //---------------------------------------------------------------
-// ƒ‹[ƒ€î•ñƒ‚ƒfƒ‹ [ RoomModel.cs ]
+// ãƒ«ãƒ¼ãƒ æƒ…å ±ãƒ¢ãƒ‡ãƒ« [ RoomModel.cs ]
 // Author:Kenta Nakamoto
 // Data:2024/11/18
 // Update:2025/01/27
@@ -16,108 +16,108 @@ using UnityEngine;
 public class RoomModel : BaseModel,IRoomHubReceiver
 {
     //-------------------------------------------------------
-    // ƒtƒB[ƒ‹ƒh
+    // ãƒ•ã‚£ãƒ¼ãƒ«ãƒ‰
 
-    private GrpcChannel channel;    // Ú‘±‚Ég—p
+    private GrpcChannel channel;    // æ¥ç¶šæ™‚ã«ä½¿ç”¨
     private IRoomHub roomHub;
 
     /// <summary>
-    /// ƒ†[ƒU[ID
+    /// ãƒ¦ãƒ¼ã‚¶ãƒ¼ID
     /// </summary>
     public int UserId { get; set; }
 
     /// <summary>
-    /// Ú‘±ID
+    /// æ¥ç¶šID
     /// </summary>
     public Guid ConnectionId { get; set; }
 
     /// <summary>
-    /// Q‰Áƒ‹[ƒ€–¼
+    /// å‚åŠ ãƒ«ãƒ¼ãƒ å
     /// </summary>
     public string RoomName { get; set; }
 
     /// <summary>
-    /// Q‰Á‡ (PLNo)
+    /// å‚åŠ é † (PLNo)
     /// </summary>
     public int JoinOrder { get; set; }
 
     /// <summary>
-    /// ƒ†[ƒU[–¼
+    /// ãƒ¦ãƒ¼ã‚¶ãƒ¼å
     /// </summary>
     public string UserName { get; set; }
 
     /// <summary>
-    /// ƒ}ƒbƒ`ƒ“ƒOŠ®—¹’Ê’m
+    /// ãƒãƒƒãƒãƒ³ã‚°å®Œäº†é€šçŸ¥
     /// </summary>
     public Action<string,int> OnMatchingUser { get; set; }
 
     /// <summary>
-    /// ƒ†[ƒU[Ú‘±’Ê’m
+    /// ãƒ¦ãƒ¼ã‚¶ãƒ¼æ¥ç¶šé€šçŸ¥
     /// </summary>
     public Action<JoinedUser> OnJoinedUser {  get; set; }
 
     /// <summary>
-    /// ƒ†[ƒU[‘Şo’Ê’m
+    /// ãƒ¦ãƒ¼ã‚¶ãƒ¼é€€å‡ºé€šçŸ¥
     /// </summary>
     public Action<JoinedUser> OnExitedUser { get; set; }
 
     /// <summary>
-    /// ƒ†[ƒU[ˆÚ“®’Ê’m
+    /// ãƒ¦ãƒ¼ã‚¶ãƒ¼ç§»å‹•é€šçŸ¥
     /// </summary>
     public Action<MoveData> OnMovedUser { get; set; }
 
     /// <summary>
-    /// ƒCƒ“ƒQ[ƒ€’Ê’m
+    /// ã‚¤ãƒ³ã‚²ãƒ¼ãƒ é€šçŸ¥
     /// </summary>
     public Action OnInGameUser { get; set; }
 
     /// <summary>
-    /// ƒQ[ƒ€ŠJn’Ê’m
+    /// ã‚²ãƒ¼ãƒ é–‹å§‹é€šçŸ¥
     /// </summary>
     public Action OnStartGameUser { get; set; }
 
     /// <summary>
-    /// ƒQ[ƒ€I—¹’Ê’m
+    /// ã‚²ãƒ¼ãƒ çµ‚äº†é€šçŸ¥
     /// </summary>
     public Action<List<ResultData>> OnEndGameUser { get; set; }
 
     /// <summary>
-    /// ƒ†[ƒU[Œ‚”j’Ê’m
+    /// ãƒ¦ãƒ¼ã‚¶ãƒ¼æ’ƒç ´é€šçŸ¥
     /// </summary>
     public Action<string,string,Guid,int> OnCrushingUser { get; set; }
 
     /// <summary>
-    /// cƒ^ƒCƒ€’Ê’m
+    /// æ®‹ã‚¿ã‚¤ãƒ é€šçŸ¥
     /// </summary>
     public Action<int> OnTimeCountUser { get; set; }
 
     /// <summary>
-    /// ƒ^ƒCƒ€ƒAƒbƒv’Ê’m
+    /// ã‚¿ã‚¤ãƒ ã‚¢ãƒƒãƒ—é€šçŸ¥
     /// </summary>
     public Action OnTimeUpUser {  get; set; }
 
     /// <summary>
-    ///  ”­Ë’Ê’m
+    ///  ç™ºå°„é€šçŸ¥
     /// </summary>
     public Action<int> OnShotUser { get; set; }
 
     //-------------------------------------------------------
-    // ƒƒ\ƒbƒh
+    // ãƒ¡ã‚½ãƒƒãƒ‰
     void Start()
     {
-        // roomModel‚ª”jŠü‚³‚ê‚È‚¢‚æ‚¤‚Éİ’è
+        // roomModelãŒç ´æ£„ã•ã‚Œãªã„ã‚ˆã†ã«è¨­å®š
         DontDestroyOnLoad(this.gameObject);
     }
 
-    // Ú‘±ˆ—
+    // æ¥ç¶šå‡¦ç†
     public async UniTask ConnectAsync()
     {
-        var handler = new YetAnotherHttpHandler() { Http2Only = true };   // ƒnƒ“ƒhƒ‰[‚Ìİ’è
-        channel = GrpcChannel.ForAddress(ServerURL, new GrpcChannelOptions() { HttpHandler = handler });    // ƒT[ƒo[‚Æ‚Ìƒ`ƒƒƒ“ƒlƒ‹‚ğİ’è
-        roomHub = await StreamingHubClient.ConnectAsync<IRoomHub, IRoomHubReceiver>(channel, this); // ƒT[ƒo[‚Æ‚ÌÚ‘±
+        var handler = new YetAnotherHttpHandler() { Http2Only = true };   // ãƒãƒ³ãƒ‰ãƒ©ãƒ¼ã®è¨­å®š
+        channel = GrpcChannel.ForAddress(ServerURL, new GrpcChannelOptions() { HttpHandler = handler });    // ã‚µãƒ¼ãƒãƒ¼ã¨ã®ãƒãƒ£ãƒ³ãƒãƒ«ã‚’è¨­å®š
+        roomHub = await StreamingHubClient.ConnectAsync<IRoomHub, IRoomHubReceiver>(channel, this); // ã‚µãƒ¼ãƒãƒ¼ã¨ã®æ¥ç¶š
     }
 
-    // Ø’fˆ—
+    // åˆ‡æ–­å‡¦ç†
     public async UniTask DisconnectionAsync()
     {
         if (roomHub != null)
@@ -129,21 +129,21 @@ public class RoomModel : BaseModel,IRoomHubReceiver
         roomHub = null; channel = null;
     }
 
-    // ”jŠüˆ—
+    // ç ´æ£„å‡¦ç†
     async void OnDestroy()
     {
-        // Ø’fˆ—
+        // åˆ‡æ–­å‡¦ç†
         await DisconnectionAsync();
     }
 
-    // ƒƒr[Ú‘±ˆ—
+    // ãƒ­ãƒ“ãƒ¼æ¥ç¶šå‡¦ç†
     public async UniTask JoinLobbyAsync(int userId)
     {
-        this.UserId = userId;   // ƒ†[ƒU[ID‚Ì•Û‘¶
+        this.UserId = userId;   // ãƒ¦ãƒ¼ã‚¶ãƒ¼IDã®ä¿å­˜
         await roomHub.JoinLobbyAsync(userId);
     }
 
-    // “üºˆ—
+    // å…¥å®¤å‡¦ç†
     public async UniTask JoinAsync()
     {
         JoinedUser[] users =await roomHub.JoinAsync(RoomName, UserId);
@@ -151,129 +151,129 @@ public class RoomModel : BaseModel,IRoomHubReceiver
         {
             if (user.UserData.Id == UserId)
             {
-                this.ConnectionId = user.ConnectionId;  // Ú‘±ID‚Ì•Û‘¶
-                this.JoinOrder = user.JoinOrder;        // Q‰Á‡(PLNo)‚Ì•Û‘¶
-                this.UserName = user.UserData.Name;     // ƒ†[ƒU[–¼‚Ì•Û‘¶
+                this.ConnectionId = user.ConnectionId;  // æ¥ç¶šIDã®ä¿å­˜
+                this.JoinOrder = user.JoinOrder;        // å‚åŠ é †(PLNo)ã®ä¿å­˜
+                this.UserName = user.UserData.Name;     // ãƒ¦ãƒ¼ã‚¶ãƒ¼åã®ä¿å­˜
             }
-            OnJoinedUser(user); // Action‚ÅModel‚ğg‚¤ƒNƒ‰ƒX‚É’Ê’m
+            OnJoinedUser(user); // Actionã§Modelã‚’ä½¿ã†ã‚¯ãƒ©ã‚¹ã«é€šçŸ¥
         }
     }
 
-    // ‘Şoˆ—
+    // é€€å‡ºå‡¦ç†
     public async UniTask ExitAsync()
     {
         await roomHub.ExitAsync();
     }
 
-    // ˆÚ“®ˆ—
+    // ç§»å‹•å‡¦ç†
     public async UniTask MoveAsync(MoveData moveData)
     {
         await roomHub.MoveAsync(moveData);
     }
 
-    // ƒQ[ƒ€ŠJn’Ê’mˆ—
+    // ã‚²ãƒ¼ãƒ é–‹å§‹é€šçŸ¥å‡¦ç†
     public async UniTask GameStartAsync()
     {
         await roomHub.GameStartAsync();
     }
 
-    // ƒQ[ƒ€I—¹’Ê’mˆ—
+    // ã‚²ãƒ¼ãƒ çµ‚äº†é€šçŸ¥å‡¦ç†
     public async UniTask GameEndAsync()
     {
         await roomHub.GameEndAsync();
     }
 
-    // Œ‚”j’Ê’mˆ—
+    // æ’ƒç ´é€šçŸ¥å‡¦ç†
     public async UniTask CrushingPlayerAsync(string attackName, string cruchName, Guid crushID, int deadNo)
     {
         await roomHub.CrushingPlayerAsync(attackName, cruchName, crushID, deadNo);
     }
 
-    // cƒ^ƒCƒ€’Ê’mˆ—
+    // æ®‹ã‚¿ã‚¤ãƒ é€šçŸ¥å‡¦ç†
     public async UniTask TimeCountAsync(int time)
     {
         await roomHub.TimeCountAsync(time);
     }
 
-    // ‘å–CËoˆ—
+    // å¤§ç ²å°„å‡ºå‡¦ç†
     public async UniTask ShotCannonAsync()
     { 
         await roomHub.ShotCannonAsync();
     }
 
     //==================================================================
-    // IRoomHubReceiverƒCƒ“ƒ^[ƒtƒF[ƒX‚ÌÀ‘•
+    // IRoomHubReceiverã‚¤ãƒ³ã‚¿ãƒ¼ãƒ•ã‚§ãƒ¼ã‚¹ã®å®Ÿè£…
 
-    // ƒ}ƒbƒ`ƒ“ƒOŠ®—¹’Ê’m
+    // ãƒãƒƒãƒãƒ³ã‚°å®Œäº†é€šçŸ¥
     public void OnMatching(string roomName, int stageID)
     {
         OnMatchingUser(roomName,stageID);
     }
 
-    // “üº’Ê’m
+    // å…¥å®¤é€šçŸ¥
     public void OnJoin(JoinedUser user)
     {
         if (OnJoinedUser == null) return;
         OnJoinedUser(user);
     }
 
-    // ‘Şo’Ê’m
+    // é€€å‡ºé€šçŸ¥
     public void OnExit(JoinedUser user)
     {
         if (OnExitedUser == null) return;
         OnExitedUser(user);
     }
 
-    // ˆÚ“®’Ê’m
+    // ç§»å‹•é€šçŸ¥
     public void OnMove(MoveData moveData)
     {
         if (OnMovedUser == null) return;
         OnMovedUser(moveData);
     }
 
-    // ƒCƒ“ƒQ[ƒ€’Ê’m
+    // ã‚¤ãƒ³ã‚²ãƒ¼ãƒ é€šçŸ¥
     public void OnInGame()
     {
         if (OnInGameUser == null) return;
         OnInGameUser();
     }
 
-    // ƒQ[ƒ€ŠJn’Ê’m
+    // ã‚²ãƒ¼ãƒ é–‹å§‹é€šçŸ¥
     public void OnStartGame()
     {
         if (OnStartGameUser == null) return;
         OnStartGameUser();
     }
 
-    // ƒQ[ƒ€I—¹’Ê’m
+    // ã‚²ãƒ¼ãƒ çµ‚äº†é€šçŸ¥
     public void OnEndGame(List<ResultData> result)
     {
         if (OnEndGameUser == null) return;
         OnEndGameUser(result);
     }
 
-    // Œ‚”j’Ê’mˆ—
+    // æ’ƒç ´é€šçŸ¥å‡¦ç†
     public void OnCrushing(string attackName, string cruchName, Guid crushID, int deadNo)
     {
         if (OnCrushingUser == null) return;
         OnCrushingUser(attackName, cruchName, crushID, deadNo);
     }
 
-    // cƒ^ƒCƒ€’Ê’mˆ—
+    // æ®‹ã‚¿ã‚¤ãƒ é€šçŸ¥å‡¦ç†
     public void OnTimeCount(int time)
     {
         if (OnTimeCountUser == null) return;
         OnTimeCountUser(time);
     }
 
-    // ƒ^ƒCƒ€ƒAƒbƒv’Ê’mˆ—
+    // ã‚¿ã‚¤ãƒ ã‚¢ãƒƒãƒ—é€šçŸ¥å‡¦ç†
     public void OnTimeUp()
     {
         if (OnTimeUpUser == null) return;
         OnTimeUpUser();
     }
 
-    // ”­Ë’Ê’mˆ—
+    // ç™ºå°„é€šçŸ¥å‡¦ç†
     public void OnShot(int cannonID)
     {
         if (OnShotUser == null) return;

@@ -1,5 +1,5 @@
 //---------------------------------------------------------------
-// ƒ\ƒƒXƒe[ƒW‘I‘ğƒ}ƒl[ƒWƒƒ[ [ SoloSelectManager.cs ]
+// ã‚½ãƒ­ã‚¹ãƒ†ãƒ¼ã‚¸é¸æŠãƒãƒãƒ¼ã‚¸ãƒ£ãƒ¼ [ SoloSelectManager.cs ]
 // Author:Kenta Nakamoto
 // Data:2025/01/11
 // Update:2025/01/30
@@ -19,110 +19,110 @@ using UnityEngine.UI;
 public class SoloSelectManager : MonoBehaviour
 {
     //=====================================
-    // ƒtƒB[ƒ‹ƒh
+    // ãƒ•ã‚£ãƒ¼ãƒ«ãƒ‰
 
     /// <summary>
-    /// æ“¾ƒS[ƒXƒgƒf[ƒ^
+    /// å–å¾—ã‚´ãƒ¼ã‚¹ãƒˆãƒ‡ãƒ¼ã‚¿
     /// </summary>
     private string getGhostData;
 
     /// <summary>
-    /// ƒvƒŒƒCƒXƒe[ƒWID
+    /// ãƒ—ãƒ¬ã‚¤ã‚¹ãƒ†ãƒ¼ã‚¸ID
     /// </summary>
     private int playStageID = 1;
 
     /// <summary>
-    /// ŠeƒXƒe[ƒW‚Ìƒ‰ƒ“ƒLƒ“ƒOî•ñ‚ğæ“¾
+    /// å„ã‚¹ãƒ†ãƒ¼ã‚¸ã®ãƒ©ãƒ³ã‚­ãƒ³ã‚°æƒ…å ±ã‚’å–å¾—
     /// </summary>
     private List<List<RankingData>> stageRnakings = new List<List<RankingData>>();
 
     /// <summary>
-    /// Å‘åƒXƒe[ƒW”
+    /// æœ€å¤§ã‚¹ãƒ†ãƒ¼ã‚¸æ•°
     /// </summary>
     [SerializeField] private int maxStage;
 
     /// <summary>
-    /// ƒ†[ƒU[–¼Ši”[—p
+    /// ãƒ¦ãƒ¼ã‚¶ãƒ¼åæ ¼ç´ç”¨
     /// </summary>
     [SerializeField] private Text[] nameTexts;
 
     /// <summary>
-    /// ƒNƒŠƒAƒ^ƒCƒ€Ši”[—p
+    /// ã‚¯ãƒªã‚¢ã‚¿ã‚¤ãƒ æ ¼ç´ç”¨
     /// </summary>
     [SerializeField] private Text[] clearTimeTexts;
 
     /// <summary>
-    /// ƒXƒe[ƒW‰æ‘œŠi”[—p
+    /// ã‚¹ãƒ†ãƒ¼ã‚¸ç”»åƒæ ¼ç´ç”¨
     /// </summary>
     [SerializeField] private Sprite[] stageSprits;
 
     /// <summary>
-    /// ƒXƒe[ƒW‰æ‘œ
+    /// ã‚¹ãƒ†ãƒ¼ã‚¸ç”»åƒ
     /// </summary>
     [SerializeField] private Image stageImage;
 
     /// <summary>
-    /// ƒ‰ƒ“ƒLƒ“ƒOƒ‚ƒfƒ‹Ši”[—p
+    /// ãƒ©ãƒ³ã‚­ãƒ³ã‚°ãƒ¢ãƒ‡ãƒ«æ ¼ç´ç”¨
     /// </summary>
     [SerializeField] private RankingModel rankingModel;
 
     /// <summary>
-    /// ƒS[ƒXƒgƒIƒ“ƒ{ƒ^ƒ“
+    /// ã‚´ãƒ¼ã‚¹ãƒˆã‚ªãƒ³ãƒœã‚¿ãƒ³
     /// </summary>
     [SerializeField] private GameObject onGhostButton;
 
     /// <summary>
-    /// ƒS[ƒXƒgƒIƒtƒ{ƒ^ƒ“
+    /// ã‚´ãƒ¼ã‚¹ãƒˆã‚ªãƒ•ãƒœã‚¿ãƒ³
     /// </summary>
     [SerializeField] private GameObject offGhostButton;
 
     /// <summary>
-    /// ƒlƒNƒXƒgƒXƒe[ƒWƒ{ƒ^ƒ“
+    /// ãƒã‚¯ã‚¹ãƒˆã‚¹ãƒ†ãƒ¼ã‚¸ãƒœã‚¿ãƒ³
     /// </summary>
     [SerializeField] private GameObject nextButton;
 
     /// <summary>
-    /// ƒoƒbƒNƒXƒe[ƒWƒ{ƒ^ƒ“
+    /// ãƒãƒƒã‚¯ã‚¹ãƒ†ãƒ¼ã‚¸ãƒœã‚¿ãƒ³
     /// </summary>
     [SerializeField] private GameObject backButton;
 
     //=====================================
-    // ƒƒ\ƒbƒh
+    // ãƒ¡ã‚½ãƒƒãƒ‰
 
     /// <summary>
-    /// ‰Šúˆ—
+    /// åˆæœŸå‡¦ç†
     /// </summary>
     async void Start()
     {
-        //Ä¶’†‚ÌBGM‚Ì–¼‘O‚ğ‘S‚Äæ“¾
+        //å†ç”Ÿä¸­ã®BGMã®åå‰ã‚’å…¨ã¦å–å¾—
         var currentBGMNames = BGMManager.Instance.GetCurrentAudioNames();
 
         if (currentBGMNames[0] != "MainBGM")
-        {   // MainBGM‚ğÄŠJ
+        {   // MainBGMã‚’å†é–‹
             BGMManager.Instance.Stop(BGMPath.TIME_ATTACK);
             BGMManager.Instance.Stop(BGMPath.MULTI_PLAY);
             BGMManager.Instance.Play(BGMPath.MAIN_BGM, 0.75f, 0, 1, true, true);
         }
 
         for (int i=0;i < maxStage; i++)
-        {   // ƒXƒe[ƒW”•ª‚Ìƒ‰ƒ“ƒLƒ“ƒOî•ñƒŠƒXƒg‚ğ¶¬
+        {   // ã‚¹ãƒ†ãƒ¼ã‚¸æ•°åˆ†ã®ãƒ©ãƒ³ã‚­ãƒ³ã‚°æƒ…å ±ãƒªã‚¹ãƒˆã‚’ç”Ÿæˆ
             stageRnakings.Add (new List<RankingData>());
         }
 
-        // ƒ‰ƒ“ƒLƒ“ƒOƒf[ƒ^‚Ìæ“¾ (Œ»İ‚ÍƒXƒe[ƒW1‚ÉŒÅ’è)
+        // ãƒ©ãƒ³ã‚­ãƒ³ã‚°ãƒ‡ãƒ¼ã‚¿ã®å–å¾— (ç¾åœ¨ã¯ã‚¹ãƒ†ãƒ¼ã‚¸1ã«å›ºå®š)
         stageRnakings[0] = await rankingModel.GetRankingAsync(1);
 
-        // ƒ‰ƒ“ƒLƒ“ƒO1ˆÊ‚ÌƒS[ƒXƒgƒf[ƒ^‚ğæ“¾
-        UserModel.Instance.GhostData = "";  // ƒŠƒZƒbƒg
+        // ãƒ©ãƒ³ã‚­ãƒ³ã‚°1ä½ã®ã‚´ãƒ¼ã‚¹ãƒˆãƒ‡ãƒ¼ã‚¿ã‚’å–å¾—
+        UserModel.Instance.GhostData = "";  // ãƒªã‚»ãƒƒãƒˆ
         UserModel.Instance.GhostData = stageRnakings[0][0].GhostData;
         getGhostData = stageRnakings[0][0].GhostData;
 
-        // ‰æ–Ê‚É”½‰f
+        // ç”»é¢ã«åæ˜ 
         for (int i = 0; i < stageRnakings[0].Count; i++)
         {
-            nameTexts[i].text = stageRnakings[0][i].UserName;   // –¼‘O‚ğŠi”[
+            nameTexts[i].text = stageRnakings[0][i].UserName;   // åå‰ã‚’æ ¼ç´
 
-            // ƒNƒŠƒAƒ^ƒCƒ€‚ğƒeƒLƒXƒg‚É”½‰f
+            // ã‚¯ãƒªã‚¢ã‚¿ã‚¤ãƒ ã‚’ãƒ†ã‚­ã‚¹ãƒˆã«åæ˜ 
             float clearTIme = (float)stageRnakings[0][i].ClearTime / 1000.0f;
             string decNum = (clearTIme - (int)clearTIme).ToString(".000");
             clearTimeTexts[i].text = ((int)(clearTIme / 60)).ToString("00") + ":" + ((int)clearTIme % 60).ToString("00") + decNum;
@@ -130,11 +130,11 @@ public class SoloSelectManager : MonoBehaviour
     }
 
     /// <summary>
-    /// ƒXƒe[ƒWØ‚è‘Ö‚¦ˆ—
+    /// ã‚¹ãƒ†ãƒ¼ã‚¸åˆ‡ã‚Šæ›¿ãˆå‡¦ç†
     /// </summary>
     private async void SelectStageButton()
     {
-        //--- ƒ{ƒ^ƒ“‚Ì—LŒøØ‘Ö
+        //--- ãƒœã‚¿ãƒ³ã®æœ‰åŠ¹åˆ‡æ›¿
         if(playStageID == 1)
         {
             nextButton.GetComponent<Button>().interactable = true;
@@ -150,37 +150,37 @@ public class SoloSelectManager : MonoBehaviour
             backButton.GetComponent<Button>().interactable = true;
         }
 
-        //--- ‘I‘ğƒXƒe[ƒW‚Ìƒ‰ƒ“ƒLƒ“ƒOî•ñ‚ğ•\¦
+        //--- é¸æŠã‚¹ãƒ†ãƒ¼ã‚¸ã®ãƒ©ãƒ³ã‚­ãƒ³ã‚°æƒ…å ±ã‚’è¡¨ç¤º
 
-        // Šù‚Éƒ‰ƒ“ƒLƒ“ƒOî•ñ‚ğæ“¾‚µ‚Ä‚¢‚é‚©”»’f
+        // æ—¢ã«ãƒ©ãƒ³ã‚­ãƒ³ã‚°æƒ…å ±ã‚’å–å¾—ã—ã¦ã„ã‚‹ã‹åˆ¤æ–­
         if (stageRnakings[playStageID - 1].Count == 0)
         {
-            // ‘I‘ğ‚µ‚½ƒXƒe[ƒWƒ‰ƒ“ƒLƒ“ƒOƒf[ƒ^‚Ìæ“¾
+            // é¸æŠã—ãŸã‚¹ãƒ†ãƒ¼ã‚¸ãƒ©ãƒ³ã‚­ãƒ³ã‚°ãƒ‡ãƒ¼ã‚¿ã®å–å¾—
             stageRnakings[playStageID - 1] = await rankingModel.GetRankingAsync(playStageID);
         }
 
-        // ƒS[ƒXƒgƒf[ƒ^‚ÌØ‚è‘Ö‚¦
-        UserModel.Instance.GhostData = "";  // ƒŠƒZƒbƒg
+        // ã‚´ãƒ¼ã‚¹ãƒˆãƒ‡ãƒ¼ã‚¿ã®åˆ‡ã‚Šæ›¿ãˆ
+        UserModel.Instance.GhostData = "";  // ãƒªã‚»ãƒƒãƒˆ
         UserModel.Instance.GhostData = stageRnakings[playStageID - 1][0].GhostData;
         getGhostData = stageRnakings[playStageID - 1][0].GhostData;
 
-        // ‰æ–Ê‚É”½‰f
+        // ç”»é¢ã«åæ˜ 
         for (int i = 0; i < stageRnakings[playStageID - 1].Count; i++)
         {
-            nameTexts[i].text = stageRnakings[playStageID - 1][i].UserName;   // –¼‘O‚ğŠi”[
+            nameTexts[i].text = stageRnakings[playStageID - 1][i].UserName;   // åå‰ã‚’æ ¼ç´
 
-            // ƒNƒŠƒAƒ^ƒCƒ€‚ğƒeƒLƒXƒg‚É”½‰f
+            // ã‚¯ãƒªã‚¢ã‚¿ã‚¤ãƒ ã‚’ãƒ†ã‚­ã‚¹ãƒˆã«åæ˜ 
             float clearTIme = (float)stageRnakings[playStageID - 1][i].ClearTime / 1000.0f;
             string decNum = (clearTIme - (int)clearTIme).ToString(".000");
             clearTimeTexts[i].text = ((int)(clearTIme / 60)).ToString("00") + ":" + ((int)clearTIme % 60).ToString("00") + decNum;
         }
 
-        // ‰æ‘œØ‚è‘Ö‚¦
+        // ç”»åƒåˆ‡ã‚Šæ›¿ãˆ
         stageImage.sprite = stageSprits[playStageID - 1];
     }
 
     /// <summary>
-    /// ƒXƒe[ƒW‘I‘ğƒ{ƒ^ƒ“ (Ÿ‚Ö)
+    /// ã‚¹ãƒ†ãƒ¼ã‚¸é¸æŠãƒœã‚¿ãƒ³ (æ¬¡ã¸)
     /// </summary>
     public void OnNextButton()
     {
@@ -191,7 +191,7 @@ public class SoloSelectManager : MonoBehaviour
     }
 
     /// <summary>
-    /// ƒXƒe[ƒW‘I‘ğƒ{ƒ^ƒ“ (‘O‚Ö)
+    /// ã‚¹ãƒ†ãƒ¼ã‚¸é¸æŠãƒœã‚¿ãƒ³ (å‰ã¸)
     /// </summary>
     public void OnBackButton()
     {
@@ -202,33 +202,33 @@ public class SoloSelectManager : MonoBehaviour
     }
 
     /// <summary>
-    /// ƒvƒŒƒCƒ{ƒ^ƒ“‰Ÿ‰ºˆ—
+    /// ãƒ—ãƒ¬ã‚¤ãƒœã‚¿ãƒ³æŠ¼ä¸‹å‡¦ç†
     /// </summary>
     public void OnPlayButton()
     {
-        // SEÄ¶
+        // SEå†ç”Ÿ
         SEManager.Instance.Play(SEPath.TAP_BUTTON);
 
-        // ƒ\ƒƒvƒŒƒCƒ‚[ƒh‘JˆÚ
+        // ã‚½ãƒ­ãƒ—ãƒ¬ã‚¤ãƒ¢ãƒ¼ãƒ‰é·ç§»
         Initiate.DoneFading();
         Initiate.Fade(playStageID.ToString() + "_SoloPlayScene", Color.white, 2.5f);
     }
 
     /// <summary>
-    /// ƒƒjƒ…[ƒ{ƒ^ƒ“‰Ÿ‰ºˆ—
+    /// ãƒ¡ãƒ‹ãƒ¥ãƒ¼ãƒœã‚¿ãƒ³æŠ¼ä¸‹å‡¦ç†
     /// </summary>
     public void OnMenuButton()
     {
-        // SEÄ¶
+        // SEå†ç”Ÿ
         SEManager.Instance.Play(SEPath.TAP_BUTTON);
 
-        // ƒƒjƒ…[ƒ‚[ƒh‘JˆÚ
+        // ãƒ¡ãƒ‹ãƒ¥ãƒ¼ãƒ¢ãƒ¼ãƒ‰é·ç§»
         Initiate.DoneFading();
         Initiate.Fade("2_MenuScene", Color.white, 2.5f);
     }
 
     /// <summary>
-    /// ƒS[ƒXƒgƒIƒ“ƒ{ƒ^ƒ“
+    /// ã‚´ãƒ¼ã‚¹ãƒˆã‚ªãƒ³ãƒœã‚¿ãƒ³
     /// </summary>
     public void OnGhostPlayButton()
     {
@@ -239,7 +239,7 @@ public class SoloSelectManager : MonoBehaviour
     }
 
     /// <summary>
-    /// ƒS[ƒXƒgƒIƒtƒ{ƒ^ƒ“
+    /// ã‚´ãƒ¼ã‚¹ãƒˆã‚ªãƒ•ãƒœã‚¿ãƒ³
     /// </summary>
     public void OnGhostNotButton()
     {

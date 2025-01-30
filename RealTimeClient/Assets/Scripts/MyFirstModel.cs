@@ -13,7 +13,7 @@ public class MyFirstModel : BaseModel
     async void Start()
     {
         // UniTask
-        int sumResult = await Sum(100, 323);   // ”ñ“¯Šúˆ—BŠ®—¹Ÿ‘æŸ‚Ìs‚Ö
+        int sumResult = await Sum(100, 323);   // éåŒæœŸå‡¦ç†ã€‚å®Œäº†æ¬¡ç¬¬æ¬¡ã®è¡Œã¸
 
         int subResult = await Sub(150, 100);
 
@@ -27,21 +27,21 @@ public class MyFirstModel : BaseModel
         numArray.y = 6.2f;
         float result = await SumAllNumber(numArray);
 
-        // ƒƒOo—Í
-        //Debug.Log("‘«‚µZ" + sumResult);
+        // ãƒ­ã‚°å‡ºåŠ›
+        //Debug.Log("è¶³ã—ç®—" + sumResult);
 
-        //Debug.Log("ˆø‚«Z" + subResult);
+        //Debug.Log("å¼•ãç®—" + subResult);
 
-        //Debug.Log("”z—ñ‘«‚µZ" + sumAllResult);
+        //Debug.Log("é…åˆ—è¶³ã—ç®—" + sumAllResult);
 
-        //Debug.Log("‘«‚µZ" + calcResult[0]);
-        //Debug.Log("ˆø‚«Z" + calcResult[1]);
-        //Debug.Log("‚©‚¯Z" + calcResult[2]);
-        //Debug.Log("‚í‚èZ" + calcResult[3]);
+        //Debug.Log("è¶³ã—ç®—" + calcResult[0]);
+        //Debug.Log("å¼•ãç®—" + calcResult[1]);
+        //Debug.Log("ã‹ã‘ç®—" + calcResult[2]);
+        //Debug.Log("ã‚ã‚Šç®—" + calcResult[3]);
 
-        Debug.Log("¬”‘«‚µZF" + result);
+        Debug.Log("å°æ•°è¶³ã—ç®—ï¼š" + result);
 
-        // ’Êí
+        // é€šå¸¸
         /*Sum(100, 250, result =>
         {
             Debug.Log(result);
@@ -51,62 +51,62 @@ public class MyFirstModel : BaseModel
 
     // UniTask ----------------------------------------------------------------------------------------------------------------------------------
 
-    // u‘«‚µZAPIv“ñ‚Â‚Ì®”‚ğˆø”‚Åó‚¯æ‚è‡Œv’l‚ğ•Ô‚·
+    // ã€Œè¶³ã—ç®—APIã€äºŒã¤ã®æ•´æ•°ã‚’å¼•æ•°ã§å—ã‘å–ã‚Šåˆè¨ˆå€¤ã‚’è¿”ã™
     public async UniTask<int> Sum(int x, int y)
     {
-        using var handler = new YetAnotherHttpHandler() { Http2Only = true };   // ƒnƒ“ƒhƒ‰[‚Ìİ’è
-        var channel = GrpcChannel.ForAddress(ServerURL, new GrpcChannelOptions() { HttpHandler = handler });    // ƒT[ƒo[‚Æ‚Ìƒ`ƒƒƒ“ƒlƒ‹‚ğİ’è
-        var client = MagicOnionClient.Create<IMyFirstService>(channel); // ƒT[ƒo[‚Æ‚ÌÚ‘±
-        var result = await client.SumAsync(x, y);   // ŠÖ”ŒÄ‚Ño‚µ
+        using var handler = new YetAnotherHttpHandler() { Http2Only = true };   // ãƒãƒ³ãƒ‰ãƒ©ãƒ¼ã®è¨­å®š
+        var channel = GrpcChannel.ForAddress(ServerURL, new GrpcChannelOptions() { HttpHandler = handler });    // ã‚µãƒ¼ãƒãƒ¼ã¨ã®ãƒãƒ£ãƒ³ãƒãƒ«ã‚’è¨­å®š
+        var client = MagicOnionClient.Create<IMyFirstService>(channel); // ã‚µãƒ¼ãƒãƒ¼ã¨ã®æ¥ç¶š
+        var result = await client.SumAsync(x, y);   // é–¢æ•°å‘¼ã³å‡ºã—
         return result;
     }
 
-    // uˆø‚«ZAPIv“ñ‚Â‚Ì®”‚ğˆø”‚Åó‚¯æ‚èŒ¸Z’l‚ğ•Ô‚·
+    // ã€Œå¼•ãç®—APIã€äºŒã¤ã®æ•´æ•°ã‚’å¼•æ•°ã§å—ã‘å–ã‚Šæ¸›ç®—å€¤ã‚’è¿”ã™
     public async UniTask<int> Sub(int x, int y)
     {
-        using var handler = new YetAnotherHttpHandler() { Http2Only = true };   // ƒnƒ“ƒhƒ‰[‚Ìİ’è
-        var channel = GrpcChannel.ForAddress(ServerURL, new GrpcChannelOptions() { HttpHandler = handler });    // ƒT[ƒo[‚Æ‚Ìƒ`ƒƒƒ“ƒlƒ‹‚ğİ’è
-        var client = MagicOnionClient.Create<IMyFirstService>(channel); // ƒT[ƒo[‚Æ‚ÌÚ‘±
-        var result = await client.SubAsync(x, y);   // ŠÖ”ŒÄ‚Ño‚µ
+        using var handler = new YetAnotherHttpHandler() { Http2Only = true };   // ãƒãƒ³ãƒ‰ãƒ©ãƒ¼ã®è¨­å®š
+        var channel = GrpcChannel.ForAddress(ServerURL, new GrpcChannelOptions() { HttpHandler = handler });    // ã‚µãƒ¼ãƒãƒ¼ã¨ã®ãƒãƒ£ãƒ³ãƒãƒ«ã‚’è¨­å®š
+        var client = MagicOnionClient.Create<IMyFirstService>(channel); // ã‚µãƒ¼ãƒãƒ¼ã¨ã®æ¥ç¶š
+        var result = await client.SubAsync(x, y);   // é–¢æ•°å‘¼ã³å‡ºã—
         return result;
     }
 
-    // u‘«‚µZAPIvint”z—ñ‚ğˆø”‚Åó‚¯æ‚è‡Œv’l‚ğ•Ô‚·
+    // ã€Œè¶³ã—ç®—APIã€inté…åˆ—ã‚’å¼•æ•°ã§å—ã‘å–ã‚Šåˆè¨ˆå€¤ã‚’è¿”ã™
     public async UniTask<int> SumAll(int[] numList)
     {
-        using var handler = new YetAnotherHttpHandler() { Http2Only = true };   // ƒnƒ“ƒhƒ‰[‚Ìİ’è
-        var channel = GrpcChannel.ForAddress(ServerURL, new GrpcChannelOptions() { HttpHandler = handler });    // ƒT[ƒo[‚Æ‚Ìƒ`ƒƒƒ“ƒlƒ‹‚ğİ’è
-        var client = MagicOnionClient.Create<IMyFirstService>(channel); // ƒT[ƒo[‚Æ‚ÌÚ‘±
-        var result = await client.SumAllAsync(numList);   // ŠÖ”ŒÄ‚Ño‚µ
+        using var handler = new YetAnotherHttpHandler() { Http2Only = true };   // ãƒãƒ³ãƒ‰ãƒ©ãƒ¼ã®è¨­å®š
+        var channel = GrpcChannel.ForAddress(ServerURL, new GrpcChannelOptions() { HttpHandler = handler });    // ã‚µãƒ¼ãƒãƒ¼ã¨ã®ãƒãƒ£ãƒ³ãƒãƒ«ã‚’è¨­å®š
+        var client = MagicOnionClient.Create<IMyFirstService>(channel); // ã‚µãƒ¼ãƒãƒ¼ã¨ã®æ¥ç¶š
+        var result = await client.SumAllAsync(numList);   // é–¢æ•°å‘¼ã³å‡ºã—
         return result;
     }
 
-    // [0] x+y , [1] x-y , [2] x*y , [3] x/y ‚Ì”z—ñ‚ğ•Ô‚·
+    // [0] x+y , [1] x-y , [2] x*y , [3] x/y ã®é…åˆ—ã‚’è¿”ã™
     public async UniTask<int[]> CalcForOperation(int x, int y)
     {
-        using var handler = new YetAnotherHttpHandler() { Http2Only = true };   // ƒnƒ“ƒhƒ‰[‚Ìİ’è
-        var channel = GrpcChannel.ForAddress(ServerURL, new GrpcChannelOptions() { HttpHandler = handler });    // ƒT[ƒo[‚Æ‚Ìƒ`ƒƒƒ“ƒlƒ‹‚ğİ’è
-        var client = MagicOnionClient.Create<IMyFirstService>(channel); // ƒT[ƒo[‚Æ‚ÌÚ‘±
-        var result = await client.CalcForOperationAsync(x,y);   // ŠÖ”ŒÄ‚Ño‚µ
+        using var handler = new YetAnotherHttpHandler() { Http2Only = true };   // ãƒãƒ³ãƒ‰ãƒ©ãƒ¼ã®è¨­å®š
+        var channel = GrpcChannel.ForAddress(ServerURL, new GrpcChannelOptions() { HttpHandler = handler });    // ã‚µãƒ¼ãƒãƒ¼ã¨ã®ãƒãƒ£ãƒ³ãƒãƒ«ã‚’è¨­å®š
+        var client = MagicOnionClient.Create<IMyFirstService>(channel); // ã‚µãƒ¼ãƒãƒ¼ã¨ã®æ¥ç¶š
+        var result = await client.CalcForOperationAsync(x,y);   // é–¢æ•°å‘¼ã³å‡ºã—
         return result;
     }
 
     public async UniTask<float> SumAllNumber(IMyFirstService.Number numArray)
     {
-        using var handler = new YetAnotherHttpHandler() { Http2Only = true };   // ƒnƒ“ƒhƒ‰[‚Ìİ’è
-        var channel = GrpcChannel.ForAddress(ServerURL, new GrpcChannelOptions() { HttpHandler = handler });    // ƒT[ƒo[‚Æ‚Ìƒ`ƒƒƒ“ƒlƒ‹‚ğİ’è
-        var client = MagicOnionClient.Create<IMyFirstService>(channel); // ƒT[ƒo[‚Æ‚ÌÚ‘±
-        var result = await client.SumAllNumberAsync(numArray);   // ŠÖ”ŒÄ‚Ño‚µ
+        using var handler = new YetAnotherHttpHandler() { Http2Only = true };   // ãƒãƒ³ãƒ‰ãƒ©ãƒ¼ã®è¨­å®š
+        var channel = GrpcChannel.ForAddress(ServerURL, new GrpcChannelOptions() { HttpHandler = handler });    // ã‚µãƒ¼ãƒãƒ¼ã¨ã®ãƒãƒ£ãƒ³ãƒãƒ«ã‚’è¨­å®š
+        var client = MagicOnionClient.Create<IMyFirstService>(channel); // ã‚µãƒ¼ãƒãƒ¼ã¨ã®æ¥ç¶š
+        var result = await client.SumAllNumberAsync(numArray);   // é–¢æ•°å‘¼ã³å‡ºã—
         return result;
     }
 
-    // ’Êí
+    // é€šå¸¸
     /*public async void Sum(int x, int y, Action<int> callback)
     {
-        using var handler = new YetAnotherHttpHandler() { Http2Only = true };   // ƒnƒ“ƒhƒ‰[‚Ìİ’è
-        var channel = GrpcChannel.ForAddress(ServerURL, new GrpcChannelOptions() { HttpHandler = handler });    // ƒT[ƒo[‚Æ‚Ìƒ`ƒƒƒ“ƒlƒ‹‚ğİ’è
-        var client = MagicOnionClient.Create<IMyFirstService>(channel); // ƒT[ƒo[‚Æ‚ÌÚ‘±
-        var result = await client.SumAsync(x, y);   // ŠÖ”ŒÄ‚Ño‚µ
+        using var handler = new YetAnotherHttpHandler() { Http2Only = true };   // ãƒãƒ³ãƒ‰ãƒ©ãƒ¼ã®è¨­å®š
+        var channel = GrpcChannel.ForAddress(ServerURL, new GrpcChannelOptions() { HttpHandler = handler });    // ã‚µãƒ¼ãƒãƒ¼ã¨ã®ãƒãƒ£ãƒ³ãƒãƒ«ã‚’è¨­å®š
+        var client = MagicOnionClient.Create<IMyFirstService>(channel); // ã‚µãƒ¼ãƒãƒ¼ã¨ã®æ¥ç¶š
+        var result = await client.SumAsync(x, y);   // é–¢æ•°å‘¼ã³å‡ºã—
         callback?.Invoke(result);
     }*/
 }

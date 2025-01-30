@@ -1,5 +1,5 @@
 //---------------------------------------------------------------
-// ƒQ[ƒ€ƒ}ƒl[ƒWƒƒ[ [ GameManager.cs ]
+// ã‚²ãƒ¼ãƒ ãƒãƒãƒ¼ã‚¸ãƒ£ãƒ¼ [ GameManager.cs ]
 // Author:Kenta Nakamoto
 // Data:2024/11/18
 // Update:2025/01/28
@@ -23,10 +23,10 @@ using KanKikuchi.AudioManager;
 public class GameManager : MonoBehaviour
 {
     //=====================================
-    // ƒtƒB[ƒ‹ƒh
+    // ãƒ•ã‚£ãƒ¼ãƒ«ãƒ‰
 
     /// <summary>
-    /// ƒQ[ƒ€ó‘Ôí—Ş
+    /// ã‚²ãƒ¼ãƒ çŠ¶æ…‹ç¨®é¡
     /// </summary>
     private enum GameState
     {
@@ -37,187 +37,187 @@ public class GameManager : MonoBehaviour
     }
 
     /// <summary>
-    /// ƒfƒXƒ}ƒbƒ`ŠJnƒ^ƒCƒ€
+    /// ãƒ‡ã‚¹ãƒãƒƒãƒé–‹å§‹ã‚¿ã‚¤ãƒ 
     /// </summary>
     private const int DEATH_MATCH_TIME = 10;
 
     /// <summary>
-    /// ƒ‹[ƒ€ƒ‚ƒfƒ‹Ši”[—p
+    /// ãƒ«ãƒ¼ãƒ ãƒ¢ãƒ‡ãƒ«æ ¼ç´ç”¨
     /// </summary>
     private RoomModel roomModel;
 
     /// <summary>
-    /// Ú‘±ID‚ğƒL[‚ÉƒLƒƒƒ‰ƒNƒ^‚ÌƒIƒuƒWƒFƒNƒg‚ğŠÇ—
+    /// æ¥ç¶šIDã‚’ã‚­ãƒ¼ã«ã‚­ãƒ£ãƒ©ã‚¯ã‚¿ã®ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’ç®¡ç†
     /// </summary>
     private Dictionary<Guid, GameObject> characterList = new Dictionary<Guid, GameObject>();
 
     /// <summary>
-    /// ƒQ[ƒ€ó‘Ô
+    /// ã‚²ãƒ¼ãƒ çŠ¶æ…‹
     /// </summary>
     private GameState gameState = GameState.None;
 
     /// <summary>
-    /// •â³pos
+    /// è£œæ­£pos
     /// </summary>
     private Vector3 posCorrection = new Vector3(0.0f,-0.9f,0.0f);
 
     /// <summary>
-    /// ƒvƒŒƒCƒ„[ƒRƒ“ƒgƒ[ƒ‰[
+    /// ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã‚³ãƒ³ãƒˆãƒ­ãƒ¼ãƒ©ãƒ¼
     /// </summary>
     private GameObject playerController;
 
     /// <summary>
-    /// Ô‘ÌƒIƒuƒWƒF‚ÌˆÊ’uî•ñ
+    /// è»Šä½“ã‚ªãƒ–ã‚¸ã‚§ã®ä½ç½®æƒ…å ±
     /// </summary>
     private Transform visualTransform;
 
     /// <summary>
-    /// ‘€ìƒRƒ“ƒgƒ[ƒ‰[
+    /// æ“ä½œã‚³ãƒ³ãƒˆãƒ­ãƒ¼ãƒ©ãƒ¼
     /// </summary>
     private GameObject inputController;
 
     /// <summary>
-    /// ƒzƒC[ƒ‹‚ÌŠp“xæ“¾—p
+    /// ãƒ›ã‚¤ãƒ¼ãƒ«ã®è§’åº¦å–å¾—ç”¨
     /// </summary>
     private Transform wheelAngle;
 
     /// <summary>
-    /// ƒvƒŒƒCƒ„[‚Ìƒ^[ƒ{ƒp[ƒeƒBƒNƒ‹
+    /// ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã®ã‚¿ãƒ¼ãƒœãƒ‘ãƒ¼ãƒ†ã‚£ã‚¯ãƒ«
     /// </summary>
     private ParticleSystem playerTurboParticle;
 
     /// <summary>
-    /// ƒvƒŒƒCƒ„[‚ÌƒhƒŠƒtƒgƒp[ƒeƒBƒNƒ‹
+    /// ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã®ãƒ‰ãƒªãƒ•ãƒˆãƒ‘ãƒ¼ãƒ†ã‚£ã‚¯ãƒ«
     /// </summary>
     private ParticleSystem playerDriftParticle;
 
     /// <summary>
-    /// Q‰Á‡
+    /// å‚åŠ é †
     /// </summary>
     private int joinOrder = 0;
 
     /// <summary>
-    /// ‘å–C”­Ëƒtƒ‰ƒO
+    /// å¤§ç ²ç™ºå°„ãƒ•ãƒ©ã‚°
     /// </summary>
     private bool isCannon = false;
 
     /// <summary>
-    /// ƒfƒXƒ}ƒbƒ`ƒtƒ‰ƒO
+    /// ãƒ‡ã‚¹ãƒãƒƒãƒãƒ•ãƒ©ã‚°
     /// </summary>
     private bool isDeathMatch = false;
 
-    [Header("”’lİ’è")]
+    [Header("æ•°å€¤è¨­å®š")]
 
     /// <summary>
-    /// ’ÊM‘¬“x
+    /// é€šä¿¡é€Ÿåº¦
     /// </summary>
     [SerializeField] private float internetSpeed = 0.1f;
 
     /// <summary>
-    /// §ŒÀŠÔ
+    /// åˆ¶é™æ™‚é–“
     /// </summary>
     [SerializeField] private int timeLimit = 30;
 
     /// <summary>
-    /// ‘å–C”­ËŠÔŠu
+    /// å¤§ç ²ç™ºå°„é–“éš”
     /// </summary>
     [SerializeField] private int shotInterval = 10;
 
-    [Header("ŠeíObject‚ğƒAƒ^ƒbƒ`")]
+    [Header("å„ç¨®Objectã‚’ã‚¢ã‚¿ãƒƒãƒ")]
 
     /// <summary>
-    /// ƒ‚ƒoƒCƒ‹ƒCƒ“ƒvƒbƒgƒXƒNƒŠƒvƒg
+    /// ãƒ¢ãƒã‚¤ãƒ«ã‚¤ãƒ³ãƒ—ãƒƒãƒˆã‚¹ã‚¯ãƒªãƒ—ãƒˆ
     /// </summary>
     [SerializeField] private TinyCarMobileInput tinyCarMobileInput;
 
     /// <summary>
-    /// ƒ‚ƒoƒCƒ‹ƒCƒ“ƒvƒbƒgobj
+    /// ãƒ¢ãƒã‚¤ãƒ«ã‚¤ãƒ³ãƒ—ãƒƒãƒˆobj
     /// </summary>
     [SerializeField] private GameObject mobileInputObj;
 
     /// <summary>
-    /// ¶¬‚·‚éƒvƒŒƒCƒ„[‚ÌƒLƒƒƒ‰ƒNƒ^[ƒvƒŒƒnƒu
+    /// ç”Ÿæˆã™ã‚‹ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã®ã‚­ãƒ£ãƒ©ã‚¯ã‚¿ãƒ¼ãƒ—ãƒ¬ãƒãƒ–
     /// </summary>
     [SerializeField] private GameObject playerPrefab;
 
     /// <summary>
-    /// ¶¬‚·‚é‘¼ƒvƒŒƒCƒ„[‚ÌƒLƒƒƒ‰ƒNƒ^[ƒvƒŒƒnƒu
+    /// ç”Ÿæˆã™ã‚‹ä»–ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã®ã‚­ãƒ£ãƒ©ã‚¯ã‚¿ãƒ¼ãƒ—ãƒ¬ãƒãƒ–
     /// </summary>
     [SerializeField] private GameObject otherPrefab;
 
     /// <summary>
-    /// “ü—Íˆ—ƒvƒŒƒnƒu
+    /// å…¥åŠ›å‡¦ç†ãƒ—ãƒ¬ãƒãƒ–
     /// </summary>
     [SerializeField] private GameObject inputPrefab;
 
     /// <summary>
-    /// ƒvƒŒƒCƒ„[‚ğŠi”[‚·‚éeƒIƒuƒWƒFƒNƒg
+    /// ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã‚’æ ¼ç´ã™ã‚‹è¦ªã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ
     /// </summary>
     [SerializeField] private GameObject parentObj;
 
     /// <summary>
-    /// ƒƒCƒ“ƒJƒƒ‰
+    /// ãƒ¡ã‚¤ãƒ³ã‚«ãƒ¡ãƒ©
     /// </summary>
     [SerializeField] private GameObject mainCamera;
 
     /// <summary>
-    /// ƒvƒŒƒCƒ„[‚²‚Æ‚ÌƒŠƒX’n“_
+    /// ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã”ã¨ã®ãƒªã‚¹åœ°ç‚¹
     /// </summary>
     [SerializeField] private Transform[] respownList;
 
     /// <summary>
-    /// ”š”­ƒp[ƒeƒBƒNƒ‹
+    /// çˆ†ç™ºãƒ‘ãƒ¼ãƒ†ã‚£ã‚¯ãƒ«
     /// </summary>
     [SerializeField] private GameObject explosionPrefab;
 
     /// <summary>
-    /// ƒ†[ƒU[–¼•\¦—pƒIƒuƒWƒF
+    /// ãƒ¦ãƒ¼ã‚¶ãƒ¼åè¡¨ç¤ºç”¨ã‚ªãƒ–ã‚¸ã‚§
     /// </summary>
     [SerializeField] private GameObject[] nameObjs;
 
     /// <summary>
-    /// ‘å–CƒXƒNƒŠƒvƒg
+    /// å¤§ç ²ã‚¹ã‚¯ãƒªãƒ—ãƒˆ
     /// </summary>
     [SerializeField] private Cannon[] cannons;
 
     [Space (25)]
-    [Header("===== UIŠÖ˜A =====")]
+    [Header("===== UIé–¢é€£ =====")]
 
     [Space(10)]
     [Header("---- Text ----")]
 
     /// <summary>
-    /// ƒ^ƒCƒ}[
+    /// ã‚¿ã‚¤ãƒãƒ¼
     /// </summary>
     [SerializeField] private Text timerText;
 
     /// <summary>
-    /// Œ‚”j’Ê’m•\¦
+    /// æ’ƒç ´é€šçŸ¥è¡¨ç¤º
     /// </summary>
     [SerializeField] private GameObject crushText;
 
     /// <summary>
-    /// ƒŒ[ƒg•\¦—pƒIƒuƒWƒF
+    /// ãƒ¬ãƒ¼ãƒˆè¡¨ç¤ºç”¨ã‚ªãƒ–ã‚¸ã‚§
     /// </summary>
     [SerializeField] private GameObject rateObjs;
 
     /// <summary>
-    /// ƒŒ[ƒgƒeƒLƒXƒg
+    /// ãƒ¬ãƒ¼ãƒˆãƒ†ã‚­ã‚¹ãƒˆ
     /// </summary>
     [SerializeField] private Text rateText;
 
     /// <summary>
-    /// •„†•\¦ƒeƒLƒXƒg
+    /// ç¬¦å·è¡¨ç¤ºãƒ†ã‚­ã‚¹ãƒˆ
     /// </summary>
     [SerializeField] private Text signText;
 
     /// <summary>
-    /// ƒŒ[ƒg‘Œ¸ƒeƒLƒXƒg
+    /// ãƒ¬ãƒ¼ãƒˆå¢—æ¸›ãƒ†ã‚­ã‚¹ãƒˆ
     /// </summary>
     [SerializeField] private Text changeRateText;
 
     /// <summary>
-    /// ƒ†[ƒU[–¼ƒeƒLƒXƒg
+    /// ãƒ¦ãƒ¼ã‚¶ãƒ¼åãƒ†ã‚­ã‚¹ãƒˆ
     /// </summary>
     [SerializeField] private Text[] nameTexts;
 
@@ -225,17 +225,17 @@ public class GameManager : MonoBehaviour
     [Header("---- Panel ----")]
 
     /// <summary>
-    /// ƒŠƒUƒ‹ƒgƒpƒlƒ‹
+    /// ãƒªã‚¶ãƒ«ãƒˆãƒ‘ãƒãƒ«
     /// </summary>
     [SerializeField] private GameObject resultPanel;
 
     /// <summary>
-    /// Ø’f•\¦ƒpƒlƒ‹
+    /// åˆ‡æ–­è¡¨ç¤ºãƒ‘ãƒãƒ«
     /// </summary>
     [SerializeField] private GameObject disconnectPanel;
 
     /// <summary>
-    /// cƒ^ƒCƒ€•\¦ƒpƒlƒ‹
+    /// æ®‹ã‚¿ã‚¤ãƒ è¡¨ç¤ºãƒ‘ãƒãƒ«
     /// </summary>
     [SerializeField] private GameObject timerPanel;
 
@@ -243,27 +243,27 @@ public class GameManager : MonoBehaviour
     [Header("---- Image ----")]
 
     /// <summary>
-    /// ‡ˆÊ•\¦‰æ‘œ
+    /// é †ä½è¡¨ç¤ºç”»åƒ
     /// </summary>
     [SerializeField] private GameObject[] rankImages;
 
     /// <summary>
-    /// ƒJƒEƒ“ƒgƒ_ƒEƒ“‰æ‘œƒIƒuƒWƒF
+    /// ã‚«ã‚¦ãƒ³ãƒˆãƒ€ã‚¦ãƒ³ç”»åƒã‚ªãƒ–ã‚¸ã‚§
     /// </summary>
     [SerializeField] private GameObject countDownImageObj;
 
     /// <summary>
-    /// I—¹•\¦‰æ‘œ
+    /// çµ‚äº†è¡¨ç¤ºç”»åƒ
     /// </summary>
     [SerializeField] private GameObject endImageObj;
 
     /// <summary>
-    /// ƒJƒEƒ“ƒgƒ_ƒEƒ“‰æ‘œ
+    /// ã‚«ã‚¦ãƒ³ãƒˆãƒ€ã‚¦ãƒ³ç”»åƒ
     /// </summary>
     [SerializeField] private Image countDownImage;
 
     /// <summary>
-    /// ˆø‚«•ª‚¯•\¦—pƒIƒuƒWƒF
+    /// å¼•ãåˆ†ã‘è¡¨ç¤ºç”¨ã‚ªãƒ–ã‚¸ã‚§
     /// </summary>
     [SerializeField] private GameObject drawImageObj;
 
@@ -271,61 +271,61 @@ public class GameManager : MonoBehaviour
     [Header("---- Sprit ----")]
 
     /// <summary>
-    /// ƒJƒEƒ“ƒgƒ_ƒEƒ“ƒXƒvƒ‰ƒCƒg
+    /// ã‚«ã‚¦ãƒ³ãƒˆãƒ€ã‚¦ãƒ³ã‚¹ãƒ—ãƒ©ã‚¤ãƒˆ
     /// </summary>
     [SerializeField] private Sprite[] countSprits;
 
     //=====================================
-    // ƒƒ\ƒbƒh
+    // ãƒ¡ã‚½ãƒƒãƒ‰
 
     /// <summary>
-    /// ‰Šúˆ—
+    /// åˆæœŸå‡¦ç†
     /// </summary>
     async void Start()
     {
-        // BGMÄ¶
+        // BGMå†ç”Ÿ
         BGMManager.Instance.Pause(BGMPath.MAIN_BGM);
         BGMManager.Instance.Play(BGMPath.MULTI_PLAY);
 
         if(SceneManager.GetActiveScene().name == "3_OnlinePlayScene")
-        {   // ‘å–CƒXƒe[ƒW‚Ì‚É”­Ëƒtƒ‰ƒOOn
+        {   // å¤§ç ²ã‚¹ãƒ†ãƒ¼ã‚¸ã®æ™‚ã«ç™ºå°„ãƒ•ãƒ©ã‚°On
             isCannon = true;
         }
 
-        // ƒ‹[ƒ€ƒ‚ƒfƒ‹‚Ìæ“¾
+        // ãƒ«ãƒ¼ãƒ ãƒ¢ãƒ‡ãƒ«ã®å–å¾—
         roomModel = GameObject.Find("RoomModel").GetComponent<RoomModel>();
 
-        // Še’Ê’m‚ª“Í‚¢‚½Û‚És‚¤ˆ—‚ğƒ‚ƒfƒ‹‚É“o˜^‚·‚é
-        roomModel.OnJoinedUser += OnJoinedUser;         // “üº
-        roomModel.OnExitedUser += OnExitedUser;         // ‘Şº
-        roomModel.OnMovedUser += OnMovedUser;           // ˆÚ“®
-        roomModel.OnInGameUser += OnInGameUser;         // ƒCƒ“ƒQ[ƒ€
-        roomModel.OnStartGameUser += OnStartGameUser;   // ƒQ[ƒ€ƒXƒ^[ƒg
-        roomModel.OnEndGameUser += OnEndGameUser;       // ƒQ[ƒ€I—¹
-        roomModel.OnCrushingUser += OnCrushingUser;     // Œ‚”j
-        roomModel.OnTimeCountUser += OnTimeCountUser;   // ƒ^ƒCƒ€ƒJƒEƒ“ƒg
-        roomModel.OnTimeUpUser += OnTimeUpUser;         // ƒ^ƒCƒ€ƒAƒbƒv
-        roomModel.OnShotUser += OnShotUser;             // ‘å–C”­Ë
+        // å„é€šçŸ¥ãŒå±Šã„ãŸéš›ã«è¡Œã†å‡¦ç†ã‚’ãƒ¢ãƒ‡ãƒ«ã«ç™»éŒ²ã™ã‚‹
+        roomModel.OnJoinedUser += OnJoinedUser;         // å…¥å®¤
+        roomModel.OnExitedUser += OnExitedUser;         // é€€å®¤
+        roomModel.OnMovedUser += OnMovedUser;           // ç§»å‹•
+        roomModel.OnInGameUser += OnInGameUser;         // ã‚¤ãƒ³ã‚²ãƒ¼ãƒ 
+        roomModel.OnStartGameUser += OnStartGameUser;   // ã‚²ãƒ¼ãƒ ã‚¹ã‚¿ãƒ¼ãƒˆ
+        roomModel.OnEndGameUser += OnEndGameUser;       // ã‚²ãƒ¼ãƒ çµ‚äº†
+        roomModel.OnCrushingUser += OnCrushingUser;     // æ’ƒç ´
+        roomModel.OnTimeCountUser += OnTimeCountUser;   // ã‚¿ã‚¤ãƒ ã‚«ã‚¦ãƒ³ãƒˆ
+        roomModel.OnTimeUpUser += OnTimeUpUser;         // ã‚¿ã‚¤ãƒ ã‚¢ãƒƒãƒ—
+        roomModel.OnShotUser += OnShotUser;             // å¤§ç ²ç™ºå°„
 
-        // §ŒÀŠÔ‚Ì‰Šú‰»
+        // åˆ¶é™æ™‚é–“ã®åˆæœŸåŒ–
         timerText.text = timeLimit.ToString();
 
-        // Ú‘±
+        // æ¥ç¶š
         await roomModel.ConnectAsync();
-        // “üº (ƒ‹[ƒ€–¼‚Æƒ†[ƒU[ID‚ğ“n‚µ‚Ä“üºBÅI“I‚É‚Íƒ[ƒJƒ‹ƒf[ƒ^‚Ìƒ†[ƒU[ID‚ğg—p‚·‚é
+        // å…¥å®¤ (ãƒ«ãƒ¼ãƒ åã¨ãƒ¦ãƒ¼ã‚¶ãƒ¼IDã‚’æ¸¡ã—ã¦å…¥å®¤ã€‚æœ€çµ‚çš„ã«ã¯ãƒ­ãƒ¼ã‚«ãƒ«ãƒ‡ãƒ¼ã‚¿ã®ãƒ¦ãƒ¼ã‚¶ãƒ¼IDã‚’ä½¿ç”¨ã™ã‚‹
         await roomModel.JoinAsync();
 
-        Debug.Log("“üº");
+        Debug.Log("å…¥å®¤");
     }
 
     /// <summary>
-    /// ˆÚ“®ƒf[ƒ^‘—Mˆ—
+    /// ç§»å‹•ãƒ‡ãƒ¼ã‚¿é€ä¿¡å‡¦ç†
     /// </summary>
     private async void SendMoveData()
     {
         if (gameState == GameState.None) return;
 
-        // ˆÚ“®ƒf[ƒ^‚Ìì¬
+        // ç§»å‹•ãƒ‡ãƒ¼ã‚¿ã®ä½œæˆ
         var moveData = new MoveData()
         {
             ConnectionId = roomModel.ConnectionId,
@@ -340,27 +340,27 @@ public class GameManager : MonoBehaviour
     }
 
     /// <summary>
-    /// Ø’fˆ—
+    /// åˆ‡æ–­å‡¦ç†
     /// </summary>
     public async void OnDisconnect()
     {
         CancelInvoke();
 
-        // ‘Şo
+        // é€€å‡º
         await roomModel.DisconnectionAsync();
 
-        // ƒvƒŒƒCƒ„[ƒIƒuƒWƒFƒNƒg‚Ìíœ
+        // ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®å‰Šé™¤
         foreach (Transform child in parentObj.transform)
         {
             Destroy(child.gameObject);
         }
 
         gameState = GameState.None;
-        Debug.Log("‘Şo");
+        Debug.Log("é€€å‡º");
     }
 
     /// <summary>
-    /// ƒQ[ƒ€ƒXƒ^[ƒg’Ê’mˆ—
+    /// ã‚²ãƒ¼ãƒ ã‚¹ã‚¿ãƒ¼ãƒˆé€šçŸ¥å‡¦ç†
     /// </summary>
     public async void OnStart()
     {
@@ -368,25 +368,25 @@ public class GameManager : MonoBehaviour
     }
 
     // --------------------------------------------------------------
-    // ƒ‚ƒfƒ‹“o˜^—pŠÖ”
+    // ãƒ¢ãƒ‡ãƒ«ç™»éŒ²ç”¨é–¢æ•°
 
     /// <summary>
-    /// “üº’Ê’móM‚Ìˆ—
+    /// å…¥å®¤é€šçŸ¥å—ä¿¡æ™‚ã®å‡¦ç†
     /// </summary>
     /// <param name="user"></param>
     private void OnJoinedUser(JoinedUser user)
     {
         if (characterList.ContainsKey(user.ConnectionId)) return;
 
-        GameObject characterObj;    // ¶¬‚³‚ê‚éƒIƒuƒWƒFƒNƒg
+        GameObject characterObj;    // ç”Ÿæˆã•ã‚Œã‚‹ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ
 
-        // ©•ª‚©‘¼ƒvƒŒƒCƒ„[‚©”»’f
+        // è‡ªåˆ†ã‹ä»–ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã‹åˆ¤æ–­
         if (user.ConnectionId == roomModel.ConnectionId)
         {
-            // Q‰Á‡‚Ì•Û‘¶
+            // å‚åŠ é †ã®ä¿å­˜
             joinOrder = user.JoinOrder;
 
-            // ©‹@E‘€ì—pƒIƒuƒWƒF‚Ì¶¬
+            // è‡ªæ©Ÿãƒ»æ“ä½œç”¨ã‚ªãƒ–ã‚¸ã‚§ã®ç”Ÿæˆ
             if(joinOrder == 1 || joinOrder == 3)
             {
                 characterObj = Instantiate(playerPrefab, respownList[user.JoinOrder - 1].position, Quaternion.Euler(0, 0, 0));
@@ -398,127 +398,127 @@ public class GameManager : MonoBehaviour
                 inputController = Instantiate(inputPrefab, Vector3.zero, Quaternion.identity);
             }
 
-            // ƒJ[ƒRƒ“ƒgƒ[ƒ‰[‚Ìæ“¾E”½‰f
+            // ã‚«ãƒ¼ã‚³ãƒ³ãƒˆãƒ­ãƒ¼ãƒ©ãƒ¼ã®å–å¾—ãƒ»åæ˜ 
             playerController = characterObj.transform.GetChild(0).gameObject;
             wheelAngle = characterObj.transform.Find("Visuals/WheelFrontLeft").transform;
 
-            // ƒvƒŒƒCƒ„[‚ÌˆÊ’uî•ñ‚ğæ“¾
+            // ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã®ä½ç½®æƒ…å ±ã‚’å–å¾—
             visualTransform = characterObj.transform.GetChild(1).gameObject.GetComponent<Transform>();
 
-            // ƒp[ƒeƒBƒNƒ‹‚Ìæ“¾
+            // ãƒ‘ãƒ¼ãƒ†ã‚£ã‚¯ãƒ«ã®å–å¾—
             playerTurboParticle = characterObj.transform.Find("Visuals/ParticlesBoost").GetComponent<ParticleSystem>();
             playerDriftParticle = characterObj.transform.Find("Visuals/ParticlesDrifting").GetComponent<ParticleSystem>();
 
-            // ƒ‚ƒoƒCƒ‹ƒCƒ“ƒvƒbƒg‚ÉƒJ[ƒRƒ“ƒgƒ[ƒ‰[‚ğİ’è
+            // ãƒ¢ãƒã‚¤ãƒ«ã‚¤ãƒ³ãƒ—ãƒƒãƒˆã«ã‚«ãƒ¼ã‚³ãƒ³ãƒˆãƒ­ãƒ¼ãƒ©ãƒ¼ã‚’è¨­å®š
             tinyCarMobileInput.carController = playerController.GetComponent<TinyCarController>();
 
-            // ƒ†[ƒU[–¼UI‚Ì’Ç]İ’è & –¼‘O”½‰f
+            // ãƒ¦ãƒ¼ã‚¶ãƒ¼åUIã®è¿½å¾“è¨­å®š & åå‰åæ˜ 
             nameObjs[user.JoinOrder - 1].GetComponent<NameTracker>().SetTarget(playerController.transform, 1);
             nameTexts[user.JoinOrder - 1].text = user.UserData.Name;
             nameObjs[user.JoinOrder - 1].SetActive(true);
 
-            // UI•ÏX
+            // UIå¤‰æ›´
             gameState = GameState.Join;
-            Debug.Log("©‹@¶¬Š®—¹");
+            Debug.Log("è‡ªæ©Ÿç”Ÿæˆå®Œäº†");
 
-            // ˆÊ’u‘—MŠJn
+            // ä½ç½®é€ä¿¡é–‹å§‹
             InvokeRepeating("SendMoveData", 0.5f, internetSpeed);
         }
         else
         {
-            // ‘¼ƒvƒŒƒCƒ„[‚Ì¶¬
+            // ä»–ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã®ç”Ÿæˆ
             characterObj = Instantiate(otherPrefab, respownList[user.JoinOrder - 1].position, Quaternion.Euler(0, 180, 0));
-            characterObj.GetComponent<OtherPlayerManager>().ConnectionID = user.ConnectionId;   // Ú‘±ID‚Ì•Û‘¶
-            characterObj.GetComponent<OtherPlayerManager>().UserName = user.UserData.Name;      // ƒ†[ƒU[–¼‚Ì•Û‘¶
-            characterObj.GetComponent<OtherPlayerManager>().JoinOrder = user.JoinOrder;         // Q‰Á‡‚Ì•Û‘¶
+            characterObj.GetComponent<OtherPlayerManager>().ConnectionID = user.ConnectionId;   // æ¥ç¶šIDã®ä¿å­˜
+            characterObj.GetComponent<OtherPlayerManager>().UserName = user.UserData.Name;      // ãƒ¦ãƒ¼ã‚¶ãƒ¼åã®ä¿å­˜
+            characterObj.GetComponent<OtherPlayerManager>().JoinOrder = user.JoinOrder;         // å‚åŠ é †ã®ä¿å­˜
 
-            // ƒ†[ƒU[–¼UI‚Ì’Ç]İ’è & –¼‘O”½‰f
+            // ãƒ¦ãƒ¼ã‚¶ãƒ¼åUIã®è¿½å¾“è¨­å®š & åå‰åæ˜ 
             nameObjs[user.JoinOrder - 1].GetComponent<NameTracker>().SetTarget(characterObj.transform, 2);
             nameTexts[user.JoinOrder - 1].text = user.UserData.Name;
             nameObjs[user.JoinOrder - 1].SetActive(true);
         }
 
-        characterObj.transform.parent = parentObj.transform;    // e‚ğİ’è
-        characterList[user.ConnectionId] = characterObj;        // ƒtƒB[ƒ‹ƒh‚É•Û‘¶
+        characterObj.transform.parent = parentObj.transform;    // è¦ªã‚’è¨­å®š
+        characterList[user.ConnectionId] = characterObj;        // ãƒ•ã‚£ãƒ¼ãƒ«ãƒ‰ã«ä¿å­˜
 
-        Debug.Log(user.JoinOrder + "PQ‰Á");
+        Debug.Log(user.JoinOrder + "På‚åŠ ");
     }
 
     /// <summary>
-    /// ‘Şo’Ê’móM‚Ìˆ—
+    /// é€€å‡ºé€šçŸ¥å—ä¿¡æ™‚ã®å‡¦ç†
     /// </summary>
     /// <param name="user"></param>
     private void OnExitedUser(JoinedUser user)
     {
-        if (!characterList.ContainsKey(user.ConnectionId)) return;  // ‘ŞoÒƒIƒuƒWƒF‚Ì‘¶İƒ`ƒFƒbƒN
+        if (!characterList.ContainsKey(user.ConnectionId)) return;  // é€€å‡ºè€…ã‚ªãƒ–ã‚¸ã‚§ã®å­˜åœ¨ãƒã‚§ãƒƒã‚¯
 
         if(gameState == GameState.Result)
         {
-            Destroy(characterList[user.ConnectionId]);   // ƒIƒuƒWƒFƒNƒg‚Ì”jŠü
-            characterList.Remove(user.ConnectionId);     // ƒŠƒXƒg‚©‚çíœ
+            Destroy(characterList[user.ConnectionId]);   // ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®ç ´æ£„
+            characterList.Remove(user.ConnectionId);     // ãƒªã‚¹ãƒˆã‹ã‚‰å‰Šé™¤
         }
         else
         {
-            // ‘¼ƒvƒŒƒCƒ„[‚ÌØ’f•\¦E‰Ÿ‰º‚Åƒƒjƒ…[‚É–ß‚é
+            // ä»–ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã®åˆ‡æ–­è¡¨ç¤ºãƒ»æŠ¼ä¸‹ã§ãƒ¡ãƒ‹ãƒ¥ãƒ¼ã«æˆ»ã‚‹
             disconnectPanel.SetActive(true);
         }
     }
 
     /// <summary>
-    /// ƒvƒŒƒCƒ„[‚ªˆÚ“®‚µ‚½‚Æ‚«‚Ìˆ—
+    /// ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ãŒç§»å‹•ã—ãŸã¨ãã®å‡¦ç†
     /// </summary>
     /// <param name="moveData"></param>
     private void OnMovedUser(MoveData moveData)
     {
-        // ˆÊ’uî•ñ‚ÌXV
+        // ä½ç½®æƒ…å ±ã®æ›´æ–°
         if (!characterList.ContainsKey(moveData.ConnectionId)) return;
 
-        // –{‘ÌˆÊ’u‚ÌXV
+        // æœ¬ä½“ä½ç½®ã®æ›´æ–°
         characterList[moveData.ConnectionId].transform.DOMove(moveData.Position, internetSpeed).SetEase(Ease.Linear).SetUpdate(UpdateType.Fixed, true);
         characterList[moveData.ConnectionId].transform.DORotate(moveData.Rotation, internetSpeed).SetEase(Ease.Linear).SetUpdate(UpdateType.Fixed, true);
 
-        // ƒ^ƒCƒ„Šp‚ÌXV
+        // ã‚¿ã‚¤ãƒ¤è§’ã®æ›´æ–°
         Transform wheelR = characterList[moveData.ConnectionId].transform.Find("wheels/wheel front right").transform;
         Transform wheelL = characterList[moveData.ConnectionId].transform.Find("wheels/wheel front left").transform;
         wheelR.localEulerAngles = new Vector3(wheelR.localEulerAngles.x, moveData.WheelAngle, 0);
         wheelL.localEulerAngles = new Vector3(wheelL.localEulerAngles.x, moveData.WheelAngle, 0);
 
-        // ƒp[ƒeƒBƒNƒ‹‚Ìæ“¾EXV
+        // ãƒ‘ãƒ¼ãƒ†ã‚£ã‚¯ãƒ«ã®å–å¾—ãƒ»æ›´æ–°
         characterList[moveData.ConnectionId].GetComponent<OtherPlayerManager>().playDrift(moveData.IsDrift);
         characterList[moveData.ConnectionId].GetComponent<OtherPlayerManager>().playTurbo(moveData.IsTurbo);
     }
 
     /// <summary>
-    /// ƒCƒ“ƒQ[ƒ€’Ê’móMˆ—
+    /// ã‚¤ãƒ³ã‚²ãƒ¼ãƒ é€šçŸ¥å—ä¿¡å‡¦ç†
     /// </summary>
     private void OnInGameUser()
     {
-        // ƒJƒEƒ“ƒgƒ_ƒEƒ“ŠJn
-        Debug.Log("ƒJƒEƒ“ƒgƒ_ƒEƒ“");
+        // ã‚«ã‚¦ãƒ³ãƒˆãƒ€ã‚¦ãƒ³é–‹å§‹
+        Debug.Log("ã‚«ã‚¦ãƒ³ãƒˆãƒ€ã‚¦ãƒ³");
         StartCoroutine("StartCount");
     }
 
     /// <summary>
-    /// ƒQ[ƒ€ƒXƒ^[ƒg’Ê’móMˆ—
+    /// ã‚²ãƒ¼ãƒ ã‚¹ã‚¿ãƒ¼ãƒˆé€šçŸ¥å—ä¿¡å‡¦ç†
     /// </summary>
     private void OnStartGameUser()
     {
         SEManager.Instance.Play(SEPath.START);
 
-        // ƒeƒLƒXƒg‚Ì•ÏX
+        // ãƒ†ã‚­ã‚¹ãƒˆã®å¤‰æ›´
         countDownImage.sprite = countSprits[0];
         StartCoroutine("HiddenText");
 
-        // §ŒÀŠÔ•\¦EƒzƒXƒg‚ÍƒJƒEƒ“ƒgŠJn
+        // åˆ¶é™æ™‚é–“è¡¨ç¤ºãƒ»ãƒ›ã‚¹ãƒˆã¯ã‚«ã‚¦ãƒ³ãƒˆé–‹å§‹
         timerPanel.transform.DOLocalMove(new Vector3(820, 450, 0), 0.6f);
         if (joinOrder == 1)
         {
             InvokeRepeating("CountTime", 1, 1);
         }
 
-        // ƒJƒƒ‰‚ğƒgƒbƒvƒ_ƒEƒ“‚É•ÏX
+        // ã‚«ãƒ¡ãƒ©ã‚’ãƒˆãƒƒãƒ—ãƒ€ã‚¦ãƒ³ã«å¤‰æ›´
         mainCamera.GetComponent<TinyCarCamera>().whatToFollow = playerController.transform;
-        // ‘€ì‰Â”\‚É‚·‚é
+        // æ“ä½œå¯èƒ½ã«ã™ã‚‹
         inputController.GetComponent<TinyCarStandardInput>().carController = playerController.GetComponent<TinyCarController>();
         mobileInputObj.SetActive(true);
 
@@ -526,66 +526,66 @@ public class GameManager : MonoBehaviour
     }
 
     /// <summary>
-    /// ƒQ[ƒ€I—¹’Ê’móMˆ—
+    /// ã‚²ãƒ¼ãƒ çµ‚äº†é€šçŸ¥å—ä¿¡å‡¦ç†
     /// </summary>
     private void OnEndGameUser(List<ResultData> result)
     {
         gameState = GameState.Result;
 
-        // ‘€ì•s”\‚É‚·‚é
+        // æ“ä½œä¸èƒ½ã«ã™ã‚‹
         mobileInputObj.SetActive(false);
 
-        // I—¹SEÄ¶
+        // çµ‚äº†SEå†ç”Ÿ
         SEManager.Instance.Play(SEPath.GOAL);
 
-        // I—¹•\¦
+        // çµ‚äº†è¡¨ç¤º
         endImageObj.SetActive(true);
 
-        // ƒŠƒUƒ‹ƒgƒpƒlƒ‹‚ÉŒ‹‰Ê‚ğ”½‰f (©•ª‚Ì‡ˆÊEƒŒ[ƒg‚ğ”½‰f)
+        // ãƒªã‚¶ãƒ«ãƒˆãƒ‘ãƒãƒ«ã«çµæœã‚’åæ˜  (è‡ªåˆ†ã®é †ä½ãƒ»ãƒ¬ãƒ¼ãƒˆã‚’åæ˜ )
         foreach(ResultData resultData in result)
         {
             if(resultData.UserId == roomModel.UserId)
             {
-                rateText.text = resultData.Rate.ToString();                         // æ“¾‚µ‚½ƒŒ[ƒg‚ğ•\¦
-                changeRateText.text = Math.Abs(resultData.ChangeRate).ToString();   // ‘Œ¸ƒŒ[ƒg‚ğ•\¦
+                rateText.text = resultData.Rate.ToString();                         // å–å¾—ã—ãŸãƒ¬ãƒ¼ãƒˆã‚’è¡¨ç¤º
+                changeRateText.text = Math.Abs(resultData.ChangeRate).ToString();   // å¢—æ¸›ãƒ¬ãƒ¼ãƒˆã‚’è¡¨ç¤º
                 if(resultData.ChangeRate < 0)
-                {   // Œ¸Z‚Ìê‡‚Í - ‚ğ•\¦
+                {   // æ¸›ç®—ã®å ´åˆã¯ - ã‚’è¡¨ç¤º
                     signText.text = "-";
                 }
 
-                rankImages[resultData.Rank - 1].SetActive(true);        // ŠY“–‡ˆÊ‚Ì•\¦
+                rankImages[resultData.Rank - 1].SetActive(true);        // è©²å½“é †ä½ã®è¡¨ç¤º
             }
         }
 
-        // 1•bŒã‚ÉƒŠƒUƒ‹ƒg•\¦
+        // 1ç§’å¾Œã«ãƒªã‚¶ãƒ«ãƒˆè¡¨ç¤º
         StartCoroutine("DisplayResult");
     }
 
     /// <summary>
-    /// ƒvƒŒƒCƒ„[Œ‚”j’Ê’mˆ—
+    /// ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼æ’ƒç ´é€šçŸ¥å‡¦ç†
     /// </summary>
-    /// <param name="attackName">Œ‚”j‚µ‚½l‚ÌPL–¼</param>
-    /// <param name="crushName"> Œ‚”j‚³‚ê‚½l‚ÌPL–¼</param>
-    /// <param name="crushID">   Œ‚”j‚³‚ê‚½l‚ÌÚ‘±ID</param>
+    /// <param name="attackName">æ’ƒç ´ã—ãŸäººã®PLå</param>
+    /// <param name="crushName"> æ’ƒç ´ã•ã‚ŒãŸäººã®PLå</param>
+    /// <param name="crushID">   æ’ƒç ´ã•ã‚ŒãŸäººã®æ¥ç¶šID</param>
     private void OnCrushingUser(string attackName, string crushName, Guid crushID, int deadNo)
     {
-        // Œ‚”j’Ê’mƒeƒLƒXƒg‚Ì“à—e•ÏXE•\¦‚·‚é ()
+        // æ’ƒç ´é€šçŸ¥ãƒ†ã‚­ã‚¹ãƒˆã®å†…å®¹å¤‰æ›´ãƒ»è¡¨ç¤ºã™ã‚‹ ()
         if(deadNo == 1)
         {
-            crushText.GetComponent<Text>().text = attackName + " ‚ª " + crushName + "‚ğŒ‚”jI";
+            crushText.GetComponent<Text>().text = attackName + " ãŒ " + crushName + "ã‚’æ’ƒç ´ï¼";
         }
         else if(deadNo == 2)
         {
-            crushText.GetComponent<Text>().text = crushName + "‚ª”š”jI";
+            crushText.GetComponent<Text>().text = crushName + "ãŒçˆ†ç ´ï¼";
         }
 
-        // ’Ê’m•\¦Sequence‚ğì¬
+        // é€šçŸ¥è¡¨ç¤ºSequenceã‚’ä½œæˆ
         var sequence = DOTween.Sequence();
         sequence.Append(crushText.transform.DOLocalMove(new Vector3(0f, 450f, 0f), 2.5f));
         sequence.Append(crushText.transform.DOLocalMove(new Vector3(0f, 830f, 0f), 0.5f));
         sequence.Play();
         
-        // Œ‚”j‚³‚ê‚½ƒvƒŒƒCƒ„[‚Ì–¼‘O‚ğ”ñ•\¦
+        // æ’ƒç ´ã•ã‚ŒãŸãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã®åå‰ã‚’éè¡¨ç¤º
         foreach(Text name in nameTexts)
         {
             if(name.text == crushName)
@@ -594,14 +594,14 @@ public class GameManager : MonoBehaviour
             }
         }
 
-        // ”š”­ƒAƒjƒ[ƒVƒ‡ƒ“¶¬
+        // çˆ†ç™ºã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ç”Ÿæˆ
         if (roomModel.ConnectionId == crushID)
-        {   // ©•ª‚ªŒ‚”j‚³‚ê‚½‚Æ‚«
+        {   // è‡ªåˆ†ãŒæ’ƒç ´ã•ã‚ŒãŸã¨ã
             SEManager.Instance.Play(SEPath.BOOM);
-            Instantiate(explosionPrefab, playerController.transform.position, Quaternion.identity); // ”š”­ƒGƒtƒFƒNƒg
-            mainCamera.GetComponent<TinyCarCamera>().whatToFollow = null;                           // ƒJƒƒ‰‚ğ˜ëáÕ‚É•ÏX
-            characterList[crushID].GetComponent<TinyCarExplosiveBody>().explode();                  // ©”šˆ—
-            characterList.Remove(crushID);                                                          // PLƒŠƒXƒg‚©‚çíœ
+            Instantiate(explosionPrefab, playerController.transform.position, Quaternion.identity); // çˆ†ç™ºã‚¨ãƒ•ã‚§ã‚¯ãƒˆ
+            mainCamera.GetComponent<TinyCarCamera>().whatToFollow = null;                           // ã‚«ãƒ¡ãƒ©ã‚’ä¿¯ç°ã«å¤‰æ›´
+            characterList[crushID].GetComponent<TinyCarExplosiveBody>().explode();                  // è‡ªçˆ†å‡¦ç†
+            characterList.Remove(crushID);                                                          // PLãƒªã‚¹ãƒˆã‹ã‚‰å‰Šé™¤
         }
         else
         {
@@ -613,11 +613,11 @@ public class GameManager : MonoBehaviour
     }
 
     /// <summary>
-    /// cƒ^ƒCƒ€’Ê’mˆ—
+    /// æ®‹ã‚¿ã‚¤ãƒ é€šçŸ¥å‡¦ç†
     /// </summary>
     /// <param name="time"></param>
     private void OnTimeCountUser(int time)
-    {   // cƒ^ƒCƒ€‚Ì”½‰fˆ—
+    {   // æ®‹ã‚¿ã‚¤ãƒ ã®åæ˜ å‡¦ç†
         timerText.text = time.ToString();
 
         if(time <= DEATH_MATCH_TIME && !isDeathMatch)
@@ -632,25 +632,25 @@ public class GameManager : MonoBehaviour
     }
 
     /// <summary>
-    /// ƒ^ƒCƒ€ƒAƒbƒv’Ê’m
+    /// ã‚¿ã‚¤ãƒ ã‚¢ãƒƒãƒ—é€šçŸ¥
     /// </summary>
     private void OnTimeUpUser()
     {
         if (gameState == GameState.Result) return;
 
-        // I—¹SEÄ¶
+        // çµ‚äº†SEå†ç”Ÿ
         SEManager.Instance.Play(SEPath.GOAL);
 
-        // ‘€ì•s”\‚É‚·‚é
+        // æ“ä½œä¸èƒ½ã«ã™ã‚‹
         mobileInputObj.SetActive(false);
 
-        // –¼‘O”ñ•\¦
+        // åå‰éè¡¨ç¤º
         foreach (GameObject obj in nameObjs)
         {
             obj.SetActive(false);
         }
 
-        // ƒŠƒUƒ‹ƒg•\¦
+        // ãƒªã‚¶ãƒ«ãƒˆè¡¨ç¤º
         drawImageObj.SetActive(true);
         resultPanel.gameObject.SetActive(true);
 
@@ -658,15 +658,15 @@ public class GameManager : MonoBehaviour
     }
 
     /// <summary>
-    /// ‘å–C”­Ë’Ê’m
+    /// å¤§ç ²ç™ºå°„é€šçŸ¥
     /// </summary>
     private void OnShotUser(int cannonID)
     {
         if (!isCannon) return;
 
-        // ”­Ëˆ—‚ÌŒÄ‚Ño‚µ
+        // ç™ºå°„å‡¦ç†ã®å‘¼ã³å‡ºã—
         if (isDeathMatch)
-        {   // ƒfƒXƒ}ƒbƒ`‚Í‘ÎŠpü2‚Â‚Ì‘å–C‚ğg—p‚·‚é
+        {   // ãƒ‡ã‚¹ãƒãƒƒãƒæ™‚ã¯å¯¾è§’ç·š2ã¤ã®å¤§ç ²ã‚’ä½¿ç”¨ã™ã‚‹
             if(cannonID == 1 || cannonID == 4)
             {
                 cannons[0].ShotBullet();
@@ -685,7 +685,7 @@ public class GameManager : MonoBehaviour
     }
 
     /// <summary>
-    /// ƒQ[ƒ€ƒJƒEƒ“ƒg
+    /// ã‚²ãƒ¼ãƒ ã‚«ã‚¦ãƒ³ãƒˆ
     /// </summary>
     /// <returns></returns>
     IEnumerator StartCount()
@@ -696,7 +696,7 @@ public class GameManager : MonoBehaviour
 
             SEManager.Instance.Play(SEPath.COUNT);
 
-            // 1•b‘Ò‚Á‚ÄƒRƒ‹[ƒ`ƒ“’†’f
+            // 1ç§’å¾…ã£ã¦ã‚³ãƒ«ãƒ¼ãƒãƒ³ä¸­æ–­
             yield return new WaitForSeconds(1.0f);
 
             if (i == 1)
@@ -707,86 +707,86 @@ public class GameManager : MonoBehaviour
     }
 
     /// <summary>
-    /// cƒ^ƒCƒ€ƒJƒEƒ“ƒgˆ—
+    /// æ®‹ã‚¿ã‚¤ãƒ ã‚«ã‚¦ãƒ³ãƒˆå‡¦ç†
     /// </summary>
     private async void CountTime()
     {
         timeLimit--;
 
         if(timeLimit % shotInterval == 0 && joinOrder == 1 && isCannon ==true)
-        {   // ”­ËŠÔŠu && ƒzƒXƒg && ‘å–CƒXƒe[ƒW‚Ì
+        {   // ç™ºå°„é–“éš” && ãƒ›ã‚¹ãƒˆ && å¤§ç ²ã‚¹ãƒ†ãƒ¼ã‚¸ã®æ™‚
             await roomModel.ShotCannonAsync();
         }
 
         await roomModel.TimeCountAsync(timeLimit);
 
         if(timeLimit <= 0)
-        {   // 0ˆÈ‰º‚Ì‚ÍƒJƒEƒ“ƒgI—¹
+        {   // 0ä»¥ä¸‹ã®æ™‚ã¯ã‚«ã‚¦ãƒ³ãƒˆçµ‚äº†
             CancelInvoke("CountTime");
         }
     } 
 
     /// <summary>
-    /// ƒ^ƒCƒ}[ƒeƒLƒXƒg”ñ•\¦ˆ—
+    /// ã‚¿ã‚¤ãƒãƒ¼ãƒ†ã‚­ã‚¹ãƒˆéè¡¨ç¤ºå‡¦ç†
     /// </summary>
     /// <returns></returns>
     IEnumerator HiddenText()
     {
-        // 1•b‘Ò‚Á‚ÄƒRƒ‹[ƒ`ƒ“’†’f
+        // 1ç§’å¾…ã£ã¦ã‚³ãƒ«ãƒ¼ãƒãƒ³ä¸­æ–­
         yield return new WaitForSeconds(0.8f);
 
         countDownImageObj.SetActive(false);
     }
 
     /// <summary>
-    /// ƒŠƒUƒ‹ƒg•\¦
+    /// ãƒªã‚¶ãƒ«ãƒˆè¡¨ç¤º
     /// </summary>
     /// <returns></returns>
     IEnumerator DisplayResult()
     {
         CancelInvoke("CountTime");
 
-        // –¼‘O•\¦‚ğ‚·‚×‚ÄOFF
+        // åå‰è¡¨ç¤ºã‚’ã™ã¹ã¦OFF
         foreach (GameObject obj in nameObjs)
         {
             obj.SetActive(false);
         }
 
-        // 1•b‘Ò‚Á‚ÄƒRƒ‹[ƒ`ƒ“’†’f
+        // 1ç§’å¾…ã£ã¦ã‚³ãƒ«ãƒ¼ãƒãƒ³ä¸­æ–­
         yield return new WaitForSeconds(1.0f);
 
         mobileInputObj.SetActive(false);
         endImageObj.SetActive(false);
-        rateObjs.SetActive(true);               // ƒŒ[ƒg•\¦
-        resultPanel.gameObject.SetActive(true); // ƒŠƒUƒ‹ƒgƒpƒlƒ‹•\¦
+        rateObjs.SetActive(true);               // ãƒ¬ãƒ¼ãƒˆè¡¨ç¤º
+        resultPanel.gameObject.SetActive(true); // ãƒªã‚¶ãƒ«ãƒˆãƒ‘ãƒãƒ«è¡¨ç¤º
     }
 
     /// <summary>
-    /// ƒ^ƒCƒgƒ‹ƒ{ƒ^ƒ“‰Ÿ‰º
+    /// ã‚¿ã‚¤ãƒˆãƒ«ãƒœã‚¿ãƒ³æŠ¼ä¸‹æ™‚
     /// </summary>
     public async void OnTitleButton()
     {
         CancelInvoke();
 
-        // SEÄ¶
+        // SEå†ç”Ÿ
         SEManager.Instance.Play(SEPath.TAP_BUTTON);
 
-        // ‘Şo
+        // é€€å‡º
         await roomModel.ExitAsync();
 
-        // ƒvƒŒƒCƒ„[ƒIƒuƒWƒFƒNƒg‚Ìíœ
+        // ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®å‰Šé™¤
         foreach (Transform child in parentObj.transform)
         {
             Destroy(child.gameObject);
         }
 
         gameState = GameState.None;
-        Debug.Log("‘Şo");
+        Debug.Log("é€€å‡º");
 
-        // ƒ‹[ƒ€ƒ‚ƒfƒ‹‚Ì”jŠü
+        // ãƒ«ãƒ¼ãƒ ãƒ¢ãƒ‡ãƒ«ã®ç ´æ£„
         Destroy(GameObject.Find("RoomModel"));
 
-        // ƒ^ƒCƒgƒ‹‚É–ß‚é
+        // ã‚¿ã‚¤ãƒˆãƒ«ã«æˆ»ã‚‹
         Initiate.DoneFading();
         Initiate.Fade("2_MenuScene", Color.white, 2.5f);
     }

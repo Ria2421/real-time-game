@@ -1,5 +1,5 @@
 //---------------------------------------------------------------
-// ƒ\ƒƒ}ƒl[ƒWƒƒ[ [ SoloManager.cs ]
+// ã‚½ãƒ­ãƒãƒãƒ¼ã‚¸ãƒ£ãƒ¼ [ SoloManager.cs ]
 // Author:Kenta Nakamoto
 // Data:2024/12/10
 // Update:2025/01/27
@@ -20,62 +20,62 @@ using UnityEngine.UI;
 public class SoloManager : MonoBehaviour
 {
     //===================================
-    // ƒtƒB[ƒ‹ƒh
+    // ãƒ•ã‚£ãƒ¼ãƒ«ãƒ‰
 
     [Header("===== StageOption =====")]
 
     /// <summary>
-    /// ƒXƒe[ƒWNo
+    /// ã‚¹ãƒ†ãƒ¼ã‚¸No
     /// </summary>
     [SerializeField] private int stageID;
 
     /// <summary>
-    /// Å‘åƒ‰ƒbƒv”
+    /// æœ€å¤§ãƒ©ãƒƒãƒ—æ•°
     /// </summary>
     [SerializeField] private int maxRapNum = 0;
 
     /// <summary>
-    /// ƒS[ƒXƒgƒf[ƒ^‹L˜^ŠÔŠu
+    /// ã‚´ãƒ¼ã‚¹ãƒˆãƒ‡ãƒ¼ã‚¿è¨˜éŒ²é–“éš”
     /// </summary>
     [SerializeField] private float saveSpeed;
 
     /// <summary>
-    /// Œ»ƒ‰ƒbƒv”
+    /// ç¾ãƒ©ãƒƒãƒ—æ•°
     /// </summary>
     private int currentRapNum = 1;
 
     /// <summary>
-    /// ŠÔŒv‘ª—p
+    /// æ™‚é–“è¨ˆæ¸¬ç”¨
     /// </summary>
     private float timer;
 
     /// <summary>
-    /// ƒS[ƒ‹ƒ^ƒCƒ€•Û‘¶
+    /// ã‚´ãƒ¼ãƒ«ã‚¿ã‚¤ãƒ ä¿å­˜
     /// </summary>
     private int goalTime = 0;
 
     /// <summary>
-    /// Œv‘ªƒtƒ‰ƒO
+    /// è¨ˆæ¸¬ãƒ•ãƒ©ã‚°
     /// </summary>
     private bool isCount = false;
 
     /// <summary>
-    /// ƒS[ƒXƒgƒf[ƒ^ƒŠƒXƒg
+    /// ã‚´ãƒ¼ã‚¹ãƒˆãƒ‡ãƒ¼ã‚¿ãƒªã‚¹ãƒˆ
     /// </summary>
     private List<GhostData> ghostList = new List<GhostData>();
 
     /// <summary>
-    /// Ä¶ƒS[ƒXƒgƒf[ƒ^
+    /// å†ç”Ÿã‚´ãƒ¼ã‚¹ãƒˆãƒ‡ãƒ¼ã‚¿
     /// </summary>
     private List<GhostData> playGhost = new List<GhostData>();
 
     /// <summary>
-    /// ƒS[ƒXƒgƒf[ƒ^ƒJƒEƒ“ƒg
+    /// ã‚´ãƒ¼ã‚¹ãƒˆãƒ‡ãƒ¼ã‚¿ã‚«ã‚¦ãƒ³ãƒˆ
     /// </summary>
     private int ghostCnt = 0;
 
     /// <summary>
-    /// ƒS[ƒXƒg•\¦•â³À•W
+    /// ã‚´ãƒ¼ã‚¹ãƒˆè¡¨ç¤ºè£œæ­£åº§æ¨™
     /// </summary>
     private Vector3 ghostCorrection;
 
@@ -83,52 +83,52 @@ public class SoloManager : MonoBehaviour
     [Header("===== DataObject =====")]
 
     /// <summary>
-    /// Šî–{“ü—ÍŠÇ—ƒIƒuƒWƒF
+    /// åŸºæœ¬å…¥åŠ›ç®¡ç†ã‚ªãƒ–ã‚¸ã‚§
     /// </summary>
     [SerializeField] private GameObject standardInput;
 
     /// <summary>
-    /// ƒ‚ƒoƒCƒ‹“ü—ÍŠÇ—ƒIƒuƒWƒF
+    /// ãƒ¢ãƒã‚¤ãƒ«å…¥åŠ›ç®¡ç†ã‚ªãƒ–ã‚¸ã‚§
     /// </summary>
     [SerializeField] private GameObject mobileInput;
 
     /// <summary>
-    /// Ô‘Ì”š”jƒ}ƒl[ƒWƒƒ[
+    /// è»Šä½“çˆ†ç ´ãƒãƒãƒ¼ã‚¸ãƒ£ãƒ¼
     /// </summary>
     [SerializeField] private TinyCarExplosiveBody boomManager;
 
     /// <summary>
-    /// ƒ‰ƒ“ƒLƒ“ƒOƒ‚ƒfƒ‹Ši”[—p
+    /// ãƒ©ãƒ³ã‚­ãƒ³ã‚°ãƒ¢ãƒ‡ãƒ«æ ¼ç´ç”¨
     /// </summary>
     [SerializeField] private RankingModel rankingModel;
 
     /// <summary>
-    /// ˆÊ’uî•ñæ“¾ƒIƒuƒWƒF
+    /// ä½ç½®æƒ…å ±å–å¾—ã‚ªãƒ–ã‚¸ã‚§
     /// </summary>
     [SerializeField] private Transform visualObj;
 
     /// <summary>
-    /// ƒ^ƒCƒ„Špæ“¾ƒIƒuƒWƒF
+    /// ã‚¿ã‚¤ãƒ¤è§’å–å¾—ã‚ªãƒ–ã‚¸ã‚§
     /// </summary>
     [SerializeField] private Transform wheelRot;
 
     /// <summary>
-    /// ƒS[ƒXƒgÔƒIƒuƒWƒF
+    /// ã‚´ãƒ¼ã‚¹ãƒˆè»Šã‚ªãƒ–ã‚¸ã‚§
     /// </summary>
     [SerializeField] private GameObject ghostCarObj;
 
     /// <summary>
-    /// ƒS[ƒXƒgÔˆÊ’uî•ñ
+    /// ã‚´ãƒ¼ã‚¹ãƒˆè»Šä½ç½®æƒ…å ±
     /// </summary>
     [SerializeField] private Transform ghostCatTrs;
 
     /// <summary>
-    /// ƒS[ƒXƒgÔˆÊ’uî•ñ
+    /// ã‚´ãƒ¼ã‚¹ãƒˆè»Šä½ç½®æƒ…å ±
     /// </summary>
     [SerializeField] private Transform ghostWheelR;
 
     /// <summary>
-    /// ƒS[ƒXƒgÔˆÊ’uî•ñ
+    /// ã‚´ãƒ¼ã‚¹ãƒˆè»Šä½ç½®æƒ…å ±
     /// </summary>
     [SerializeField] private Transform ghostWheelL;
 
@@ -139,12 +139,12 @@ public class SoloManager : MonoBehaviour
     [Header("---- Panel ----")]
 
     /// <summary>
-    /// ƒŠƒUƒ‹ƒgƒpƒlƒ‹
+    /// ãƒªã‚¶ãƒ«ãƒˆãƒ‘ãƒãƒ«
     /// </summary>
     [SerializeField] private GameObject resultPanel;
 
     /// <summary>
-    /// Œv‘ªƒ^ƒCƒ}[ƒpƒlƒ‹
+    /// è¨ˆæ¸¬ã‚¿ã‚¤ãƒãƒ¼ãƒ‘ãƒãƒ«
     /// </summary>
     [SerializeField] private GameObject timerPanel;
 
@@ -152,17 +152,17 @@ public class SoloManager : MonoBehaviour
     [Header("---- Image ----")]
 
     /// <summary>
-    /// ƒJƒEƒ“ƒgƒ_ƒEƒ“ƒIƒuƒWƒF
+    /// ã‚«ã‚¦ãƒ³ãƒˆãƒ€ã‚¦ãƒ³ã‚ªãƒ–ã‚¸ã‚§
     /// </summary>
     [SerializeField] private GameObject countDownObj;
 
     /// <summary>
-    /// ƒJƒEƒ“ƒgƒ_ƒEƒ“—pƒXƒvƒ‰ƒCƒg
+    /// ã‚«ã‚¦ãƒ³ãƒˆãƒ€ã‚¦ãƒ³ç”¨ã‚¹ãƒ—ãƒ©ã‚¤ãƒˆ
     /// </summary>
     [SerializeField] private Sprite[] countDownSprits;
 
     /// <summary>
-    /// V‹L˜^‰æ‘œ
+    /// æ–°è¨˜éŒ²ç”»åƒ
     /// </summary>
     [SerializeField] private GameObject newRecordObj;
 
@@ -170,103 +170,103 @@ public class SoloManager : MonoBehaviour
     [Header("---- Text ----")]
 
     /// <summary>
-    /// ŠÔŒv‘ª—pƒeƒLƒXƒg
+    /// æ™‚é–“è¨ˆæ¸¬ç”¨ãƒ†ã‚­ã‚¹ãƒˆ
     /// </summary>
     [SerializeField] private Text timerText;
 
     /// <summary>
-    /// ƒ‰ƒbƒv”•\¦—pƒeƒLƒXƒg
+    /// ãƒ©ãƒƒãƒ—æ•°è¡¨ç¤ºç”¨ãƒ†ã‚­ã‚¹ãƒˆ
     /// </summary>
     [SerializeField] private Text rapText;
 
     //=====================================
-    // ƒƒ\ƒbƒh
+    // ãƒ¡ã‚½ãƒƒãƒ‰
 
     /// <summary>
-    /// ‰Šúˆ—
+    /// åˆæœŸå‡¦ç†
     /// </summary>
     void Start()
     {
-        // ƒƒCƒ“BGMˆê’â~
+        // ãƒ¡ã‚¤ãƒ³BGMä¸€æ™‚åœæ­¢
         BGMManager.Instance.Pause(BGMPath.MAIN_BGM);
         BGMManager.Instance.Play(BGMPath.TIME_ATTACK);
 
-        // •Ï”‰Šú‰»ˆ—
+        // å¤‰æ•°åˆæœŸåŒ–å‡¦ç†
         isCount = false;
         ghostCnt = 0;
         ghostCorrection = new Vector3(0, -0.74f, 0);
 
         rapText.text = currentRapNum.ToString() + " / " + maxRapNum.ToString();
 
-        // Ä¶‚·‚éƒS[ƒXƒgƒf[ƒ^‚ğæ“¾
+        // å†ç”Ÿã™ã‚‹ã‚´ãƒ¼ã‚¹ãƒˆãƒ‡ãƒ¼ã‚¿ã‚’å–å¾—
         if (UserModel.Instance.GhostData != "")
         {
             playGhost = JsonConvert.DeserializeObject<List<GhostData>>(UserModel.Instance.GhostData);
-            Debug.Log("ƒS[ƒXƒgƒf[ƒ^æ“¾");
+            Debug.Log("ã‚´ãƒ¼ã‚¹ãƒˆãƒ‡ãƒ¼ã‚¿å–å¾—");
         }
         else
         {
             ghostCarObj.SetActive(false);
         }
 
-        // ƒJƒEƒ“ƒgƒ_ƒEƒ“ŠJn
-        Debug.Log("ƒJƒEƒ“ƒgƒ_ƒEƒ“");
+        // ã‚«ã‚¦ãƒ³ãƒˆãƒ€ã‚¦ãƒ³é–‹å§‹
+        Debug.Log("ã‚«ã‚¦ãƒ³ãƒˆãƒ€ã‚¦ãƒ³");
         StartCoroutine("StartCount");
     }
 
     /// <summary>
-    /// XVˆ—
+    /// æ›´æ–°å‡¦ç†
     /// </summary>
     void Update()
     {
         if (!isCount) return;
 
-        // timer‚ğ—˜—p‚µ‚ÄŒo‰ßŠÔ‚ğŒv‘ªE•\¦
+        // timerã‚’åˆ©ç”¨ã—ã¦çµŒéæ™‚é–“ã‚’è¨ˆæ¸¬ãƒ»è¡¨ç¤º
         timer += Time.deltaTime;
         DisplayTime(timer);
     }
 
     /// <summary>
-    /// ƒ‰ƒbƒv”‰ÁZˆ—
+    /// ãƒ©ãƒƒãƒ—æ•°åŠ ç®—å‡¦ç†
     /// </summary>
     public async void AddRapCnt()
     {
-        currentRapNum++;    // ƒ‰ƒbƒv‰ÁZ
+        currentRapNum++;    // ãƒ©ãƒƒãƒ—åŠ ç®—
 
         if(currentRapNum == maxRapNum + 1)
         {
             CancelInvoke("SaveGhost");
 
-            // SEÄ¶
+            // SEå†ç”Ÿ
             SEManager.Instance.Play(SEPath.GOAL);
 
-            // I—¹”»’è
-            isCount = false;                // ƒ^ƒCƒ}[ƒXƒgƒbƒv
-            Invoke("BoomCar", 1);           // Ô‘Ì”š”j
-            resultPanel.SetActive(true);    // ƒŠƒUƒ‹ƒg•\¦
-            mobileInput.SetActive(false);   // ƒ‚ƒoƒCƒ‹UI”ñ•\¦
+            // çµ‚äº†åˆ¤å®š
+            isCount = false;                // ã‚¿ã‚¤ãƒãƒ¼ã‚¹ãƒˆãƒƒãƒ—
+            Invoke("BoomCar", 1);           // è»Šä½“çˆ†ç ´
+            resultPanel.SetActive(true);    // ãƒªã‚¶ãƒ«ãƒˆè¡¨ç¤º
+            mobileInput.SetActive(false);   // ãƒ¢ãƒã‚¤ãƒ«UIéè¡¨ç¤º
             
-            // ƒ^ƒCƒ}[ˆÚ“®ˆ—
+            // ã‚¿ã‚¤ãƒãƒ¼ç§»å‹•å‡¦ç†
             var sequence = DOTween.Sequence();
             sequence.Append(timerPanel.transform.DOScale(1.7f, 0.7f));
             sequence.Append(timerPanel.transform.DOLocalMove(new Vector3(0,-25,0), 0.5f));
             sequence.Play();
 
-            // ƒNƒŠƒAƒ^ƒCƒ€‚ğm/sec‚É•ÏŠ·‚·‚é
+            // ã‚¯ãƒªã‚¢ã‚¿ã‚¤ãƒ ã‚’m/secã«å¤‰æ›ã™ã‚‹
             timer = (float)Math.Round(timer, 3, MidpointRounding.AwayFromZero);
             goalTime = (int)(timer * 1000);
 
             UserModel userModel = UserModel.Instance;
 
-            // ‘—M—pƒS[ƒXƒgƒf[ƒ^‚Ìì¬
+            // é€ä¿¡ç”¨ã‚´ãƒ¼ã‚¹ãƒˆãƒ‡ãƒ¼ã‚¿ã®ä½œæˆ
             SaveGhost();
             string ghostData = JsonConvert.SerializeObject(ghostList);
 
-            // ‹L˜^“o˜^ˆ—
+            // è¨˜éŒ²ç™»éŒ²å‡¦ç†
             RegistResult result = await rankingModel.RegistClearTimeAsync(stageID, userModel.UserId, goalTime, ghostData);
 
             if (result.timeRegistFlag)
-            {   // newRecord•\¦
+            {   // newRecordè¡¨ç¤º
                 SEManager.Instance.Play(SEPath.NEW_RECORD);
                 newRecordObj.SetActive(true);
                 newRecordObj.transform.DOScale(1.3f, 1.5f).SetEase(Ease.InCubic).SetLoops(-1, LoopType.Yoyo);
@@ -276,33 +276,33 @@ public class SoloManager : MonoBehaviour
         }
         else
         {
-            Debug.Log("Œ»ƒ‰ƒbƒv”" + currentRapNum);
+            Debug.Log("ç¾ãƒ©ãƒƒãƒ—æ•°" + currentRapNum);
             rapText.text = currentRapNum.ToString() + " / " + maxRapNum.ToString();
         }
     }
 
     /// <summary>
-    /// §ŒÀŠÔ‚ğXV‚µ‚Ä[•ª:•b]‚Å•\¦‚·‚é
+    /// åˆ¶é™æ™‚é–“ã‚’æ›´æ–°ã—ã¦[åˆ†:ç§’]ã§è¡¨ç¤ºã™ã‚‹
     /// </summary>
     private void DisplayTime(float limitTime)
     {
-        // ˆø”‚Åó‚¯æ‚Á‚½’l‚ğ[•ª:•b]‚É•ÏŠ·‚µ‚Ä•\¦‚·‚é
-        // ToString("00")‚Åƒ[ƒƒvƒŒ[ƒXƒtƒHƒ‹ƒ_[‚µ‚ÄA‚PŒ…‚Ì‚Æ‚«‚Í“ª‚É0‚ğ‚Â‚¯‚é
+        // å¼•æ•°ã§å—ã‘å–ã£ãŸå€¤ã‚’[åˆ†:ç§’]ã«å¤‰æ›ã—ã¦è¡¨ç¤ºã™ã‚‹
+        // ToString("00")ã§ã‚¼ãƒ­ãƒ—ãƒ¬ãƒ¼ã‚¹ãƒ•ã‚©ãƒ«ãƒ€ãƒ¼ã—ã¦ã€ï¼‘æ¡ã®ã¨ãã¯é ­ã«0ã‚’ã¤ã‘ã‚‹
         string decNum = (limitTime - (int)limitTime).ToString(".000");
         timerText.text = ((int)(limitTime / 60)).ToString("00") + ":" + ((int)limitTime % 60).ToString("00") + decNum;
     }
 
     /// <summary>
-    /// ƒJƒEƒ“ƒgƒ_ƒEƒ“”ñ•\¦ˆ—
+    /// ã‚«ã‚¦ãƒ³ãƒˆãƒ€ã‚¦ãƒ³éè¡¨ç¤ºå‡¦ç†
     /// </summary>
-    /// <param name="obj">”ñ•\¦‚É‚µ‚½‚¢ƒIƒuƒWƒF</param>
+    /// <param name="obj">éè¡¨ç¤ºã«ã—ãŸã„ã‚ªãƒ–ã‚¸ã‚§</param>
     private void HiddenCount()
     {
         countDownObj.SetActive(false);
     }
 
     /// <summary>
-    /// Ô‘Ì”š”jˆ—
+    /// è»Šä½“çˆ†ç ´å‡¦ç†
     /// </summary>
     private void BoomCar()
     {
@@ -310,7 +310,7 @@ public class SoloManager : MonoBehaviour
     }
 
     /// <summary>
-    /// ƒJƒEƒ“ƒgƒ_ƒEƒ“ˆ—
+    /// ã‚«ã‚¦ãƒ³ãƒˆãƒ€ã‚¦ãƒ³å‡¦ç†
     /// </summary>
     /// <returns></returns>
     IEnumerator StartCount()
@@ -322,11 +322,11 @@ public class SoloManager : MonoBehaviour
             if (i == 3)
             {
                 SEManager.Instance.Play(SEPath.START);
-                // Œv‘ªŠJnE‘€ì‰Â”\EƒS[ƒXƒgƒf[ƒ^•Û‘¶ˆ—‹N“®‚·‚é
+                // è¨ˆæ¸¬é–‹å§‹ãƒ»æ“ä½œå¯èƒ½ãƒ»ã‚´ãƒ¼ã‚¹ãƒˆãƒ‡ãƒ¼ã‚¿ä¿å­˜å‡¦ç†èµ·å‹•ã™ã‚‹
                 countDownObj.GetComponent<Image>().sprite = countDownSprits[i];
 
                 if (UserModel.Instance.GhostData != "")
-                {   // ƒS[ƒXƒgƒf[ƒ^‚ª‚ ‚é‚Ì‚İÄ¶
+                {   // ã‚´ãƒ¼ã‚¹ãƒˆãƒ‡ãƒ¼ã‚¿ãŒã‚ã‚‹æ™‚ã®ã¿å†ç”Ÿ
                     InvokeRepeating("PlayGhost",0,saveSpeed);
                 }
 
@@ -335,59 +335,59 @@ public class SoloManager : MonoBehaviour
                 isCount = true;
                 InvokeRepeating("SaveGhost", 0.1f, saveSpeed);
 
-                // ƒJƒEƒ“ƒg”ñ•\¦
+                // ã‚«ã‚¦ãƒ³ãƒˆéè¡¨ç¤º
                 Invoke("HiddenCount", 0.6f);
             }
             else
             {
                 SEManager.Instance.Play(SEPath.COUNT);
-                // 0.9•b‘Ò‚Á‚ÄƒRƒ‹[ƒ`ƒ“’†’f
+                // 0.9ç§’å¾…ã£ã¦ã‚³ãƒ«ãƒ¼ãƒãƒ³ä¸­æ–­
                 yield return new WaitForSeconds(0.9f);
             }
         }
     }
 
     /// <summary>
-    /// ƒS[ƒXƒgƒf[ƒ^•Û‘¶ˆ—
+    /// ã‚´ãƒ¼ã‚¹ãƒˆãƒ‡ãƒ¼ã‚¿ä¿å­˜å‡¦ç†
     /// </summary>
     private void SaveGhost()
     {
         GhostData ghostData = new GhostData();
-        ghostData.Pos = visualObj.position;        // ˆÊ’u
-        ghostData.Rot = visualObj.eulerAngles;     // Šp“x
-        ghostData.WRot = wheelRot.localEulerAngles.y;   // ƒ^ƒCƒ„Šp
+        ghostData.Pos = visualObj.position;        // ä½ç½®
+        ghostData.Rot = visualObj.eulerAngles;     // è§’åº¦
+        ghostData.WRot = wheelRot.localEulerAngles.y;   // ã‚¿ã‚¤ãƒ¤è§’
 
         ghostList.Add(ghostData);
     }
 
     /// <summary>
-    /// ƒS[ƒXƒgÄ¶ˆ—
+    /// ã‚´ãƒ¼ã‚¹ãƒˆå†ç”Ÿå‡¦ç†
     /// </summary>
     private void PlayGhost()
     {
-        // –{‘ÌˆÊ’u‚ÌXV
+        // æœ¬ä½“ä½ç½®ã®æ›´æ–°
         ghostCarObj.transform.DOMove(playGhost[ghostCnt].Pos + ghostCorrection, saveSpeed).SetEase(Ease.Linear).SetUpdate(UpdateType.Fixed, true);
         ghostCarObj.transform.DORotate(playGhost[ghostCnt].Rot, saveSpeed).SetEase(Ease.Linear).SetUpdate(UpdateType.Fixed, true);
 
-        // ƒ^ƒCƒ„Šp‚ÌXV
+        // ã‚¿ã‚¤ãƒ¤è§’ã®æ›´æ–°
         ghostWheelL.transform.localEulerAngles = new Vector3 (ghostWheelL.transform.localEulerAngles.x,playGhost[ghostCnt].WRot,0);
         ghostWheelR.transform.localEulerAngles = new Vector3(ghostWheelR.transform.localEulerAngles.x, playGhost[ghostCnt].WRot, 0);
 
         ghostCnt++;
 
         if (playGhost.Count - 1 < ghostCnt)
-        {   // Ä¶‚·‚éƒf[ƒ^‚ª–³‚¢‚ÍÄ¶’â~
+        {   // å†ç”Ÿã™ã‚‹ãƒ‡ãƒ¼ã‚¿ãŒç„¡ã„æ™‚ã¯å†ç”Ÿåœæ­¢
             CancelInvoke("PlayGhost");
             return;
         }
     }
 
     /// <summary>
-    /// ƒƒjƒ…[‘JˆÚˆ—
+    /// ãƒ¡ãƒ‹ãƒ¥ãƒ¼é·ç§»å‡¦ç†
     /// </summary>
     public void OnBackMenu()
     {
-        // SEÄ¶
+        // SEå†ç”Ÿ
         SEManager.Instance.Play(SEPath.TAP_BUTTON);
 
         Initiate.DoneFading();
@@ -395,11 +395,11 @@ public class SoloManager : MonoBehaviour
     }
 
     /// <summary>
-    /// ƒXƒe[ƒW‘I‘ğ‘JˆÚˆ—
+    /// ã‚¹ãƒ†ãƒ¼ã‚¸é¸æŠé·ç§»å‡¦ç†
     /// </summary>
     public void OnBackSelect()
     {
-        // SEÄ¶
+        // SEå†ç”Ÿ
         SEManager.Instance.Play(SEPath.TAP_BUTTON);
 
         Initiate.DoneFading();
@@ -407,11 +407,11 @@ public class SoloManager : MonoBehaviour
     }
 
     /// <summary>
-    /// ƒŠƒgƒ‰ƒC‘JˆÚˆ—
+    /// ãƒªãƒˆãƒ©ã‚¤é·ç§»å‡¦ç†
     /// </summary>
     public void OnRetryButton() 
     {
-        // SEÄ¶
+        // SEå†ç”Ÿ
         SEManager.Instance.Play(SEPath.TAP_BUTTON);
 
         Initiate.DoneFading();
@@ -419,7 +419,7 @@ public class SoloManager : MonoBehaviour
     }
 
     /// <summary>
-    /// ƒpƒlƒ‹•Â‚¶‚éˆ—
+    /// ãƒ‘ãƒãƒ«é–‰ã˜ã‚‹å‡¦ç†
     /// </summary>
     /// <param name="panel"></param>
     public void OnCloseButton(GameObject panel)
@@ -428,7 +428,7 @@ public class SoloManager : MonoBehaviour
     }
 
     /// <summary>
-    /// ƒƒjƒ…[ƒ{ƒ^ƒ“‰Ÿ‰º
+    /// ãƒ¡ãƒ‹ãƒ¥ãƒ¼ãƒœã‚¿ãƒ³æŠ¼ä¸‹æ™‚
     /// </summary>
     /// <param name="menuPanel"></param>
     public void OnMenuButton(GameObject menuPanel)

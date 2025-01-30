@@ -1,5 +1,5 @@
 //---------------------------------------------------------------
-// ƒ^ƒbƒvƒGƒtƒFƒNƒgƒ}ƒl[ƒWƒƒ[ [ TapEffectManager.cs ]
+// ã‚¿ãƒƒãƒ—ã‚¨ãƒ•ã‚§ã‚¯ãƒˆãƒãƒãƒ¼ã‚¸ãƒ£ãƒ¼ [ TapEffectManager.cs ]
 // Author:Kenta Nakamoto
 // Data:2024/12/17
 // Update:2024/12/17
@@ -11,20 +11,20 @@ using UnityEngine;
 public class TapEffectManager : MonoBehaviour
 {
     //=====================================
-    // ƒtƒB[ƒ‹ƒh
+    // ãƒ•ã‚£ãƒ¼ãƒ«ãƒ‰
 
     /// <summary>
-    /// ƒƒCƒ“ƒJƒƒ‰
+    /// ãƒ¡ã‚¤ãƒ³ã‚«ãƒ¡ãƒ©
     /// </summary>
     [SerializeField] private Camera mainCamera;
 
     /// <summary>
-    /// ¶¬ƒGƒtƒFƒNƒg
+    /// ç”Ÿæˆã‚¨ãƒ•ã‚§ã‚¯ãƒˆ
     /// </summary>
     [SerializeField] private GameObject tapEffect;
 
     //=====================================
-    // ƒƒ\ƒbƒh
+    // ãƒ¡ã‚½ãƒƒãƒ‰
 
     // Start is called before the first frame update
     void Start()
@@ -37,10 +37,10 @@ public class TapEffectManager : MonoBehaviour
     {
         if (Input.GetMouseButtonDown(0))
         {
-            // ‰æ–Ê‚ğƒ^ƒbƒv‚µ‚½‚Æ‚«‚Ìˆ—
+            // ç”»é¢ã‚’ã‚¿ãƒƒãƒ—ã—ãŸã¨ãã®å‡¦ç†
             Vector2 tapPosition = mainCamera.ScreenToWorldPoint(Input.mousePosition + mainCamera.transform.forward * 10);
 
-            // ƒGƒtƒFƒNƒg‚ğ¶¬
+            // ã‚¨ãƒ•ã‚§ã‚¯ãƒˆã‚’ç”Ÿæˆ
             GameObject effect = Instantiate(tapEffect, tapPosition, Quaternion.identity, this.transform);
         }
     }

@@ -1,5 +1,5 @@
 //---------------------------------------------------------------
-// ƒƒjƒ…[ƒ}ƒl[ƒWƒƒ[ [ MenuManager.cs ]
+// ãƒ¡ãƒ‹ãƒ¥ãƒ¼ãƒãƒãƒ¼ã‚¸ãƒ£ãƒ¼ [ MenuManager.cs ]
 // Author:Kenta Nakamoto
 // Data:2024/12/10
 // Update:2025/01/30
@@ -15,55 +15,55 @@ using UnityEngine.UI;
 public class MenuManager : MonoBehaviour
 {
     //=====================================
-    // ƒtƒB[ƒ‹ƒh
+    // ãƒ•ã‚£ãƒ¼ãƒ«ãƒ‰
 
     private int imageNo = 0;
 
     [Header("---- Button ----")]
 
-    // ƒƒjƒ…[ƒ{ƒ^ƒ“
-    [SerializeField] private Button acountButton;           // ƒAƒJƒEƒ“ƒg
-    [SerializeField] private Button shopButton;             // ƒVƒ‡ƒbƒv
-    [SerializeField] private Button optionButton;           // ƒIƒvƒVƒ‡ƒ“
-    [SerializeField] private Button updateButton;           // XV•ÒW
+    // ãƒ¡ãƒ‹ãƒ¥ãƒ¼ãƒœã‚¿ãƒ³
+    [SerializeField] private Button acountButton;           // ã‚¢ã‚«ã‚¦ãƒ³ãƒˆ
+    [SerializeField] private Button shopButton;             // ã‚·ãƒ§ãƒƒãƒ—
+    [SerializeField] private Button optionButton;           // ã‚ªãƒ—ã‚·ãƒ§ãƒ³
+    [SerializeField] private Button updateButton;           // æ›´æ–°ç·¨é›†
 
     [Header("---- Slider ----")]
 
-    // ƒTƒEƒ“ƒhƒXƒ‰ƒCƒ_[
+    // ã‚µã‚¦ãƒ³ãƒ‰ã‚¹ãƒ©ã‚¤ãƒ€ãƒ¼
     [SerializeField] private Slider bgmSlider;
     [SerializeField] private Slider seSlider;
 
     [Header("---- Panel ----")]
 
-    // ƒƒjƒ…[ƒpƒlƒ‹
+    // ãƒ¡ãƒ‹ãƒ¥ãƒ¼ãƒ‘ãƒãƒ«
     [SerializeField] private GameObject accountPanel;
     [SerializeField] private GameObject soundPanel;
     [SerializeField] private GameObject helpPanel;
 
     [Header("---- AccountPanel ----")]
 
-    // ƒAƒJƒEƒ“ƒgƒpƒlƒ‹•\¦UI
+    // ã‚¢ã‚«ã‚¦ãƒ³ãƒˆãƒ‘ãƒãƒ«è¡¨ç¤ºUI
     [SerializeField] private Text displayNameText;
     [SerializeField] private Text inputNameText;
     [SerializeField] private Text registText;
     [SerializeField] private Text rateText;
-    [SerializeField] private GameObject errorButton;        // ƒGƒ‰[ (–¼‘O”í‚è)
-    [SerializeField] private GameObject netErrorButton;     // ƒGƒ‰[ (’ÊMƒGƒ‰[)
-    [SerializeField] private GameObject nameUpdateButton;   // –¼‘OXVŠ®—¹
+    [SerializeField] private GameObject errorButton;        // ã‚¨ãƒ©ãƒ¼ (åå‰è¢«ã‚Š)
+    [SerializeField] private GameObject netErrorButton;     // ã‚¨ãƒ©ãƒ¼ (é€šä¿¡ã‚¨ãƒ©ãƒ¼)
+    [SerializeField] private GameObject nameUpdateButton;   // åå‰æ›´æ–°å®Œäº†
 
     [Header("---- HelpPanel ----")]
 
-    // ƒwƒ‹ƒvƒpƒlƒ‹•\¦UI
+    // ãƒ˜ãƒ«ãƒ—ãƒ‘ãƒãƒ«è¡¨ç¤ºUI
     [SerializeField] private Text nowPageText;
     [SerializeField] private Text maxPageText;
     [SerializeField] private Image helpImage;
     [SerializeField] private Sprite[] helpSprites;
 
     //=====================================
-    // ƒƒ\ƒbƒh
+    // ãƒ¡ã‚½ãƒƒãƒ‰
 
     /// <summary>
-    /// ‰Šúˆ—
+    /// åˆæœŸå‡¦ç†
     /// </summary>
     void Start()
     {
@@ -72,12 +72,12 @@ public class MenuManager : MonoBehaviour
             Destroy(GameObject.Find("RoomModel"));
         }
 
-        //Ä¶’†‚ÌBGM‚Ì–¼‘O‚ğ‘S‚Äæ“¾
+        //å†ç”Ÿä¸­ã®BGMã®åå‰ã‚’å…¨ã¦å–å¾—
         var currentBGMNames = BGMManager.Instance.GetCurrentAudioNames();
 
         maxPageText.text = helpSprites.Length.ToString();
 
-        // ƒ`ƒ…[ƒgƒŠƒAƒ‹•\¦”»’f
+        // ãƒãƒ¥ãƒ¼ãƒˆãƒªã‚¢ãƒ«è¡¨ç¤ºåˆ¤æ–­
         if (!UserModel.Instance.TutorialFlag)
         {
             helpPanel.SetActive(true);
@@ -86,7 +86,7 @@ public class MenuManager : MonoBehaviour
         }
 
         if (currentBGMNames[0] != "MainBGM")
-        {   // MainBGM‚ğÄŠJ
+        {   // MainBGMã‚’å†é–‹
             BGMManager.Instance.Stop(BGMPath.TIME_ATTACK);
             BGMManager.Instance.Stop(BGMPath.MULTI_PLAY);
             BGMManager.Instance.Play(BGMPath.MAIN_BGM, 0.75f, 0, 1, true, true);
@@ -94,7 +94,7 @@ public class MenuManager : MonoBehaviour
     }
 
     /// <summary>
-    /// ƒGƒ‰[ƒ{ƒ^ƒ“”ñ•\¦EXVƒ{ƒ^ƒ“•œŠˆ
+    /// ã‚¨ãƒ©ãƒ¼ãƒœã‚¿ãƒ³éè¡¨ç¤ºãƒ»æ›´æ–°ãƒœã‚¿ãƒ³å¾©æ´»
     /// </summary>
     public void OnErrorButton()
     {
@@ -104,7 +104,7 @@ public class MenuManager : MonoBehaviour
     }
 
     /// <summary>
-    /// BGM‰¹—Ê•ÏXˆ—
+    /// BGMéŸ³é‡å¤‰æ›´å‡¦ç†
     /// </summary>
     public void ChangeBgmVolume()
     {
@@ -112,7 +112,7 @@ public class MenuManager : MonoBehaviour
     }
 
     /// <summary>
-    /// SE‰¹—Ê•ÏXˆ—
+    /// SEéŸ³é‡å¤‰æ›´å‡¦ç†
     /// </summary>
     public void ChangeSeVolume()
     {
@@ -120,63 +120,63 @@ public class MenuManager : MonoBehaviour
     }
 
     /// <summary>
-    /// w’èƒpƒlƒ‹‚Ì•\¦ˆ—
+    /// æŒ‡å®šãƒ‘ãƒãƒ«ã®è¡¨ç¤ºå‡¦ç†
     /// </summary>
     private void DisplayPanel(GameObject panel)
     {
-        // ‘Sƒpƒlƒ‹‚ğ”ñ•\¦
+        // å…¨ãƒ‘ãƒãƒ«ã‚’éè¡¨ç¤º
         accountPanel.SetActive(false);
         soundPanel.SetActive(false);
         helpPanel.SetActive(false);
 
-        // w’èƒpƒlƒ‹‚ğ•\¦
+        // æŒ‡å®šãƒ‘ãƒãƒ«ã‚’è¡¨ç¤º
         panel.SetActive(true);
     }
 
     //-----------------------------
-    // ƒ{ƒ^ƒ“‰Ÿ‰ºˆ—
+    // ãƒœã‚¿ãƒ³æŠ¼ä¸‹å‡¦ç†
 
     /// <summary>
-    /// ƒ\ƒƒ{ƒ^ƒ“‰Ÿ‰º
+    /// ã‚½ãƒ­ãƒœã‚¿ãƒ³æŠ¼ä¸‹æ™‚
     /// </summary>
     public void OnSoloButton()
     {
-        // SEÄ¶
+        // SEå†ç”Ÿ
         SEManager.Instance.Play(SEPath.TAP_BUTTON);
 
-        // ƒ\ƒ‘I‘ğƒ‚[ƒh‘JˆÚ
+        // ã‚½ãƒ­é¸æŠãƒ¢ãƒ¼ãƒ‰é·ç§»
         Initiate.DoneFading();
         Initiate.Fade("3_SoloSelectScene", Color.white, 2.5f);
     }
 
     /// <summary>
-    /// ƒIƒ“ƒ‰ƒCƒ“ƒ{ƒ^ƒ“‰Ÿ‰º
+    /// ã‚ªãƒ³ãƒ©ã‚¤ãƒ³ãƒœã‚¿ãƒ³æŠ¼ä¸‹æ™‚
     /// </summary>
     public void OnOnlineButton()
     {
-        // SEÄ¶
+        // SEå†ç”Ÿ
         SEManager.Instance.Play(SEPath.TAP_BUTTON);
 
-        // ƒIƒ“ƒ‰ƒCƒ“ƒ‚[ƒh‘JˆÚ
+        // ã‚ªãƒ³ãƒ©ã‚¤ãƒ³ãƒ¢ãƒ¼ãƒ‰é·ç§»
         Initiate.DoneFading();
         Initiate.Fade("4_MatchingScene", Color.white, 2.5f);
     }
 
     /// <summary>
-    /// ƒ^ƒCƒgƒ‹ƒ{ƒ^ƒ“‰Ÿ‰º
+    /// ã‚¿ã‚¤ãƒˆãƒ«ãƒœã‚¿ãƒ³æŠ¼ä¸‹æ™‚
     /// </summary>
     public void OnTitleButton()
     {
-        // SEÄ¶
+        // SEå†ç”Ÿ
         SEManager.Instance.Play(SEPath.TAP_BUTTON);
 
-        // ƒ^ƒCƒgƒ‹‘JˆÚ
+        // ã‚¿ã‚¤ãƒˆãƒ«é·ç§»
         Initiate.DoneFading();
         Initiate.Fade("1_TitleScene", Color.white, 2.5f);
     }
 
     /// <summary>
-    /// ƒAƒJƒEƒ“ƒgƒ{ƒ^ƒ“‰Ÿ‰º
+    /// ã‚¢ã‚«ã‚¦ãƒ³ãƒˆãƒœã‚¿ãƒ³æŠ¼ä¸‹æ™‚
     /// </summary>
     public async void OnAcountButton()
     {
@@ -186,19 +186,19 @@ public class MenuManager : MonoBehaviour
         }
         else
         {
-            // SEÄ¶
+            // SEå†ç”Ÿ
             SEManager.Instance.Play(SEPath.TAP_BUTTON);
 
-            // ƒ†[ƒU[ƒf[ƒ^‚Ìæ“¾
+            // ãƒ¦ãƒ¼ã‚¶ãƒ¼ãƒ‡ãƒ¼ã‚¿ã®å–å¾—
             var userData = await UserModel.Instance.SearchUserID(UserModel.Instance.UserId);
 
             if (userData == null)
-            {   // ƒGƒ‰[•\¦
+            {   // ã‚¨ãƒ©ãƒ¼è¡¨ç¤º
                 errorButton.SetActive(true);
                 return;
             }
             else
-            {   // ƒ†[ƒU[ƒf[ƒ^”½‰fE•\¦
+            {   // ãƒ¦ãƒ¼ã‚¶ãƒ¼ãƒ‡ãƒ¼ã‚¿åæ˜ ãƒ»è¡¨ç¤º
                 displayNameText.text = userData.Name;
                 registText.text = userData.Created_at.ToString();
                 rateText.text = userData.Rate.ToString();
@@ -208,33 +208,33 @@ public class MenuManager : MonoBehaviour
     }
 
     /// <summary>
-    /// ƒ†[ƒU[–¼•ÏXƒ{ƒ^ƒ“
+    /// ãƒ¦ãƒ¼ã‚¶ãƒ¼åå¤‰æ›´ãƒœã‚¿ãƒ³
     /// </summary>
     public async void OnNameUpdateButton()
     {
-        // ƒ{ƒ^ƒ“–³Œø‰»
+        // ãƒœã‚¿ãƒ³ç„¡åŠ¹åŒ–
         updateButton.interactable = false;
 
-        // “o˜^ˆ—
+        // ç™»éŒ²å‡¦ç†
         UserModel.Status statusCode = await UserModel.Instance.UpdateUserName(UserModel.Instance.UserId,inputNameText.text);
 
         switch (statusCode)
         {
             case UserModel.Status.True:
-                Debug.Log("“o˜^¬Œ÷");
+                Debug.Log("ç™»éŒ²æˆåŠŸ");
                 nameUpdateButton.SetActive(true);
                 updateButton.interactable = true;
                 break;
 
             case UserModel.Status.False:
-                // ƒlƒbƒgƒGƒ‰[ƒ{ƒ^ƒ“•\¦
-                Debug.Log("’ÊM¸”s");
+                // ãƒãƒƒãƒˆã‚¨ãƒ©ãƒ¼ãƒœã‚¿ãƒ³è¡¨ç¤º
+                Debug.Log("é€šä¿¡å¤±æ•—");
                 netErrorButton.SetActive(true);
                 break;
 
             case UserModel.Status.SameName:
-                // ƒGƒ‰[•\¦
-                Debug.Log("–¼‘O”í‚è");
+                // ã‚¨ãƒ©ãƒ¼è¡¨ç¤º
+                Debug.Log("åå‰è¢«ã‚Š");
                 errorButton.SetActive(true);
                 break;
 
@@ -244,72 +244,72 @@ public class MenuManager : MonoBehaviour
     }
 
     /// <summary>
-    /// ƒTƒEƒ“ƒhƒTƒEƒ“ƒhƒ{ƒ^ƒ“‰Ÿ‰º
+    /// ã‚µã‚¦ãƒ³ãƒ‰ã‚µã‚¦ãƒ³ãƒ‰ãƒœã‚¿ãƒ³æŠ¼ä¸‹æ™‚
     /// </summary>
     public void OnSoundButton()
     {
-        // Œ»İ•\¦‚³‚ê‚Ä‚¢‚é‚©
+        // ç¾åœ¨è¡¨ç¤ºã•ã‚Œã¦ã„ã‚‹ã‹
         if (soundPanel.activeSelf)
-        {   // •\¦‚µ‚Ä‚¢‚é
+        {   // è¡¨ç¤ºã—ã¦ã„ã‚‹æ™‚
             soundPanel.SetActive(false);
         }
         else
         {
-            // SEÄ¶
+            // SEå†ç”Ÿ
             SEManager.Instance.Play(SEPath.TAP_BUTTON);
-            // ƒpƒlƒ‹•\¦
+            // ãƒ‘ãƒãƒ«è¡¨ç¤º
             DisplayPanel(soundPanel);
         }
     }
 
     /// <summary>
-    /// ƒwƒ‹ƒvƒ{ƒ^ƒ“‰Ÿ‰º
+    /// ãƒ˜ãƒ«ãƒ—ãƒœã‚¿ãƒ³æŠ¼ä¸‹æ™‚
     /// </summary>
     public void OnHelpButton()
     {
-        // SEÄ¶
+        // SEå†ç”Ÿ
         SEManager.Instance.Play(SEPath.TAP_BUTTON);
 
-        // ƒpƒlƒ‹•\¦
+        // ãƒ‘ãƒãƒ«è¡¨ç¤º
         DisplayPanel(helpPanel);
     }
 
     /// <summary>
-    /// ƒwƒ‹ƒvƒlƒNƒXƒgƒ{ƒ^ƒ“‰Ÿ‰º
+    /// ãƒ˜ãƒ«ãƒ—ãƒã‚¯ã‚¹ãƒˆãƒœã‚¿ãƒ³æŠ¼ä¸‹æ™‚
     /// </summary>
     public void OnHelpNextButton()
     {
         imageNo++;
 
-        // ”’l‚ÌãŒÀİ’è
+        // æ•°å€¤ã®ä¸Šé™è¨­å®š
         if(imageNo >= helpSprites.Length - 1) imageNo = helpSprites.Length - 1;
 
-        // ‰æ‘œEƒy[ƒWNoXV
+        // ç”»åƒãƒ»ãƒšãƒ¼ã‚¸Noæ›´æ–°
         nowPageText.text = (imageNo + 1).ToString();
         helpImage.sprite = helpSprites[imageNo];
     }
 
     /// <summary>
-    /// ƒwƒ‹ƒvƒoƒbƒNƒ{ƒ^ƒ“‰Ÿ‰º
+    /// ãƒ˜ãƒ«ãƒ—ãƒãƒƒã‚¯ãƒœã‚¿ãƒ³æŠ¼ä¸‹æ™‚
     /// </summary>
     public void OnHelpBackButton()
     {
         imageNo--;
 
-        // ”’l‚Ì‰ºŒÀİ’è
+        // æ•°å€¤ã®ä¸‹é™è¨­å®š
         if (imageNo <= 0) imageNo = 0;
 
-        // ‰æ‘œEƒy[ƒWNoXV
+        // ç”»åƒãƒ»ãƒšãƒ¼ã‚¸Noæ›´æ–°
         nowPageText.text = (imageNo + 1).ToString();
         helpImage.sprite = helpSprites[imageNo];
     }
 
     /// <summary>
-    /// ƒpƒlƒ‹”ñ•\¦ˆ—
+    /// ãƒ‘ãƒãƒ«éè¡¨ç¤ºå‡¦ç†
     /// </summary>
     public void OnCloseDisplay(GameObject gameObject)
     {
-        // SEÄ¶
+        // SEå†ç”Ÿ
         SEManager.Instance.Play(SEPath.TAP_BUTTON);
 
         gameObject.SetActive(false);
