@@ -21,4 +21,9 @@ public class SaveData
     /// トークン
     /// </summary>
     public string Token { get; set; }
+
+    /// <summary>
+    /// チュートリアルフラグ
+    /// </summary>
+    public bool TutorialFlag { get; set; }
 }

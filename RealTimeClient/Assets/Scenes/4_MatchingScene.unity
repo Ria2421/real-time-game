@@ -210,6 +210,16 @@ PrefabInstance:
       propertyPath: orthographic
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1370143537521595239, guid: c4ea05584aafdb9459ab6148c81e25d6,
+        type: 3}
+      propertyPath: m_NormalizedViewPortRect.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1370143537521595239, guid: c4ea05584aafdb9459ab6148c81e25d6,
+        type: 3}
+      propertyPath: m_NormalizedViewPortRect.width
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2082045909801449065, guid: c4ea05584aafdb9459ab6148c81e25d6,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -383,6 +393,7 @@ MonoBehaviour:
   matchingTextObj: {fileID: 554693509}
   completeTextObj: {fileID: 1119183573}
   roomModel: {fileID: 1438100668}
+  cancelObj: {fileID: 1496443645}
   cancelButton: {fileID: 1496443647}
   carBG: {fileID: 182737190}
 --- !u!4 &805237947
@@ -793,7 +804,7 @@ GameObject:
   - component: {fileID: 1496443648}
   - component: {fileID: 1496443647}
   m_Layer: 5
-  m_Name: MatchingButton
+  m_Name: CancelButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -857,7 +868,7 @@ MonoBehaviour:
     m_PressedTrigger: Pressed
     m_SelectedTrigger: Selected
     m_DisabledTrigger: Disabled
-  m_Interactable: 1
+  m_Interactable: 0
   m_TargetGraphic: {fileID: 1496443648}
   m_OnClick:
     m_PersistentCalls:

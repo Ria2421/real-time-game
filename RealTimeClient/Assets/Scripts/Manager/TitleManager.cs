@@ -2,7 +2,7 @@
 // タイトルマネージャー [ TitleManager.cs ]
 // Author:Kenta Nakamoto
 // Data:2024/12/05
-// Update:2025/01/29
+// Update:2025/01/30
 //---------------------------------------------------------------
 using DG.Tweening;
 using KanKikuchi.AudioManager;
@@ -100,6 +100,7 @@ public class TitleManager : MonoBehaviour
         else
         {   // シーン遷移処理
             Debug.Log("データあり");
+            Initiate.DoneFading();
             Initiate.Fade("2_MenuScene", Color.white, 2.5f);
         }
     }
@@ -114,7 +115,7 @@ public class TitleManager : MonoBehaviour
         // SE再生
         SEManager.Instance.Play(SEPath.MENU_SELECT);
 
-        // ボタン無効化
+        // ボタン無効
         registButton.interactable = false;
 
         // 登録処理
@@ -124,6 +125,7 @@ public class TitleManager : MonoBehaviour
         {
             case UserModel.Status.True:
                 Debug.Log("登録成功");
+                Initiate.DoneFading();
                 Initiate.Fade("2_MenuScene", Color.white, 2.5f);
                 break;
 
@@ -134,7 +136,6 @@ public class TitleManager : MonoBehaviour
 
             case UserModel.Status.SameName:
                 Debug.Log("名前被り");
-                // 注意表示
                 errorButton.SetActive(true);
                 break;
 
@@ -171,6 +172,7 @@ public class TitleManager : MonoBehaviour
 
         UserModel.Instance.UserId = int.Parse(debugIDText.text);
 
+        Initiate.DoneFading();
         Initiate.Fade("2_MenuScene", Color.white, 2.5f);
     }
 

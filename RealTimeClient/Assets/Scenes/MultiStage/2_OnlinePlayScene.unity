@@ -1650,8 +1650,8 @@ MonoBehaviour:
     steeringMultiplier: 1
     accelerationMultiplier: 1
     speedMultiplier: 1
-    forwardFrictionMultiplier: 0.4
-    lateralFrictionMultiplier: 0.4
+    forwardFrictionMultiplier: 0.3
+    lateralFrictionMultiplier: 0.3
     sideFrictionMultiplier: 0
 --- !u!64 &680575205
 MeshCollider:

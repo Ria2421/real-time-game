@@ -42,6 +42,11 @@ public class UserModel : BaseModel
     public string Token { get; set; }
 
     /// <summary>
+    /// チュートリアルフラグ
+    /// </summary>
+    public bool TutorialFlag { get; set; }
+
+    /// <summary>
     /// ゴーストデータ
     /// </summary>
     public string GhostData { get; set; } = "";
@@ -78,12 +83,13 @@ public class UserModel : BaseModel
     /// <summary>
     /// ユーザーデータ保存処理
     /// </summary>
-    private void SaveUserData()
+    public void SaveUserData()
     {
         // セーブデータクラスの生成
         SaveData saveData = new SaveData();
         saveData.UserID = this.UserId;
         saveData.Token = this.Token;
+        saveData.TutorialFlag = this.TutorialFlag;
 
         // データをJSONシリアライズ
         string json = JsonConvert.SerializeObject(saveData);
@@ -115,6 +121,7 @@ public class UserModel : BaseModel
         SaveData saveData = JsonConvert.DeserializeObject<SaveData>(json);
         this.UserId = saveData.UserID;
         this.Token = saveData.Token;
+        this.TutorialFlag = saveData.TutorialFlag;
 
         // 読み込み結果をリターン
         return true;

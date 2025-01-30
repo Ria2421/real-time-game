@@ -1,3 +1,9 @@
+//---------------------------------------------------------------
+// タイトルマネージャー [ MatchingManager.cs ]
+// Author:Kenta Nakamoto
+// Data:2024/12/10
+// Update:2025/01/30
+//---------------------------------------------------------------
 using KanKikuchi.AudioManager;
 using System;
 using System.Collections;
@@ -32,6 +38,11 @@ public class MatchingManager : MonoBehaviour
     [SerializeField] private RoomModel roomModel;
 
     /// <summary>
+    /// キャンセルボタンオブジェ
+    /// </summary>
+    [SerializeField] private GameObject cancelObj;
+
+    /// <summary>
     /// キャンセルボタン
     /// </summary>
     [SerializeField] private Button cancelButton;
@@ -51,12 +62,7 @@ public class MatchingManager : MonoBehaviour
     {
         roomModel.OnMatchingUser += OnMatchingUser;     // マッチング完了通知
 
-        // 接続
-        await roomModel.ConnectAsync();
-        // マッチング
-        await roomModel.JoinLobbyAsync(UserModel.Instance.UserId);
-
-        Debug.Log("マッチング開始");
+        Invoke("StartMatching",2.0f);
     }
 
     /// <summary>
@@ -82,6 +88,7 @@ public class MatchingManager : MonoBehaviour
         await roomModel.DisconnectionAsync();
 
         // メニューシーンに遷移
+        Initiate.DoneFading();
         Initiate.Fade("2_MenuScene", Color.white, 2.5f);
 
         Debug.Log("マッチング中止");
@@ -93,14 +100,13 @@ public class MatchingManager : MonoBehaviour
     /// <param name="roomName"></param>
     private async void OnMatchingUser(string roomName,int stageID)
     {
-        cancelButton.interactable = false;
-
         roomModel.RoomName = roomName;  // 発行されたルーム名を保存
         playStageID = stageID;          // ステージIDを保存
 
         // SE再生
         SEManager.Instance.Play(SEPath.MATCHING_COMPLETE);
         // 表示切替
+        cancelObj.SetActive(false);
         matchingTextObj.SetActive(false);
         completeTextObj.SetActive(true);
 
@@ -112,13 +118,32 @@ public class MatchingManager : MonoBehaviour
         Debug.Log("マッチング完了");
     }
 
-    // ゲームシーン遷移
+    /// <summary>
+    /// ゲームシーン遷移
+    /// </summary>
+    /// <returns></returns>
     private IEnumerator TransGmaeScene()
     {
         // 1秒待ってコルーチン中断
         yield return new WaitForSeconds(1.2f);
 
         // playStageIDに応じて対応するゲームシーンに遷移
-        SceneManager.LoadScene(playStageID.ToString() + "_OnlinePlayScene");
+        Initiate.DoneFading();
+        Initiate.Fade(playStageID.ToString() + "_OnlinePlayScene", Color.white, 2.5f);
+    }
+
+    /// <summary>
+    /// マッチング開始処理
+    /// </summary>
+    private async void StartMatching()
+    {
+        // 接続
+        await roomModel.ConnectAsync();
+        // マッチング
+        await roomModel.JoinLobbyAsync(UserModel.Instance.UserId);
+        // キャンセルボタン有効化
+        cancelButton.interactable = true;
+
+        Debug.Log("マッチング開始");
     }
 }

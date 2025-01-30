@@ -2,7 +2,7 @@
 // ソロステージ選択マネージャー [ SoloSelectManager.cs ]
 // Author:Kenta Nakamoto
 // Data:2025/01/11
-// Update:2025/01/27
+// Update:2025/01/30
 //---------------------------------------------------------------
 using Cysharp.Net.Http;
 using Grpc.Net.Client;
@@ -210,7 +210,8 @@ public class SoloSelectManager : MonoBehaviour
         SEManager.Instance.Play(SEPath.TAP_BUTTON);
 
         // ソロプレイモード遷移
-        SceneManager.LoadScene(playStageID.ToString() + "_SoloPlayScene");
+        Initiate.DoneFading();
+        Initiate.Fade(playStageID.ToString() + "_SoloPlayScene", Color.white, 2.5f);
     }
 
     /// <summary>
@@ -222,6 +223,7 @@ public class SoloSelectManager : MonoBehaviour
         SEManager.Instance.Play(SEPath.TAP_BUTTON);
 
         // メニューモード遷移
+        Initiate.DoneFading();
         Initiate.Fade("2_MenuScene", Color.white, 2.5f);
     }
 

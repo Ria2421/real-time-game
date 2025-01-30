@@ -922,27 +922,27 @@ PrefabInstance:
     - target: {fileID: 8389795037963917432, guid: 0ebf7aa7988226544b8b9e9905cbbe43,
         type: 3}
       propertyPath: m_SizeDelta.x
-      value: 1920
+      value: 1919.9999
       objectReference: {fileID: 0}
     - target: {fileID: 8389795037963917432, guid: 0ebf7aa7988226544b8b9e9905cbbe43,
         type: 3}
       propertyPath: m_SizeDelta.y
-      value: 1079.9999
+      value: 1080
       objectReference: {fileID: 0}
     - target: {fileID: 8389795037963917432, guid: 0ebf7aa7988226544b8b9e9905cbbe43,
         type: 3}
       propertyPath: m_LocalScale.x
-      value: 0.41296297
+      value: 0.42037037
       objectReference: {fileID: 0}
     - target: {fileID: 8389795037963917432, guid: 0ebf7aa7988226544b8b9e9905cbbe43,
         type: 3}
       propertyPath: m_LocalScale.y
-      value: 0.41296297
+      value: 0.42037037
       objectReference: {fileID: 0}
     - target: {fileID: 8389795037963917432, guid: 0ebf7aa7988226544b8b9e9905cbbe43,
         type: 3}
       propertyPath: m_LocalScale.z
-      value: 0.41296297
+      value: 0.42037037
       objectReference: {fileID: 0}
     - target: {fileID: 8831035786632015400, guid: 0ebf7aa7988226544b8b9e9905cbbe43,
         type: 3}
@@ -1063,7 +1063,7 @@ MonoBehaviour:
   m_InputType: 0
   m_AsteriskChar: 42
   m_KeyboardType: 0
-  m_LineType: 2
+  m_LineType: 0
   m_HideMobileInput: 0
   m_CharacterValidation: 0
   m_CharacterLimit: 6
@@ -1948,7 +1948,7 @@ MonoBehaviour:
     m_Alignment: 4
     m_AlignByGeometry: 0
     m_RichText: 0
-    m_HorizontalOverflow: 0
+    m_HorizontalOverflow: 1
     m_VerticalOverflow: 0
     m_LineSpacing: 1
   m_Text: 
@@ -10921,7 +10921,7 @@ PrefabInstance:
     - target: {fileID: 1370143537521595239, guid: c4ea05584aafdb9459ab6148c81e25d6,
         type: 3}
       propertyPath: m_NormalizedViewPortRect.x
-      value: 0.0006996691
+      value: 0.00055006146
       objectReference: {fileID: 0}
     - target: {fileID: 1370143537521595239, guid: c4ea05584aafdb9459ab6148c81e25d6,
         type: 3}
@@ -10931,7 +10931,7 @@ PrefabInstance:
     - target: {fileID: 1370143537521595239, guid: c4ea05584aafdb9459ab6148c81e25d6,
         type: 3}
       propertyPath: m_NormalizedViewPortRect.width
-      value: 0.99860066
+      value: 0.9988999
       objectReference: {fileID: 0}
     - target: {fileID: 1370143537521595239, guid: c4ea05584aafdb9459ab6148c81e25d6,
         type: 3}

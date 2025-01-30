@@ -256,6 +256,32 @@ public class RoomHub:StreamingHubBase<IRoomHub,IRoomHubReceiver>,IRoomHub
         if (rankCnt == 2)
         {
             using var context = new GameDbContext();
+            int[] rates = new int[MAX_PLAYER];
+
+            foreach(RoomData data in roomDataList)
+            {   // ランク順にレートを取得
+                switch(data.JoinedUser.Ranking)
+                {
+                    case 1:
+                        rates[0] = data.JoinedUser.UserData.Rate;
+                        break;
+
+                    case 2:
+                        rates[1] = data.JoinedUser.UserData.Rate;
+                        break;
+
+                    case 3:
+                        rates[2] = data.JoinedUser.UserData.Rate;
+                        break;
+
+                    case 4:
+                        rates[3] = data.JoinedUser.UserData.Rate;
+                        break;
+
+                    default:
+                        break;
+                }
+            }
 
             // リザルトデータの作成
             List<ResultData> rank = new List<ResultData>();
@@ -267,23 +293,35 @@ public class RoomHub:StreamingHubBase<IRoomHub,IRoomHubReceiver>,IRoomHub
                 switch (data2.JoinedUser.Ranking)
                 {
                     case 1:
-                        data2.JoinedUser.UserData.Rate += 100;
-                        resultData.ChangeRate = 100;
+                        data2.JoinedUser.UserData.Rate += CalcRate(rates[0], rates[3]);
+                        resultData.ChangeRate = CalcRate(rates[0], rates[3]);
                         break;
 
                     case 2:
-                        data2.JoinedUser.UserData.Rate += 50;
-                        resultData.ChangeRate = 50;
+                        data2.JoinedUser.UserData.Rate += CalcRate(rates[1], rates[3]) / 2;
+                        resultData.ChangeRate = CalcRate(rates[1], rates[3]) / 2;
                         break;
 
                     case 3:
-                        data2.JoinedUser.UserData.Rate -= 50;
-                        resultData.ChangeRate = -50;
+                        data2.JoinedUser.UserData.Rate -= CalcRate(rates[0], rates[2]) / 2;
+
+                        if(data2.JoinedUser.UserData.Rate <= 0)
+                        {
+                            data2.JoinedUser.UserData.Rate = 0;
+                        }
+
+                        resultData.ChangeRate = -CalcRate(rates[0], rates[2]) / 2;
                         break;
 
                     case 4:
-                        data2.JoinedUser.UserData.Rate -= 100;
-                        resultData.ChangeRate = -100;
+                        data2.JoinedUser.UserData.Rate -= CalcRate(rates[0], rates[3]);
+
+                        if (data2.JoinedUser.UserData.Rate <= 0)
+                        {
+                            data2.JoinedUser.UserData.Rate = 0;
+                        }
+
+                        resultData.ChangeRate = -CalcRate(rates[0], rates[3]);
                         break;
 
                     default:
@@ -331,5 +369,20 @@ public class RoomHub:StreamingHubBase<IRoomHub,IRoomHubReceiver>,IRoomHub
 
         // 発射通知 (発射する大砲ID)
         this.Broadcast(room).OnShot(cannonID);
+    }
+
+    /// <summary>
+    /// レート計算処理
+    /// </summary>
+    /// <param name="winRate"> 勝者レート</param>
+    /// <param name="loseRate">敗者レート</param>
+    /// <returns></returns>
+    private int CalcRate(int winRate,int loseRate)
+    {
+        int result = (int)(50.0f / (MathF.Pow(10, ((float)(winRate - loseRate) / 400.0f)) + 1.0f));
+
+        if (result <= 2) result = 2;
+
+        return result;
     }
 }
