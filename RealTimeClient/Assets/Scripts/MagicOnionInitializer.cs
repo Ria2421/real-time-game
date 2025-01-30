@@ -4,13 +4,13 @@ using MessagePack.Resolvers;
 using MessagePack.Unity;
 
 /// <summary>
-/// MagicOnion逕ｨ繧､繝ｳ繧ｿ繝輔ぉ繝ｼ繧ｹ縺ｮ繧ｳ繝ｼ繝臥函謌�
+/// MagicOnion騾包ｽｨ郢ｧ�､郢晢ｽｳ郢ｧ�ｿ郢晁ｼ斐♂郢晢ｽｼ郢ｧ�ｹ邵ｺ�ｮ郢ｧ�ｳ郢晢ｽｼ郢晁��蜃ｽ隰倹
 /// </summary>
 [MagicOnionClientGeneration(typeof(Shared.Interfaces.Services.IMyFirstService))]
 partial class MagicOnionInitializer
 {
     /// <summary>
-    /// Resolver縺ｮ逋ｻ骭ｲ蜃ｦ逅�
+    /// Resolver邵ｺ�ｮ騾具ｽｻ鬪ｭ�ｲ陷��ｽｦ騾��
     /// </summary>
     [UnityEngine.RuntimeInitializeOnLoadMethod(UnityEngine.RuntimeInitializeLoadType.BeforeSceneLoad)]
     static void RegisterResolvers()

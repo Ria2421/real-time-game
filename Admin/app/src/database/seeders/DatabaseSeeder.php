@@ -24,5 +24,6 @@ class DatabaseSeeder extends Seeder
         $this->call(SoloPlayLogsTableSeeder::class);    // ソロプレイログ
         $this->call(MultiPlayLogsTableSeeder::class);   // マルチプレイログ
         $this->call(MultiResultLogsTableSeeder::class); // マルチリザルトログ
+        $this->call(NGWordsTableSeeder::class);         // NGワード
     }
 }

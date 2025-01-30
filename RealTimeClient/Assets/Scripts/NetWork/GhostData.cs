@@ -1,5 +1,5 @@
 //---------------------------------------------------------------
-// ゴーストデータクラス [ GhostData.cs ]
+// 繧ｴ繝ｼ繧ｹ繝医ョ繝ｼ繧ｿ繧ｯ繝ｩ繧ｹ [ GhostData.cs ]
 // Author:Kenta Nakamoto
 // Data:2025/01/21
 // Update:2025/01/21
@@ -11,17 +11,17 @@ using UnityEngine;
 public class GhostData
 {
     /// <summary>
-    /// 位置
+    /// 菴咲ｽｮ
     /// </summary>
     public Vector3 Pos { get; set; }
 
     /// <summary>
-    /// 角度
+    /// 隗貞ｺｦ
     /// </summary>
     public Vector3 Rot { get; set; }
 
     /// <summary>
-    /// タイヤ角
+    /// 繧ｿ繧､繝､隗�
     /// </summary>
     public float WRot { get; set; }
 }

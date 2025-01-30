@@ -1,5 +1,5 @@
 //---------------------------------------------------------------
-// タイトルマネージャー [ MatchingManager.cs ]
+// 繧ｿ繧､繝医Ν繝槭ロ繝ｼ繧ｸ繝｣繝ｼ [ MatchingManager.cs ]
 // Author:Kenta Nakamoto
 // Data:2024/12/10
 // Update:2025/01/30
@@ -15,135 +15,135 @@ using UnityEngine.UI;
 public class MatchingManager : MonoBehaviour
 {
     //-------------------------------------------------------
-    // フィールド
+    // 繝輔ぅ繝ｼ繝ｫ繝�
 
     /// <summary>
-    /// プレイステージID
+    /// 繝励Ξ繧､繧ｹ繝�ー繧ｸID
     /// </summary>
     private int playStageID = 0;
 
     /// <summary>
-    /// マッチングテキストオブジェ
+    /// 繝槭ャ繝√Φ繧ｰ繝��く繧ｹ繝医が繝悶ず繧ｧ
     /// </summary>
     [SerializeField] private GameObject matchingTextObj;
 
     /// <summary>
-    /// マッチング完了テキストオブジェ
+    /// 繝槭ャ繝√Φ繧ｰ螳御ｺ��ユ繧ｭ繧ｹ繝医が繝悶ず繧ｧ
     /// </summary>
     [SerializeField] private GameObject completeTextObj;
 
     /// <summary>
-    /// ルームモデル格納用
+    /// 繝ｫ繝ｼ繝�繝｢繝��Ν譬ｼ邏咲畑
     /// </summary>
     [SerializeField] private RoomModel roomModel;
 
     /// <summary>
-    /// キャンセルボタンオブジェ
+    /// 繧ｭ繝｣繝ｳ繧ｻ繝ｫ繝懊ち繝ｳ繧ｪ繝悶ず繧ｧ
     /// </summary>
     [SerializeField] private GameObject cancelObj;
 
     /// <summary>
-    /// キャンセルボタン
+    /// 繧ｭ繝｣繝ｳ繧ｻ繝ｫ繝懊ち繝ｳ
     /// </summary>
     [SerializeField] private Button cancelButton;
 
     /// <summary>
-    /// 車背景
+    /// 霆願レ譎ｯ
     /// </summary>
     [SerializeField] private Transform carBG;
 
     //-------------------------------------------------------
-    // メソッド
+    // 繝｡繧ｽ繝��ラ
 
     /// <summary>
-    /// 初期処理
+    /// 蛻晄悄蜃ｦ逅�
     /// </summary>
     async void Start()
     {
-        roomModel.OnMatchingUser += OnMatchingUser;     // マッチング完了通知
+        roomModel.OnMatchingUser += OnMatchingUser;     // 繝槭ャ繝√Φ繧ｰ螳御ｺ��夂衍
 
         Invoke("StartMatching",2.0f);
     }
 
     /// <summary>
-    /// 定期更新処理
+    /// 螳壽悄譖ｴ譁ｰ蜃ｦ逅�
     /// </summary>
     private void FixedUpdate()
     {
-        // 車画像を回す
+        // 霆顔判蜒上ｒ蝗槭☆
         carBG.localEulerAngles += new Vector3(0,0,1.0f);
     }
 
     /// <summary>
-    /// キャンセルボタン
+    /// 繧ｭ繝｣繝ｳ繧ｻ繝ｫ繝懊ち繝ｳ
     /// </summary>
     public async void OnCancelButton()
     {
-        // SE再生
+        // SE蜀咲函
         SEManager.Instance.Play(SEPath.TAP_BUTTON);
 
         cancelButton.interactable = false;
 
-        // 切断 (鯖から帰ってきたらシーン移動にする)
+        // 蛻��妙 (魃悶°繧牙ｸｰ縺｣縺ｦ縺阪◆繧峨す繝ｼ繝ｳ遘ｻ蜍輔↓縺吶ｋ)
         await roomModel.DisconnectionAsync();
 
-        // メニューシーンに遷移
+        // 繝｡繝九Η繝ｼ繧ｷ繝ｼ繝ｳ縺ｫ驕ｷ遘ｻ
         Initiate.DoneFading();
         Initiate.Fade("2_MenuScene", Color.white, 2.5f);
 
-        Debug.Log("マッチング中止");
+        Debug.Log("繝槭ャ繝√Φ繧ｰ荳ｭ豁｢");
     }
 
     /// <summary>
-    /// マッチング完了通知受信時の処理
+    /// 繝槭ャ繝√Φ繧ｰ螳御ｺ��夂衍蜿嶺ｿ｡譎ゅ��蜃ｦ逅�
     /// </summary>
     /// <param name="roomName"></param>
     private async void OnMatchingUser(string roomName,int stageID)
     {
-        roomModel.RoomName = roomName;  // 発行されたルーム名を保存
-        playStageID = stageID;          // ステージIDを保存
+        roomModel.RoomName = roomName;  // 逋ｺ陦後＆繧後◆繝ｫ繝ｼ繝�蜷阪ｒ菫晏ｭ�
+        playStageID = stageID;          // 繧ｹ繝�ー繧ｸID繧剃ｿ晏ｭ�
 
-        // SE再生
+        // SE蜀咲函
         SEManager.Instance.Play(SEPath.MATCHING_COMPLETE);
-        // 表示切替
+        // 陦ｨ遉ｺ蛻��崛
         cancelObj.SetActive(false);
         matchingTextObj.SetActive(false);
         completeTextObj.SetActive(true);
 
-        // 退出
+        // 騾�蜃ｺ
         await roomModel.ExitAsync();
 
         StartCoroutine("TransGmaeScene");
 
-        Debug.Log("マッチング完了");
+        Debug.Log("繝槭ャ繝√Φ繧ｰ螳御ｺ�");
     }
 
     /// <summary>
-    /// ゲームシーン遷移
+    /// 繧ｲ繝ｼ繝�繧ｷ繝ｼ繝ｳ驕ｷ遘ｻ
     /// </summary>
     /// <returns></returns>
     private IEnumerator TransGmaeScene()
     {
-        // 1秒待ってコルーチン中断
+        // 1遘貞ｾ��▲縺ｦ繧ｳ繝ｫ繝ｼ繝√Φ荳ｭ譁ｭ
         yield return new WaitForSeconds(1.2f);
 
-        // playStageIDに応じて対応するゲームシーンに遷移
+        // playStageID縺ｫ蠢懊§縺ｦ蟇ｾ蠢懊☆繧九ご繝ｼ繝�繧ｷ繝ｼ繝ｳ縺ｫ驕ｷ遘ｻ
         Initiate.DoneFading();
         Initiate.Fade(playStageID.ToString() + "_OnlinePlayScene", Color.white, 2.5f);
     }
 
     /// <summary>
-    /// マッチング開始処理
+    /// 繝槭ャ繝√Φ繧ｰ髢句ｧ句��逅�
     /// </summary>
     private async void StartMatching()
     {
-        // 接続
+        // 謗･邯�
         await roomModel.ConnectAsync();
-        // マッチング
+        // 繝槭ャ繝√Φ繧ｰ
         await roomModel.JoinLobbyAsync(UserModel.Instance.UserId);
-        // キャンセルボタン有効化
+        // 繧ｭ繝｣繝ｳ繧ｻ繝ｫ繝懊ち繝ｳ譛牙柑蛹�
         cancelButton.interactable = true;
 
-        Debug.Log("マッチング開始");
+        Debug.Log("繝槭ャ繝√Φ繧ｰ髢句ｧ�");
     }
 }

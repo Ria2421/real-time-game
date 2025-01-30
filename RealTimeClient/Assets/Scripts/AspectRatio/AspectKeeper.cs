@@ -1,6 +1,6 @@
 //---------------------------------------------------------------
 //
-// 繧｢繧ｹ繝壹け繝域ｯ比ｿ晄戟 [ AspectKeeper.cs ]
+// 郢ｧ�｢郢ｧ�ｹ郢晏｣ｹ縺醍ｹ晏沺�ｯ豈費ｽｿ譎��亜 [ AspectKeeper.cs ]
 // Author:Kenta Nakamoto
 // Data:2024/07/17
 // Update:2024/07/17
@@ -10,50 +10,50 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[ExecuteAlways] // 蜀咲函譎ゆｻ･螟悶〒繧ょ虚菴懊☆繧�
+[ExecuteAlways] // 陷�蜥ｲ蜃ｽ隴弱ｆ�ｻ�･陞滓じ縲堤ｹｧ繧��劒闖ｴ諛岩��郢ｧ�
 public class AspectKeeper : MonoBehaviour
 {
     //-------------------------------------------
-    // 繝輔ぅ繝ｼ繝ｫ繝�
+    // 郢晁ｼ斐≦郢晢ｽｼ郢晢ｽｫ郢揄
 
     /// <summary>
-    /// 蟇ｾ雎｡縺ｨ縺吶ｋ繧ｫ繝｡繝ｩ
+    /// 陝��ｽｾ髮趣ｽ｡邵ｺ�ｨ邵ｺ蜷ｶ�狗ｹｧ�ｫ郢晢ｽ｡郢晢ｽｩ
     /// </summary>
     [SerializeField]
     private Camera targetCamera;
 
     /// <summary>
-    /// 逶ｮ逧��ｧ｣蜒丞ｺｦ
+    /// 騾ｶ�ｮ騾ｧ���ｧ�｣陷剃ｸ橸ｽｺ�ｦ
     /// </summary>
     [SerializeField]
     private Vector2 aspectVec;
 
     //--------------------------------------------
-    // 繝｡繧ｽ繝��ラ
+    // 郢晢ｽ｡郢ｧ�ｽ郢揀聽Λ
 
     /// <summary>
-    /// 譖ｴ譁ｰ蜃ｦ逅�
+    /// 隴厄ｽｴ隴��ｽｰ陷��ｽｦ騾��
     /// </summary>
     void Update()
     {
-        var screenAspect = Screen.width / (float)Screen.height; // 逕ｻ髱｢縺ｮ繧｢繧ｹ繝壹け繝域ｯ�
-        var targetAspect = aspectVec.x / aspectVec.y; // 逶ｮ逧�の繧｢繧ｹ繝壹け繝域ｯ�
+        var screenAspect = Screen.width / (float)Screen.height; // 騾包ｽｻ鬮ｱ�｢邵ｺ�ｮ郢ｧ�｢郢ｧ�ｹ郢晏｣ｹ縺醍ｹ晏沺�ｯ�
+        var targetAspect = aspectVec.x / aspectVec.y; // 騾ｶ�ｮ騾ｧ�の郢ｧ�｢郢ｧ�ｹ郢晏｣ｹ縺醍ｹ晏沺�ｯ�
 
-        var magRate = targetAspect / screenAspect; // 逶ｮ逧��い繧ｹ繝壹け繝域ｯ斐↓縺吶ｋ縺溘ａ縺ｮ蛟咲紫
+        var magRate = targetAspect / screenAspect; // 騾ｶ�ｮ騾ｧ��縺��ｹｧ�ｹ郢晏｣ｹ縺醍ｹ晏沺�ｯ譁絶��邵ｺ蜷ｶ�狗ｸｺ貅假ｽ∫ｸｺ�ｮ陋溷調邏ｫ
 
-        var viewportRect = new Rect(0, 0, 1, 1); // Viewport蛻晄悄蛟､縺ｧRect繧剃ｽ懈��
+        var viewportRect = new Rect(0, 0, 1, 1); // Viewport陋ｻ譎��ｄ陋滂ｽ､邵ｺ�ｧRect郢ｧ蜑��ｽｽ諛���
 
         if (magRate < 1)
         {
-            viewportRect.width = magRate; // 菴ｿ逕ｨ縺吶ｋ讓ｪ蟷��ｒ螟画峩
-            viewportRect.x = 0.5f - viewportRect.width * 0.5f;// 荳ｭ螟ｮ蟇��○
+            viewportRect.width = magRate; // 闖ｴ�ｿ騾包ｽｨ邵ｺ蜷ｶ�玖ｮ難ｽｪ陝ｷ���定棔逕ｻ蟲ｩ
+            viewportRect.x = 0.5f - viewportRect.width * 0.5f;// 闕ｳ�ｭ陞滂ｽｮ陝℡聹雷
         }
         else
         {
-            viewportRect.height = 1 / magRate; // 菴ｿ逕ｨ縺吶ｋ邵ｦ蟷��ｒ螟画峩
-            viewportRect.y = 0.5f - viewportRect.height * 0.5f;// 荳ｭ螟ｮ蟇��○
+            viewportRect.height = 1 / magRate; // 闖ｴ�ｿ騾包ｽｨ邵ｺ蜷ｶ�矩し�ｦ陝ｷ���定棔逕ｻ蟲ｩ
+            viewportRect.y = 0.5f - viewportRect.height * 0.5f;// 闕ｳ�ｭ陞滂ｽｮ陝℡聹雷
         }
 
-        targetCamera.rect = viewportRect; // 繧ｫ繝｡繝ｩ縺ｮViewport縺ｫ驕ｩ逕ｨ
+        targetCamera.rect = viewportRect; // 郢ｧ�ｫ郢晢ｽ｡郢晢ｽｩ邵ｺ�ｮViewport邵ｺ�ｫ鬩包ｽｩ騾包ｽｨ
     }
 }

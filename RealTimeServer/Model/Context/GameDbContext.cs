@@ -10,6 +10,7 @@ namespace MagicOnionServer.Model.Context
         public DbSet<User> Users { get; set; }
         public DbSet<SoloPlayData> Solo_Play_Data { get; set; }
         public DbSet<SoloPlayLog> Solo_Play_Logs { get; set; }
+        public DbSet<NGWord> Ng_Words { get; set; }
 
         // 接続先のDB (ローカル・オンラインで "server="の接続先が変わる)
 #if DEBUG

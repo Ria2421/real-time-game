@@ -1,5 +1,5 @@
 //---------------------------------------------------------------
-// メニューマネージャー [ MenuManager.cs ]
+// 繝｡繝九Η繝ｼ繝槭ロ繝ｼ繧ｸ繝｣繝ｼ [ MenuManager.cs ]
 // Author:Kenta Nakamoto
 // Data:2024/12/10
 // Update:2025/01/30
@@ -15,55 +15,55 @@ using UnityEngine.UI;
 public class MenuManager : MonoBehaviour
 {
     //=====================================
-    // フィールド
+    // 繝輔ぅ繝ｼ繝ｫ繝�
 
     private int imageNo = 0;
 
     [Header("---- Button ----")]
 
-    // メニューボタン
-    [SerializeField] private Button acountButton;           // アカウント
-    [SerializeField] private Button shopButton;             // ショップ
-    [SerializeField] private Button optionButton;           // オプション
-    [SerializeField] private Button updateButton;           // 更新編集
+    // 繝｡繝九Η繝ｼ繝懊ち繝ｳ
+    [SerializeField] private Button acountButton;           // 繧｢繧ｫ繧ｦ繝ｳ繝�
+    [SerializeField] private Button shopButton;             // 繧ｷ繝ｧ繝�プ
+    [SerializeField] private Button optionButton;           // 繧ｪ繝励す繝ｧ繝ｳ
+    [SerializeField] private Button updateButton;           // 譖ｴ譁ｰ邱ｨ髮�
 
     [Header("---- Slider ----")]
 
-    // サウンドスライダー
+    // 繧ｵ繧ｦ繝ｳ繝峨せ繝ｩ繧､繝�繝ｼ
     [SerializeField] private Slider bgmSlider;
     [SerializeField] private Slider seSlider;
 
     [Header("---- Panel ----")]
 
-    // メニューパネル
+    // 繝｡繝九Η繝ｼ繝代ロ繝ｫ
     [SerializeField] private GameObject accountPanel;
     [SerializeField] private GameObject soundPanel;
     [SerializeField] private GameObject helpPanel;
 
     [Header("---- AccountPanel ----")]
 
-    // アカウントパネル表示UI
+    // 繧｢繧ｫ繧ｦ繝ｳ繝医ヱ繝阪Ν陦ｨ遉ｺUI
     [SerializeField] private Text displayNameText;
     [SerializeField] private Text inputNameText;
     [SerializeField] private Text registText;
     [SerializeField] private Text rateText;
-    [SerializeField] private GameObject errorButton;        // エラー (名前被り)
-    [SerializeField] private GameObject netErrorButton;     // エラー (通信エラー)
-    [SerializeField] private GameObject nameUpdateButton;   // 名前更新完了
+    [SerializeField] private GameObject errorButton;        // 繧ｨ繝ｩ繝ｼ (蜷榊燕陲ｫ繧�)
+    [SerializeField] private GameObject netErrorButton;     // 繧ｨ繝ｩ繝ｼ (騾壻ｿ｡繧ｨ繝ｩ繝ｼ)
+    [SerializeField] private GameObject nameUpdateButton;   // 蜷榊燕譖ｴ譁ｰ螳御ｺ�
 
     [Header("---- HelpPanel ----")]
 
-    // ヘルプパネル表示UI
+    // 繝倥Ν繝励ヱ繝阪Ν陦ｨ遉ｺUI
     [SerializeField] private Text nowPageText;
     [SerializeField] private Text maxPageText;
     [SerializeField] private Image helpImage;
     [SerializeField] private Sprite[] helpSprites;
 
     //=====================================
-    // メソッド
+    // 繝｡繧ｽ繝��ラ
 
     /// <summary>
-    /// 初期処理
+    /// 蛻晄悄蜃ｦ逅�
     /// </summary>
     void Start()
     {
@@ -72,12 +72,12 @@ public class MenuManager : MonoBehaviour
             Destroy(GameObject.Find("RoomModel"));
         }
 
-        //再生中のBGMの名前を全て取得
+        //蜀咲函荳ｭ縺ｮBGM縺ｮ蜷榊燕繧貞��縺ｦ蜿門ｾ�
         var currentBGMNames = BGMManager.Instance.GetCurrentAudioNames();
 
         maxPageText.text = helpSprites.Length.ToString();
 
-        // チュートリアル表示判断
+        // 繝√Η繝ｼ繝医Μ繧｢繝ｫ陦ｨ遉ｺ蛻､譁ｭ
         if (!UserModel.Instance.TutorialFlag)
         {
             helpPanel.SetActive(true);
@@ -86,7 +86,7 @@ public class MenuManager : MonoBehaviour
         }
 
         if (currentBGMNames[0] != "MainBGM")
-        {   // MainBGMを再開
+        {   // MainBGM繧貞��髢�
             BGMManager.Instance.Stop(BGMPath.TIME_ATTACK);
             BGMManager.Instance.Stop(BGMPath.MULTI_PLAY);
             BGMManager.Instance.Play(BGMPath.MAIN_BGM, 0.75f, 0, 1, true, true);
@@ -94,7 +94,7 @@ public class MenuManager : MonoBehaviour
     }
 
     /// <summary>
-    /// エラーボタン非表示・更新ボタン復活
+    /// 繧ｨ繝ｩ繝ｼ繝懊ち繝ｳ髱櫁｡ｨ遉ｺ繝ｻ譖ｴ譁ｰ繝懊ち繝ｳ蠕ｩ豢ｻ
     /// </summary>
     public void OnErrorButton()
     {
@@ -104,7 +104,7 @@ public class MenuManager : MonoBehaviour
     }
 
     /// <summary>
-    /// BGM音量変更処理
+    /// BGM髻ｳ驥丞､画峩蜃ｦ逅�
     /// </summary>
     public void ChangeBgmVolume()
     {
@@ -112,7 +112,7 @@ public class MenuManager : MonoBehaviour
     }
 
     /// <summary>
-    /// SE音量変更処理
+    /// SE髻ｳ驥丞､画峩蜃ｦ逅�
     /// </summary>
     public void ChangeSeVolume()
     {
@@ -120,63 +120,63 @@ public class MenuManager : MonoBehaviour
     }
 
     /// <summary>
-    /// 指定パネルの表示処理
+    /// 謖��ｮ壹ヱ繝阪Ν縺ｮ陦ｨ遉ｺ蜃ｦ逅�
     /// </summary>
     private void DisplayPanel(GameObject panel)
     {
-        // 全パネルを非表示
+        // 蜈ｨ繝代ロ繝ｫ繧帝撼陦ｨ遉ｺ
         accountPanel.SetActive(false);
         soundPanel.SetActive(false);
         helpPanel.SetActive(false);
 
-        // 指定パネルを表示
+        // 謖��ｮ壹ヱ繝阪Ν繧定｡ｨ遉ｺ
         panel.SetActive(true);
     }
 
     //-----------------------------
-    // ボタン押下処理
+    // 繝懊ち繝ｳ謚ｼ荳句��逅�
 
     /// <summary>
-    /// ソロボタン押下時
+    /// 繧ｽ繝ｭ繝懊ち繝ｳ謚ｼ荳区凾
     /// </summary>
     public void OnSoloButton()
     {
-        // SE再生
+        // SE蜀咲函
         SEManager.Instance.Play(SEPath.TAP_BUTTON);
 
-        // ソロ選択モード遷移
+        // 繧ｽ繝ｭ驕ｸ謚槭Δ繝ｼ繝蛾��遘ｻ
         Initiate.DoneFading();
         Initiate.Fade("3_SoloSelectScene", Color.white, 2.5f);
     }
 
     /// <summary>
-    /// オンラインボタン押下時
+    /// 繧ｪ繝ｳ繝ｩ繧､繝ｳ繝懊ち繝ｳ謚ｼ荳区凾
     /// </summary>
     public void OnOnlineButton()
     {
-        // SE再生
+        // SE蜀咲函
         SEManager.Instance.Play(SEPath.TAP_BUTTON);
 
-        // オンラインモード遷移
+        // 繧ｪ繝ｳ繝ｩ繧､繝ｳ繝｢繝ｼ繝蛾��遘ｻ
         Initiate.DoneFading();
         Initiate.Fade("4_MatchingScene", Color.white, 2.5f);
     }
 
     /// <summary>
-    /// タイトルボタン押下時
+    /// 繧ｿ繧､繝医Ν繝懊ち繝ｳ謚ｼ荳区凾
     /// </summary>
     public void OnTitleButton()
     {
-        // SE再生
+        // SE蜀咲函
         SEManager.Instance.Play(SEPath.TAP_BUTTON);
 
-        // タイトル遷移
+        // 繧ｿ繧､繝医Ν驕ｷ遘ｻ
         Initiate.DoneFading();
         Initiate.Fade("1_TitleScene", Color.white, 2.5f);
     }
 
     /// <summary>
-    /// アカウントボタン押下時
+    /// 繧｢繧ｫ繧ｦ繝ｳ繝医��繧ｿ繝ｳ謚ｼ荳区凾
     /// </summary>
     public async void OnAcountButton()
     {
@@ -186,19 +186,19 @@ public class MenuManager : MonoBehaviour
         }
         else
         {
-            // SE再生
+            // SE蜀咲函
             SEManager.Instance.Play(SEPath.TAP_BUTTON);
 
-            // ユーザーデータの取得
+            // 繝ｦ繝ｼ繧ｶ繝ｼ繝�ー繧ｿ縺ｮ蜿門ｾ�
             var userData = await UserModel.Instance.SearchUserID(UserModel.Instance.UserId);
 
             if (userData == null)
-            {   // エラー表示
+            {   // 繧ｨ繝ｩ繝ｼ陦ｨ遉ｺ
                 errorButton.SetActive(true);
                 return;
             }
             else
-            {   // ユーザーデータ反映・表示
+            {   // 繝ｦ繝ｼ繧ｶ繝ｼ繝�ー繧ｿ蜿肴丐繝ｻ陦ｨ遉ｺ
                 displayNameText.text = userData.Name;
                 registText.text = userData.Created_at.ToString();
                 rateText.text = userData.Rate.ToString();
@@ -208,33 +208,33 @@ public class MenuManager : MonoBehaviour
     }
 
     /// <summary>
-    /// ユーザー名変更ボタン
+    /// 繝ｦ繝ｼ繧ｶ繝ｼ蜷榊､画峩繝懊ち繝ｳ
     /// </summary>
     public async void OnNameUpdateButton()
     {
-        // ボタン無効化
+        // 繝懊ち繝ｳ辟｡蜉ｹ蛹�
         updateButton.interactable = false;
 
-        // 登録処理
+        // 逋ｻ骭ｲ蜃ｦ逅�
         UserModel.Status statusCode = await UserModel.Instance.UpdateUserName(UserModel.Instance.UserId,inputNameText.text);
 
         switch (statusCode)
         {
             case UserModel.Status.True:
-                Debug.Log("登録成功");
+                Debug.Log("逋ｻ骭ｲ謌仙粥");
                 nameUpdateButton.SetActive(true);
                 updateButton.interactable = true;
                 break;
 
             case UserModel.Status.False:
-                // ネットエラーボタン表示
-                Debug.Log("通信失敗");
+                // 繝阪ャ繝医お繝ｩ繝ｼ繝懊ち繝ｳ陦ｨ遉ｺ
+                Debug.Log("騾壻ｿ｡螟ｱ謨�");
                 netErrorButton.SetActive(true);
                 break;
 
             case UserModel.Status.SameName:
-                // エラー表示
-                Debug.Log("名前被り");
+                // 繧ｨ繝ｩ繝ｼ陦ｨ遉ｺ
+                Debug.Log("蜷榊燕陲ｫ繧�");
                 errorButton.SetActive(true);
                 break;
 
@@ -244,72 +244,72 @@ public class MenuManager : MonoBehaviour
     }
 
     /// <summary>
-    /// サウンドサウンドボタン押下時
+    /// 繧ｵ繧ｦ繝ｳ繝峨し繧ｦ繝ｳ繝峨��繧ｿ繝ｳ謚ｼ荳区凾
     /// </summary>
     public void OnSoundButton()
     {
-        // 現在表示されているか
+        // 迴ｾ蝨ｨ陦ｨ遉ｺ縺輔ｌ縺ｦ縺��ｋ縺�
         if (soundPanel.activeSelf)
-        {   // 表示している時
+        {   // 陦ｨ遉ｺ縺励※縺��ｋ譎�
             soundPanel.SetActive(false);
         }
         else
         {
-            // SE再生
+            // SE蜀咲函
             SEManager.Instance.Play(SEPath.TAP_BUTTON);
-            // パネル表示
+            // 繝代ロ繝ｫ陦ｨ遉ｺ
             DisplayPanel(soundPanel);
         }
     }
 
     /// <summary>
-    /// ヘルプボタン押下時
+    /// 繝倥Ν繝励��繧ｿ繝ｳ謚ｼ荳区凾
     /// </summary>
     public void OnHelpButton()
     {
-        // SE再生
+        // SE蜀咲函
         SEManager.Instance.Play(SEPath.TAP_BUTTON);
 
-        // パネル表示
+        // 繝代ロ繝ｫ陦ｨ遉ｺ
         DisplayPanel(helpPanel);
     }
 
     /// <summary>
-    /// ヘルプネクストボタン押下時
+    /// 繝倥Ν繝励ロ繧ｯ繧ｹ繝医��繧ｿ繝ｳ謚ｼ荳区凾
     /// </summary>
     public void OnHelpNextButton()
     {
         imageNo++;
 
-        // 数値の上限設定
+        // 謨ｰ蛟､縺ｮ荳企剞險ｭ螳�
         if(imageNo >= helpSprites.Length - 1) imageNo = helpSprites.Length - 1;
 
-        // 画像・ページNo更新
+        // 逕ｻ蜒上��繝壹��繧ｸNo譖ｴ譁ｰ
         nowPageText.text = (imageNo + 1).ToString();
         helpImage.sprite = helpSprites[imageNo];
     }
 
     /// <summary>
-    /// ヘルプバックボタン押下時
+    /// 繝倥Ν繝励ヰ繝��け繝懊ち繝ｳ謚ｼ荳区凾
     /// </summary>
     public void OnHelpBackButton()
     {
         imageNo--;
 
-        // 数値の下限設定
+        // 謨ｰ蛟､縺ｮ荳矩剞險ｭ螳�
         if (imageNo <= 0) imageNo = 0;
 
-        // 画像・ページNo更新
+        // 逕ｻ蜒上��繝壹��繧ｸNo譖ｴ譁ｰ
         nowPageText.text = (imageNo + 1).ToString();
         helpImage.sprite = helpSprites[imageNo];
     }
 
     /// <summary>
-    /// パネル非表示処理
+    /// 繝代ロ繝ｫ髱櫁｡ｨ遉ｺ蜃ｦ逅�
     /// </summary>
     public void OnCloseDisplay(GameObject gameObject)
     {
-        // SE再生
+        // SE蜀咲函
         SEManager.Instance.Play(SEPath.TAP_BUTTON);
 
         gameObject.SetActive(false);

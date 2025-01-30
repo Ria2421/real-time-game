@@ -1,6 +1,6 @@
 //---------------------------------------------------------------
 //
-// 繧｢繧ｹ繝壹け繝域ｯ泌ｯｾ蠢弑I繧ｹ繧ｱ繝ｼ繝ｩ繝ｼ [ RectScalerWithViewport.cs ]
+// 郢ｧ�｢郢ｧ�ｹ郢晏｣ｹ縺醍ｹ晏沺�ｯ豕鯉ｽｯ�ｾ陟｢蠑選郢ｧ�ｹ郢ｧ�ｱ郢晢ｽｼ郢晢ｽｩ郢晢ｽｼ [ RectScalerWithViewport.cs ]
 // Author:Kenta Nakamoto
 // Data:2024/07/17
 // Update:2024/07/17
@@ -10,7 +10,7 @@ using UnityEngine;
 
 namespace TedLab
 {
-    [ExecuteAlways] // 蜀咲函譎ゆｻ･螟悶〒繧ょ虚菴懊☆繧�
+    [ExecuteAlways] // 陷�蜥ｲ蜃ｽ隴弱ｆ�ｻ�･陞滓じ縲堤ｹｧ繧��劒闖ｴ諛岩��郢ｧ�
     public class RectScalerWithViewport : MonoBehaviour
     {
         private const float LogBase = 2;
@@ -63,7 +63,7 @@ namespace TedLab
 
         private Camera GetTargetCamera()
         {
-            // 險ｭ螳壹′縺ゅｌ縺ｰ縺昴■繧峨ｒ蜆ｪ蜈�
+            // 髫ｪ�ｭ陞ｳ螢ｹ窶ｲ邵ｺ繧��ｽ檎ｸｺ�ｰ邵ｺ譏ｴ笆�郢ｧ蟲ｨ�定怕�ｪ陷��
             return refCamera != null ? refCamera : Camera.main;
         }
 
@@ -87,7 +87,7 @@ namespace TedLab
                 return;
             }
 
-            // canvas scaler縺九ｉ蠑慕畑
+            // canvas scaler邵ｺ荵晢ｽ芽�第��逡�
             var logWidth = Mathf.Log(width / referenceResolution.x, LogBase);
             var logHeight = Mathf.Log(height / referenceResolution.y, LogBase);
             var logWeightedAverage = Mathf.Lerp(logWidth, logHeight, matchWidthOrHeight);
@@ -100,7 +100,7 @@ namespace TedLab
 
             refRect.localScale = new Vector3(scale, scale, scale);
 
-            // 繧ｹ繧ｱ繝ｼ繝ｫ縺ｧ邵ｮ縺ｾ繧九��縺ｧ鬆伜沺縺�縺大ｺ��￡繧�
+            // 郢ｧ�ｹ郢ｧ�ｱ郢晢ｽｼ郢晢ｽｫ邵ｺ�ｧ驍ｵ�ｮ邵ｺ�ｾ郢ｧ荵掾ｮ邵ｺ�ｧ鬯��ｼ懈ｲｺ邵ｺ�邵ｺ螟ｧ�ｺ���｡郢ｧ�
             var revScale = 1f / scale;
             refRect.sizeDelta = new Vector2(width * revScale, height * revScale);
 

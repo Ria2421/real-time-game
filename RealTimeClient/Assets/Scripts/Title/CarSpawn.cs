@@ -1,5 +1,5 @@
 //---------------------------------------------------------------
-// 車生成 [ CarSpawn.cs ]
+// 霆顔函謌� [ CarSpawn.cs ]
 // Author:Kenta Nakamoto
 // Data:2024/12/16
 // Update:2024/12/16
@@ -13,40 +13,40 @@ using UnityEngine;
 public class CarSpawn : MonoBehaviour
 {
     //=====================================
-    // フィールド
+    // 繝輔ぅ繝ｼ繝ｫ繝�
 
     /// <summary>
-    /// 始発点
+    /// 蟋狗匱轤ｹ
     /// </summary>
     [SerializeField] private GameObject startObj;
 
     /// <summary>
-    /// 終着点
+    /// 邨ら捩轤ｹ
     /// </summary>
     [SerializeField] private GameObject goalObj;
 
     /// <summary>
-    /// 生成する車
+    /// 逕滓��縺吶ｋ霆�
     /// </summary>
     [SerializeField] private GameObject[] spawnObj;
 
     /// <summary>
-    /// 生成角度Y
+    /// 逕滓��隗貞ｺｦY
     /// </summary>
     [SerializeField] private float spawnAngleY;
 
     /// <summary>
-    /// 最低移動秒数
+    /// 譛�菴守ｧｻ蜍慕ｧ呈焚
     /// </summary>
     [SerializeField] private float minMoveSecond;
 
     /// <summary>
-    /// 最高移動秒数
+    /// 譛�鬮倡ｧｻ蜍慕ｧ呈焚
     /// </summary>
     [SerializeField] private float maxMoveSecond;
 
     //=====================================
-    // メソッド
+    // 繝｡繧ｽ繝��ラ
 
     // Start is called before the first frame update
     void Start()
@@ -54,7 +54,7 @@ public class CarSpawn : MonoBehaviour
         InvokeRepeating("SpawnCar",0.5f, 1.5f);
     }
 
-    // 車生成処理
+    // 霆顔函謌仙��逅�
     private void SpawnCar()
     {
         GameObject carObj = Instantiate(spawnObj[Random.Range(0, spawnObj.Length)], startObj.transform.position, Quaternion.Euler(0, spawnAngleY, 0));

@@ -1,5 +1,5 @@
 //---------------------------------------------------------------
-// タップエフェクトマネージャー [ TapEffectManager.cs ]
+// 繧ｿ繝�プ繧ｨ繝輔ぉ繧ｯ繝医��繝阪��繧ｸ繝｣繝ｼ [ TapEffectManager.cs ]
 // Author:Kenta Nakamoto
 // Data:2024/12/17
 // Update:2024/12/17
@@ -11,20 +11,20 @@ using UnityEngine;
 public class TapEffectManager : MonoBehaviour
 {
     //=====================================
-    // フィールド
+    // 繝輔ぅ繝ｼ繝ｫ繝�
 
     /// <summary>
-    /// メインカメラ
+    /// 繝｡繧､繝ｳ繧ｫ繝｡繝ｩ
     /// </summary>
     [SerializeField] private Camera mainCamera;
 
     /// <summary>
-    /// 生成エフェクト
+    /// 逕滓��繧ｨ繝輔ぉ繧ｯ繝�
     /// </summary>
     [SerializeField] private GameObject tapEffect;
 
     //=====================================
-    // メソッド
+    // 繝｡繧ｽ繝��ラ
 
     // Start is called before the first frame update
     void Start()
@@ -37,10 +37,10 @@ public class TapEffectManager : MonoBehaviour
     {
         if (Input.GetMouseButtonDown(0))
         {
-            // 画面をタップしたときの処理
+            // 逕ｻ髱｢繧偵ち繝�プ縺励◆縺ｨ縺阪��蜃ｦ逅�
             Vector2 tapPosition = mainCamera.ScreenToWorldPoint(Input.mousePosition + mainCamera.transform.forward * 10);
 
-            // エフェクトを生成
+            // 繧ｨ繝輔ぉ繧ｯ繝医ｒ逕滓��
             GameObject effect = Instantiate(tapEffect, tapPosition, Quaternion.identity, this.transform);
         }
     }

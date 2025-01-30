@@ -1,5 +1,5 @@
 //---------------------------------------------------------------
-// 大砲スクリプト [ Cannon.cs ]
+// 螟ｧ遐ｲ繧ｹ繧ｯ繝ｪ繝励ヨ [ Cannon.cs ]
 // Author:Kenta Nakamoto
 // Data:2025/01/27
 // Update:2025/01/28
@@ -15,42 +15,42 @@ using KanKikuchi.AudioManager;
 public class Cannon : MonoBehaviour
 {
     //-------------------------------------------------------
-    // フィールド
+    // 繝輔ぅ繝ｼ繝ｫ繝�
 
     /// <summary>
-    /// 弾の速度
+    /// 蠑ｾ縺ｮ騾溷ｺｦ
     /// </summary>
     [SerializeField] private float bulletSpeed = 4.0f;
 
     /// <summary>
-    /// 弾プレハブ
+    /// 蠑ｾ繝励Ξ繝上ヶ
     /// </summary>
     [SerializeField] private GameObject bulletprefab;
 
     /// <summary>
-    /// 到着位置
+    /// 蛻ｰ逹�菴咲ｽｮ
     /// </summary>
     [SerializeField] private Transform endPosition;
 
     //-------------------------------------------------------
-    // メソッド
+    // 繝｡繧ｽ繝��ラ
 
     /// <summary>
-    /// 弾発射処理
+    /// 蠑ｾ逋ｺ蟆�処逅�
     /// </summary>
     public void ShotBullet()
     {
-        // 弾の生成
+        // 蠑ｾ縺ｮ逕滓��
         var bulletObj = Instantiate(bulletprefab, this.gameObject.transform.position, Quaternion.identity);
 
-        // SE再生
+        // SE蜀咲函
         SEManager.Instance.Play(SEPath.CANNON);
 
-        // 弾の移動
+        // 蠑ｾ縺ｮ遘ｻ蜍�
         bulletObj.transform.DOMove(endPosition.position, bulletSpeed).SetEase(Ease.Linear)
             .SetUpdate(UpdateType.Fixed, true).OnComplete(() =>
             {
-                // 移動完了後に消去
+                // 遘ｻ蜍募ｮ御ｺ��ｾ後↓豸亥悉
                 Destroy(bulletObj);
             });
     }

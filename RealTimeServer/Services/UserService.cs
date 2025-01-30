@@ -4,6 +4,7 @@ using MagicOnionServer.Model.Context;
 using Microsoft.EntityFrameworkCore;
 using RealTimeServer.Model.Entity;
 using Shared.Interfaces.Services;
+using Shared.Model.Entity;
 using System.Xml.Linq;
 
 namespace RealTimeServer.Services
@@ -20,11 +21,22 @@ namespace RealTimeServer.Services
         {
             using var context = new GameDbContext();
 
+            var ngWords = context.Ng_Words.ToArray();
+
             // バリデーションチェック
-            if(context.Users.Where(user => user.Name == name).Count() > 0)
+            if (context.Users.Where(user => user.Name == name).Count() > 0)
             {   // 重複チェック
                 // 例外スロー
                 throw new ReturnStatusException(Grpc.Core.StatusCode.InvalidArgument, "SameName");
+            }
+
+            // NGワードチェック
+            foreach(NGWord ng in ngWords)
+            {
+                if(ng.Word == name)
+                {
+                    throw new ReturnStatusException(Grpc.Core.StatusCode.InvalidArgument, "NGWord");
+                }
             }
 
             User user = new User();
