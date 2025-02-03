@@ -1,9 +1,9 @@
 //---------------------------------------------------------------
-// 繝ｦ繝ｼ繧ｶ繝ｼ蜷崎ｿｽ蠕� [ NameTracker.cs ]
+// ユーザー名追従 [ NameTracker.cs ]
 // Author:Kenta Nakamoto
 // Data:2025/01/16
 // Update:2025/01/16
-// 蜿り�ザRL:https://tech.pjin.jp/blog/2017/07/14/unity_ugui_sync_rendermode/
+// 参考URL:https://tech.pjin.jp/blog/2017/07/14/unity_ugui_sync_rendermode/
 //---------------------------------------------------------------
 using DavidJalbert;
 using System.Collections;
@@ -14,58 +14,58 @@ using UnityEngine.UI;
 public class NameTracker : MonoBehaviour
 {
     //=====================================
-    // 繝輔ぅ繝ｼ繝ｫ繝�
+    // フィールド
 
     /// <summary>
-    /// 霑ｽ蠕灘ｯｾ雎｡
+    /// 追従対象
     /// </summary>
     private Transform targetTfm;
 
     /// <summary>
-    /// 陦ｨ遉ｺUI縺ｮRectTransform
+    /// 表示UIのRectTransform
     /// </summary>
     private RectTransform myRectTfm;
 
     /// <summary>
-    /// 陦ｨ遉ｺ繧ｪ繝輔そ繝��ヨ
+    /// 表示オフセット
     /// </summary>
     private Vector3 offset;
 
     /// <summary>
-    /// 蜷榊燕繝輔か繝ｳ繝医し繧､繧ｺ
+    /// 名前フォントサイズ
     /// </summary>
     private int fontSize;
 
     /// <summary>
-    /// 菫ｯ迸ｰ隕也せ譎ゅ��繝輔か繝ｳ繝医し繧､繧ｺ
+    /// 俯瞰視点時のフォントサイズ
     /// </summary>
     private const int topFontSize = 120;
 
     /// <summary>
-    /// 隨ｬ荳芽���ｦ也せ譎ゅ��繝輔か繝ｳ繝医し繧､繧ｺ
+    /// 第三者視点時のフォントサイズ
     /// </summary>
     private const int thirdFontSize = 85;
 
     /// <summary>
-    /// 繝｡繧､繝ｳ繧ｫ繝｡繝ｩ
+    /// メインカメラ
     /// </summary>
     [SerializeField] private Transform cameraTrs;
 
     /// <summary>
-    /// 繧ｫ繝｡繝ｩ繧ｹ繧ｯ繝ｪ繝励ヨ
+    /// カメラスクリプト
     /// </summary>
     [SerializeField] private TinyCarCamera tinyCarCamera;
 
     /// <summary>
-    /// name繝��く繧ｹ繝�
+    /// nameテキスト
     /// </summary>
     [SerializeField] private Text nameText;
 
     //=====================================
-    // 繝｡繧ｽ繝��ラ
+    // メソッド
 
     /// <summary>
-    /// 蛻晄悄蜃ｦ逅�
+    /// 初期処理
     /// </summary>
     void Start()
     {
@@ -73,18 +73,18 @@ public class NameTracker : MonoBehaviour
     }
 
     /// <summary>
-    /// 螳壽悄譖ｴ譁ｰ蜃ｦ逅�
+    /// 定期更新処理
     /// </summary>
     void FixedUpdate()
     {
         if (targetTfm == null) return;
 
-        //++ 陦ｨ遉ｺ菴咲ｽｮ繧定ｿｽ蠕灘ｯｾ雎｡+ 繧ｪ繝輔そ繝��ヨ縺ｮ蠎ｧ讓吶↓遘ｻ蜍輔＠邯壹￠繧�
+        //++ 表示位置を追従対象+ オフセットの座標に移動し続ける
         myRectTfm.position = targetTfm.position + offset;
 
         myRectTfm.rotation = cameraTrs.rotation; 
 
-        // 繧ｫ繝｡繝ｩ繝｢繝ｼ繝峨↓繧医▲縺ｦ繝輔か繝ｳ繝医し繧､繧ｺ繧貞､画峩縺吶ｋ
+        // カメラモードによってフォントサイズを変更する
         if(tinyCarCamera.viewMode == TinyCarCamera.CAMERA_MODE.ThirdPerson)
         {
             fontSize = thirdFontSize;
@@ -98,14 +98,14 @@ public class NameTracker : MonoBehaviour
     }
 
     /// <summary>
-    /// 霑ｽ蠕灘ｯｾ雎｡險ｭ螳壼��逅�
+    /// 追従対象設定処理
     /// </summary>
     /// <param name="target"></param>
     public void SetTarget(Transform target,int no)
     {
         targetTfm = target;
 
-        // 繧ｪ繝輔そ繝��ヨ霍晞屬縺ｮ螟画峩
+        // オフセット距離の変更
         if(no == 1)
         {
             offset = new Vector3(0, 2.3f, 0);

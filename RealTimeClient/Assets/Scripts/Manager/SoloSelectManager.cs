@@ -1,5 +1,5 @@
 //---------------------------------------------------------------
-// 繧ｽ繝ｭ繧ｹ繝�ー繧ｸ驕ｸ謚槭��繝阪��繧ｸ繝｣繝ｼ [ SoloSelectManager.cs ]
+// ソロステージ選択マネージャー [ SoloSelectManager.cs ]
 // Author:Kenta Nakamoto
 // Data:2025/01/11
 // Update:2025/01/30
@@ -19,110 +19,110 @@ using UnityEngine.UI;
 public class SoloSelectManager : MonoBehaviour
 {
     //=====================================
-    // 繝輔ぅ繝ｼ繝ｫ繝�
+    // フィールド
 
     /// <summary>
-    /// 蜿門ｾ励ざ繝ｼ繧ｹ繝医ョ繝ｼ繧ｿ
+    /// 取得ゴーストデータ
     /// </summary>
     private string getGhostData;
 
     /// <summary>
-    /// 繝励Ξ繧､繧ｹ繝�ー繧ｸID
+    /// プレイステージID
     /// </summary>
     private int playStageID = 1;
 
     /// <summary>
-    /// 蜷��せ繝�ー繧ｸ縺ｮ繝ｩ繝ｳ繧ｭ繝ｳ繧ｰ諠��ｱ繧貞叙蠕�
+    /// 各ステージのランキング情報を取得
     /// </summary>
     private List<List<RankingData>> stageRnakings = new List<List<RankingData>>();
 
     /// <summary>
-    /// 譛�螟ｧ繧ｹ繝�ー繧ｸ謨ｰ
+    /// 最大ステージ数
     /// </summary>
     [SerializeField] private int maxStage;
 
     /// <summary>
-    /// 繝ｦ繝ｼ繧ｶ繝ｼ蜷肴�ｼ邏咲畑
+    /// ユーザー名格納用
     /// </summary>
     [SerializeField] private Text[] nameTexts;
 
     /// <summary>
-    /// 繧ｯ繝ｪ繧｢繧ｿ繧､繝�譬ｼ邏咲畑
+    /// クリアタイム格納用
     /// </summary>
     [SerializeField] private Text[] clearTimeTexts;
 
     /// <summary>
-    /// 繧ｹ繝�ー繧ｸ逕ｻ蜒乗�ｼ邏咲畑
+    /// ステージ画像格納用
     /// </summary>
     [SerializeField] private Sprite[] stageSprits;
 
     /// <summary>
-    /// 繧ｹ繝�ー繧ｸ逕ｻ蜒�
+    /// ステージ画像
     /// </summary>
     [SerializeField] private Image stageImage;
 
     /// <summary>
-    /// 繝ｩ繝ｳ繧ｭ繝ｳ繧ｰ繝｢繝��Ν譬ｼ邏咲畑
+    /// ランキングモデル格納用
     /// </summary>
     [SerializeField] private RankingModel rankingModel;
 
     /// <summary>
-    /// 繧ｴ繝ｼ繧ｹ繝医が繝ｳ繝懊ち繝ｳ
+    /// ゴーストオンボタン
     /// </summary>
     [SerializeField] private GameObject onGhostButton;
 
     /// <summary>
-    /// 繧ｴ繝ｼ繧ｹ繝医が繝輔��繧ｿ繝ｳ
+    /// ゴーストオフボタン
     /// </summary>
     [SerializeField] private GameObject offGhostButton;
 
     /// <summary>
-    /// 繝阪け繧ｹ繝医せ繝�ー繧ｸ繝懊ち繝ｳ
+    /// ネクストステージボタン
     /// </summary>
     [SerializeField] private GameObject nextButton;
 
     /// <summary>
-    /// 繝舌ャ繧ｯ繧ｹ繝�ー繧ｸ繝懊ち繝ｳ
+    /// バックステージボタン
     /// </summary>
     [SerializeField] private GameObject backButton;
 
     //=====================================
-    // 繝｡繧ｽ繝��ラ
+    // メソッド
 
     /// <summary>
-    /// 蛻晄悄蜃ｦ逅�
+    /// 初期処理
     /// </summary>
     async void Start()
     {
-        //蜀咲函荳ｭ縺ｮBGM縺ｮ蜷榊燕繧貞��縺ｦ蜿門ｾ�
+        //再生中のBGMの名前を全て取得
         var currentBGMNames = BGMManager.Instance.GetCurrentAudioNames();
 
         if (currentBGMNames[0] != "MainBGM")
-        {   // MainBGM繧貞��髢�
+        {   // MainBGMを再開
             BGMManager.Instance.Stop(BGMPath.TIME_ATTACK);
             BGMManager.Instance.Stop(BGMPath.MULTI_PLAY);
             BGMManager.Instance.Play(BGMPath.MAIN_BGM, 0.75f, 0, 1, true, true);
         }
 
         for (int i=0;i < maxStage; i++)
-        {   // 繧ｹ繝�ー繧ｸ謨ｰ蛻�の繝ｩ繝ｳ繧ｭ繝ｳ繧ｰ諠��ｱ繝ｪ繧ｹ繝医ｒ逕滓��
+        {   // ステージ数分のランキング情報リストを生成
             stageRnakings.Add (new List<RankingData>());
         }
 
-        // 繝ｩ繝ｳ繧ｭ繝ｳ繧ｰ繝�ー繧ｿ縺ｮ蜿門ｾ� (迴ｾ蝨ｨ縺ｯ繧ｹ繝�ー繧ｸ1縺ｫ蝗ｺ螳�)
+        // ランキングデータの取得 (現在はステージ1に固定)
         stageRnakings[0] = await rankingModel.GetRankingAsync(1);
 
-        // 繝ｩ繝ｳ繧ｭ繝ｳ繧ｰ1菴阪��繧ｴ繝ｼ繧ｹ繝医ョ繝ｼ繧ｿ繧貞叙蠕�
-        UserModel.Instance.GhostData = "";  // 繝ｪ繧ｻ繝��ヨ
+        // ランキング1位のゴーストデータを取得
+        UserModel.Instance.GhostData = "";  // リセット
         UserModel.Instance.GhostData = stageRnakings[0][0].GhostData;
         getGhostData = stageRnakings[0][0].GhostData;
 
-        // 逕ｻ髱｢縺ｫ蜿肴丐
+        // 画面に反映
         for (int i = 0; i < stageRnakings[0].Count; i++)
         {
-            nameTexts[i].text = stageRnakings[0][i].UserName;   // 蜷榊燕繧呈�ｼ邏�
+            nameTexts[i].text = stageRnakings[0][i].UserName;   // 名前を格納
 
-            // 繧ｯ繝ｪ繧｢繧ｿ繧､繝�繧偵ユ繧ｭ繧ｹ繝医↓蜿肴丐
+            // クリアタイムをテキストに反映
             float clearTIme = (float)stageRnakings[0][i].ClearTime / 1000.0f;
             string decNum = (clearTIme - (int)clearTIme).ToString(".000");
             clearTimeTexts[i].text = ((int)(clearTIme / 60)).ToString("00") + ":" + ((int)clearTIme % 60).ToString("00") + decNum;
@@ -130,11 +130,11 @@ public class SoloSelectManager : MonoBehaviour
     }
 
     /// <summary>
-    /// 繧ｹ繝�ー繧ｸ蛻��ｊ譖ｿ縺亥��逅�
+    /// ステージ切り替え処理
     /// </summary>
     private async void SelectStageButton()
     {
-        //--- 繝懊ち繝ｳ縺ｮ譛牙柑蛻��崛
+        //--- ボタンの有効切替
         if(playStageID == 1)
         {
             nextButton.GetComponent<Button>().interactable = true;
@@ -150,37 +150,37 @@ public class SoloSelectManager : MonoBehaviour
             backButton.GetComponent<Button>().interactable = true;
         }
 
-        //--- 驕ｸ謚槭せ繝�ー繧ｸ縺ｮ繝ｩ繝ｳ繧ｭ繝ｳ繧ｰ諠��ｱ繧定｡ｨ遉ｺ
+        //--- 選択ステージのランキング情報を表示
 
-        // 譌｢縺ｫ繝ｩ繝ｳ繧ｭ繝ｳ繧ｰ諠��ｱ繧貞叙蠕励＠縺ｦ縺��ｋ縺句愛譁ｭ
+        // 既にランキング情報を取得しているか判断
         if (stageRnakings[playStageID - 1].Count == 0)
         {
-            // 驕ｸ謚槭＠縺溘せ繝�ー繧ｸ繝ｩ繝ｳ繧ｭ繝ｳ繧ｰ繝�ー繧ｿ縺ｮ蜿門ｾ�
+            // 選択したステージランキングデータの取得
             stageRnakings[playStageID - 1] = await rankingModel.GetRankingAsync(playStageID);
         }
 
-        // 繧ｴ繝ｼ繧ｹ繝医ョ繝ｼ繧ｿ縺ｮ蛻��ｊ譖ｿ縺�
-        UserModel.Instance.GhostData = "";  // 繝ｪ繧ｻ繝��ヨ
+        // ゴーストデータの切り替え
+        UserModel.Instance.GhostData = "";  // リセット
         UserModel.Instance.GhostData = stageRnakings[playStageID - 1][0].GhostData;
         getGhostData = stageRnakings[playStageID - 1][0].GhostData;
 
-        // 逕ｻ髱｢縺ｫ蜿肴丐
+        // 画面に反映
         for (int i = 0; i < stageRnakings[playStageID - 1].Count; i++)
         {
-            nameTexts[i].text = stageRnakings[playStageID - 1][i].UserName;   // 蜷榊燕繧呈�ｼ邏�
+            nameTexts[i].text = stageRnakings[playStageID - 1][i].UserName;   // 名前を格納
 
-            // 繧ｯ繝ｪ繧｢繧ｿ繧､繝�繧偵ユ繧ｭ繧ｹ繝医↓蜿肴丐
+            // クリアタイムをテキストに反映
             float clearTIme = (float)stageRnakings[playStageID - 1][i].ClearTime / 1000.0f;
             string decNum = (clearTIme - (int)clearTIme).ToString(".000");
             clearTimeTexts[i].text = ((int)(clearTIme / 60)).ToString("00") + ":" + ((int)clearTIme % 60).ToString("00") + decNum;
         }
 
-        // 逕ｻ蜒丞��繧頑崛縺�
+        // 画像切り替え
         stageImage.sprite = stageSprits[playStageID - 1];
     }
 
     /// <summary>
-    /// 繧ｹ繝�ー繧ｸ驕ｸ謚槭��繧ｿ繝ｳ (谺｡縺ｸ)
+    /// ステージ選択ボタン (次へ)
     /// </summary>
     public void OnNextButton()
     {
@@ -191,7 +191,7 @@ public class SoloSelectManager : MonoBehaviour
     }
 
     /// <summary>
-    /// 繧ｹ繝�ー繧ｸ驕ｸ謚槭��繧ｿ繝ｳ (蜑阪∈)
+    /// ステージ選択ボタン (前へ)
     /// </summary>
     public void OnBackButton()
     {
@@ -202,33 +202,33 @@ public class SoloSelectManager : MonoBehaviour
     }
 
     /// <summary>
-    /// 繝励Ξ繧､繝懊ち繝ｳ謚ｼ荳句��逅�
+    /// プレイボタン押下処理
     /// </summary>
     public void OnPlayButton()
     {
-        // SE蜀咲函
+        // SE再生
         SEManager.Instance.Play(SEPath.TAP_BUTTON);
 
-        // 繧ｽ繝ｭ繝励Ξ繧､繝｢繝ｼ繝蛾��遘ｻ
+        // ソロプレイモード遷移
         Initiate.DoneFading();
         Initiate.Fade(playStageID.ToString() + "_SoloPlayScene", Color.white, 2.5f);
     }
 
     /// <summary>
-    /// 繝｡繝九Η繝ｼ繝懊ち繝ｳ謚ｼ荳句��逅�
+    /// メニューボタン押下処理
     /// </summary>
     public void OnMenuButton()
     {
-        // SE蜀咲函
+        // SE再生
         SEManager.Instance.Play(SEPath.TAP_BUTTON);
 
-        // 繝｡繝九Η繝ｼ繝｢繝ｼ繝蛾��遘ｻ
+        // メニューモード遷移
         Initiate.DoneFading();
         Initiate.Fade("2_MenuScene", Color.white, 2.5f);
     }
 
     /// <summary>
-    /// 繧ｴ繝ｼ繧ｹ繝医が繝ｳ繝懊ち繝ｳ
+    /// ゴーストオンボタン
     /// </summary>
     public void OnGhostPlayButton()
     {
@@ -239,7 +239,7 @@ public class SoloSelectManager : MonoBehaviour
     }
 
     /// <summary>
-    /// 繧ｴ繝ｼ繧ｹ繝医が繝輔��繧ｿ繝ｳ
+    /// ゴーストオフボタン
     /// </summary>
     public void OnGhostNotButton()
     {

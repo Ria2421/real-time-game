@@ -1,5 +1,5 @@
 //---------------------------------------------------------------
-// 繧ｽ繝ｭ繝槭ロ繝ｼ繧ｸ繝｣繝ｼ [ SoloManager.cs ]
+// ソロマネージャー [ SoloManager.cs ]
 // Author:Kenta Nakamoto
 // Data:2024/12/10
 // Update:2025/01/27
@@ -20,62 +20,62 @@ using UnityEngine.UI;
 public class SoloManager : MonoBehaviour
 {
     //===================================
-    // 繝輔ぅ繝ｼ繝ｫ繝�
+    // フィールド
 
     [Header("===== StageOption =====")]
 
     /// <summary>
-    /// 繧ｹ繝�ー繧ｸNo
+    /// ステージNo
     /// </summary>
     [SerializeField] private int stageID;
 
     /// <summary>
-    /// 譛�螟ｧ繝ｩ繝�プ謨ｰ
+    /// 最大ラップ数
     /// </summary>
     [SerializeField] private int maxRapNum = 0;
 
     /// <summary>
-    /// 繧ｴ繝ｼ繧ｹ繝医ョ繝ｼ繧ｿ險倬鹸髢馴囈
+    /// ゴーストデータ記録間隔
     /// </summary>
     [SerializeField] private float saveSpeed;
 
     /// <summary>
-    /// 迴ｾ繝ｩ繝�プ謨ｰ
+    /// 現ラップ数
     /// </summary>
     private int currentRapNum = 1;
 
     /// <summary>
-    /// 譎る俣險域ｸｬ逕ｨ
+    /// 時間計測用
     /// </summary>
     private float timer;
 
     /// <summary>
-    /// 繧ｴ繝ｼ繝ｫ繧ｿ繧､繝�菫晏ｭ�
+    /// ゴールタイム保存
     /// </summary>
     private int goalTime = 0;
 
     /// <summary>
-    /// 險域ｸｬ繝輔Λ繧ｰ
+    /// 計測フラグ
     /// </summary>
     private bool isCount = false;
 
     /// <summary>
-    /// 繧ｴ繝ｼ繧ｹ繝医ョ繝ｼ繧ｿ繝ｪ繧ｹ繝�
+    /// ゴーストデータリスト
     /// </summary>
     private List<GhostData> ghostList = new List<GhostData>();
 
     /// <summary>
-    /// 蜀咲函繧ｴ繝ｼ繧ｹ繝医ョ繝ｼ繧ｿ
+    /// 再生ゴーストデータ
     /// </summary>
     private List<GhostData> playGhost = new List<GhostData>();
 
     /// <summary>
-    /// 繧ｴ繝ｼ繧ｹ繝医ョ繝ｼ繧ｿ繧ｫ繧ｦ繝ｳ繝�
+    /// ゴーストデータカウント
     /// </summary>
     private int ghostCnt = 0;
 
     /// <summary>
-    /// 繧ｴ繝ｼ繧ｹ繝郁｡ｨ遉ｺ陬懈ｭ｣蠎ｧ讓�
+    /// ゴースト表示補正座標
     /// </summary>
     private Vector3 ghostCorrection;
 
@@ -83,52 +83,52 @@ public class SoloManager : MonoBehaviour
     [Header("===== DataObject =====")]
 
     /// <summary>
-    /// 蝓ｺ譛ｬ蜈･蜉帷ｮ｡逅��が繝悶ず繧ｧ
+    /// 基本入力管理オブジェ
     /// </summary>
     [SerializeField] private GameObject standardInput;
 
     /// <summary>
-    /// 繝｢繝舌う繝ｫ蜈･蜉帷ｮ｡逅��が繝悶ず繧ｧ
+    /// モバイル入力管理オブジェ
     /// </summary>
     [SerializeField] private GameObject mobileInput;
 
     /// <summary>
-    /// 霆贋ｽ鍋��遐ｴ繝槭ロ繝ｼ繧ｸ繝｣繝ｼ
+    /// 車体爆破マネージャー
     /// </summary>
     [SerializeField] private TinyCarExplosiveBody boomManager;
 
     /// <summary>
-    /// 繝ｩ繝ｳ繧ｭ繝ｳ繧ｰ繝｢繝��Ν譬ｼ邏咲畑
+    /// ランキングモデル格納用
     /// </summary>
     [SerializeField] private RankingModel rankingModel;
 
     /// <summary>
-    /// 菴咲ｽｮ諠��ｱ蜿門ｾ励が繝悶ず繧ｧ
+    /// 位置情報取得オブジェ
     /// </summary>
     [SerializeField] private Transform visualObj;
 
     /// <summary>
-    /// 繧ｿ繧､繝､隗貞叙蠕励が繝悶ず繧ｧ
+    /// タイヤ角取得オブジェ
     /// </summary>
     [SerializeField] private Transform wheelRot;
 
     /// <summary>
-    /// 繧ｴ繝ｼ繧ｹ繝郁ｻ翫が繝悶ず繧ｧ
+    /// ゴースト車オブジェ
     /// </summary>
     [SerializeField] private GameObject ghostCarObj;
 
     /// <summary>
-    /// 繧ｴ繝ｼ繧ｹ繝郁ｻ贋ｽ咲ｽｮ諠��ｱ
+    /// ゴースト車位置情報
     /// </summary>
     [SerializeField] private Transform ghostCatTrs;
 
     /// <summary>
-    /// 繧ｴ繝ｼ繧ｹ繝郁ｻ贋ｽ咲ｽｮ諠��ｱ
+    /// ゴースト車位置情報
     /// </summary>
     [SerializeField] private Transform ghostWheelR;
 
     /// <summary>
-    /// 繧ｴ繝ｼ繧ｹ繝郁ｻ贋ｽ咲ｽｮ諠��ｱ
+    /// ゴースト車位置情報
     /// </summary>
     [SerializeField] private Transform ghostWheelL;
 
@@ -139,12 +139,12 @@ public class SoloManager : MonoBehaviour
     [Header("---- Panel ----")]
 
     /// <summary>
-    /// 繝ｪ繧ｶ繝ｫ繝医ヱ繝阪Ν
+    /// リザルトパネル
     /// </summary>
     [SerializeField] private GameObject resultPanel;
 
     /// <summary>
-    /// 險域ｸｬ繧ｿ繧､繝槭��繝代ロ繝ｫ
+    /// 計測タイマーパネル
     /// </summary>
     [SerializeField] private GameObject timerPanel;
 
@@ -152,17 +152,17 @@ public class SoloManager : MonoBehaviour
     [Header("---- Image ----")]
 
     /// <summary>
-    /// 繧ｫ繧ｦ繝ｳ繝医ム繧ｦ繝ｳ繧ｪ繝悶ず繧ｧ
+    /// カウントダウンオブジェ
     /// </summary>
     [SerializeField] private GameObject countDownObj;
 
     /// <summary>
-    /// 繧ｫ繧ｦ繝ｳ繝医ム繧ｦ繝ｳ逕ｨ繧ｹ繝励Λ繧､繝�
+    /// カウントダウン用スプライト
     /// </summary>
     [SerializeField] private Sprite[] countDownSprits;
 
     /// <summary>
-    /// 譁ｰ險倬鹸逕ｻ蜒�
+    /// 新記録画像
     /// </summary>
     [SerializeField] private GameObject newRecordObj;
 
@@ -170,103 +170,103 @@ public class SoloManager : MonoBehaviour
     [Header("---- Text ----")]
 
     /// <summary>
-    /// 譎る俣險域ｸｬ逕ｨ繝��く繧ｹ繝�
+    /// 時間計測用テキスト
     /// </summary>
     [SerializeField] private Text timerText;
 
     /// <summary>
-    /// 繝ｩ繝�プ謨ｰ陦ｨ遉ｺ逕ｨ繝��く繧ｹ繝�
+    /// ラップ数表示用テキスト
     /// </summary>
     [SerializeField] private Text rapText;
 
     //=====================================
-    // 繝｡繧ｽ繝��ラ
+    // メソッド
 
     /// <summary>
-    /// 蛻晄悄蜃ｦ逅�
+    /// 初期処理
     /// </summary>
     void Start()
     {
-        // 繝｡繧､繝ｳBGM荳�譎ょ●豁｢
+        // メインBGM一時停止
         BGMManager.Instance.Pause(BGMPath.MAIN_BGM);
         BGMManager.Instance.Play(BGMPath.TIME_ATTACK);
 
-        // 螟画焚蛻晄悄蛹門��逅�
+        // 変数初期化処理
         isCount = false;
         ghostCnt = 0;
         ghostCorrection = new Vector3(0, -0.74f, 0);
 
         rapText.text = currentRapNum.ToString() + " / " + maxRapNum.ToString();
 
-        // 蜀咲函縺吶ｋ繧ｴ繝ｼ繧ｹ繝医ョ繝ｼ繧ｿ繧貞叙蠕�
+        // 再生するゴーストデータを取得
         if (UserModel.Instance.GhostData != "")
         {
             playGhost = JsonConvert.DeserializeObject<List<GhostData>>(UserModel.Instance.GhostData);
-            Debug.Log("繧ｴ繝ｼ繧ｹ繝医ョ繝ｼ繧ｿ蜿門ｾ�");
+            Debug.Log("ゴーストデータ取得");
         }
         else
         {
             ghostCarObj.SetActive(false);
         }
 
-        // 繧ｫ繧ｦ繝ｳ繝医ム繧ｦ繝ｳ髢句ｧ�
-        Debug.Log("繧ｫ繧ｦ繝ｳ繝医ム繧ｦ繝ｳ");
+        // カウントダウン開始
+        Debug.Log("カウントダウン");
         StartCoroutine("StartCount");
     }
 
     /// <summary>
-    /// 譖ｴ譁ｰ蜃ｦ逅�
+    /// 更新処理
     /// </summary>
     void Update()
     {
         if (!isCount) return;
 
-        // timer繧貞茜逕ｨ縺励※邨碁℃譎る俣繧定ｨ域ｸｬ繝ｻ陦ｨ遉ｺ
+        // timerを利用して経過時間を計測・表示
         timer += Time.deltaTime;
         DisplayTime(timer);
     }
 
     /// <summary>
-    /// 繝ｩ繝�プ謨ｰ蜉�邂怜��逅�
+    /// ラップ数加算処理
     /// </summary>
     public async void AddRapCnt()
     {
-        currentRapNum++;    // 繝ｩ繝�プ蜉�邂�
+        currentRapNum++;    // ラップ加算
 
         if(currentRapNum == maxRapNum + 1)
         {
             CancelInvoke("SaveGhost");
 
-            // SE蜀咲函
+            // SE再生
             SEManager.Instance.Play(SEPath.GOAL);
 
-            // 邨ゆｺ��愛螳�
-            isCount = false;                // 繧ｿ繧､繝槭��繧ｹ繝医ャ繝�
-            Invoke("BoomCar", 1);           // 霆贋ｽ鍋��遐ｴ
-            resultPanel.SetActive(true);    // 繝ｪ繧ｶ繝ｫ繝郁｡ｨ遉ｺ
-            mobileInput.SetActive(false);   // 繝｢繝舌う繝ｫUI髱櫁｡ｨ遉ｺ
+            // 終了判定
+            isCount = false;                // タイマーストップ
+            Invoke("BoomCar", 1);           // 車体爆破
+            resultPanel.SetActive(true);    // リザルト表示
+            mobileInput.SetActive(false);   // モバイルUI非表示
             
-            // 繧ｿ繧､繝槭��遘ｻ蜍募��逅�
+            // タイマー移動処理
             var sequence = DOTween.Sequence();
             sequence.Append(timerPanel.transform.DOScale(1.7f, 0.7f));
             sequence.Append(timerPanel.transform.DOLocalMove(new Vector3(0,-25,0), 0.5f));
             sequence.Play();
 
-            // 繧ｯ繝ｪ繧｢繧ｿ繧､繝�繧知/sec縺ｫ螟画鋤縺吶ｋ
+            // クリアタイムをm/secに変換する
             timer = (float)Math.Round(timer, 3, MidpointRounding.AwayFromZero);
             goalTime = (int)(timer * 1000);
 
             UserModel userModel = UserModel.Instance;
 
-            // 騾∽ｿ｡逕ｨ繧ｴ繝ｼ繧ｹ繝医ョ繝ｼ繧ｿ縺ｮ菴懈��
+            // 送信用ゴーストデータの作成
             SaveGhost();
             string ghostData = JsonConvert.SerializeObject(ghostList);
 
-            // 險倬鹸逋ｻ骭ｲ蜃ｦ逅�
+            // 記録登録処理
             RegistResult result = await rankingModel.RegistClearTimeAsync(stageID, userModel.UserId, goalTime, ghostData);
 
             if (result.timeRegistFlag)
-            {   // newRecord陦ｨ遉ｺ
+            {   // newRecord表示
                 SEManager.Instance.Play(SEPath.NEW_RECORD);
                 newRecordObj.SetActive(true);
                 newRecordObj.transform.DOScale(1.3f, 1.5f).SetEase(Ease.InCubic).SetLoops(-1, LoopType.Yoyo);
@@ -276,33 +276,33 @@ public class SoloManager : MonoBehaviour
         }
         else
         {
-            Debug.Log("迴ｾ繝ｩ繝�プ謨ｰ" + currentRapNum);
+            Debug.Log("現ラップ数" + currentRapNum);
             rapText.text = currentRapNum.ToString() + " / " + maxRapNum.ToString();
         }
     }
 
     /// <summary>
-    /// 蛻ｶ髯先凾髢薙ｒ譖ｴ譁ｰ縺励※[蛻�:遘綻縺ｧ陦ｨ遉ｺ縺吶ｋ
+    /// 制限時間を更新して[分:秒]で表示する
     /// </summary>
     private void DisplayTime(float limitTime)
     {
-        // 蠑墓焚縺ｧ蜿励￠蜿悶▲縺溷�､繧端蛻�:遘綻縺ｫ螟画鋤縺励※陦ｨ遉ｺ縺吶ｋ
-        // ToString("00")縺ｧ繧ｼ繝ｭ繝励Ξ繝ｼ繧ｹ繝輔か繝ｫ繝�繝ｼ縺励※縲��ｼ第｡√��縺ｨ縺阪��鬆ｭ縺ｫ0繧偵▽縺代ｋ
+        // 引数で受け取った値を[分:秒]に変換して表示する
+        // ToString("00")でゼロプレースフォルダーして、１桁のときは頭に0をつける
         string decNum = (limitTime - (int)limitTime).ToString(".000");
         timerText.text = ((int)(limitTime / 60)).ToString("00") + ":" + ((int)limitTime % 60).ToString("00") + decNum;
     }
 
     /// <summary>
-    /// 繧ｫ繧ｦ繝ｳ繝医ム繧ｦ繝ｳ髱櫁｡ｨ遉ｺ蜃ｦ逅�
+    /// カウントダウン非表示処理
     /// </summary>
-    /// <param name="obj">髱櫁｡ｨ遉ｺ縺ｫ縺励◆縺��が繝悶ず繧ｧ</param>
+    /// <param name="obj">非表示にしたいオブジェ</param>
     private void HiddenCount()
     {
         countDownObj.SetActive(false);
     }
 
     /// <summary>
-    /// 霆贋ｽ鍋��遐ｴ蜃ｦ逅�
+    /// 車体爆破処理
     /// </summary>
     private void BoomCar()
     {
@@ -310,7 +310,7 @@ public class SoloManager : MonoBehaviour
     }
 
     /// <summary>
-    /// 繧ｫ繧ｦ繝ｳ繝医ム繧ｦ繝ｳ蜃ｦ逅�
+    /// カウントダウン処理
     /// </summary>
     /// <returns></returns>
     IEnumerator StartCount()
@@ -322,11 +322,11 @@ public class SoloManager : MonoBehaviour
             if (i == 3)
             {
                 SEManager.Instance.Play(SEPath.START);
-                // 險域ｸｬ髢句ｧ九��謫堺ｽ懷庄閭ｽ繝ｻ繧ｴ繝ｼ繧ｹ繝医ョ繝ｼ繧ｿ菫晏ｭ伜��逅��ｵｷ蜍輔☆繧�
+                // 計測開始・操作可能・ゴーストデータ保存処理起動する
                 countDownObj.GetComponent<Image>().sprite = countDownSprits[i];
 
                 if (UserModel.Instance.GhostData != "")
-                {   // 繧ｴ繝ｼ繧ｹ繝医ョ繝ｼ繧ｿ縺後≠繧区凾縺ｮ縺ｿ蜀咲函
+                {   // ゴーストデータがある時のみ再生
                     InvokeRepeating("PlayGhost",0,saveSpeed);
                 }
 
@@ -335,59 +335,59 @@ public class SoloManager : MonoBehaviour
                 isCount = true;
                 InvokeRepeating("SaveGhost", 0.1f, saveSpeed);
 
-                // 繧ｫ繧ｦ繝ｳ繝磯撼陦ｨ遉ｺ
+                // カウント非表示
                 Invoke("HiddenCount", 0.6f);
             }
             else
             {
                 SEManager.Instance.Play(SEPath.COUNT);
-                // 0.9遘貞ｾ��▲縺ｦ繧ｳ繝ｫ繝ｼ繝√Φ荳ｭ譁ｭ
+                // 0.9秒待ってコルーチン中断
                 yield return new WaitForSeconds(0.9f);
             }
         }
     }
 
     /// <summary>
-    /// 繧ｴ繝ｼ繧ｹ繝医ョ繝ｼ繧ｿ菫晏ｭ伜��逅�
+    /// ゴーストデータ保存処理
     /// </summary>
     private void SaveGhost()
     {
         GhostData ghostData = new GhostData();
-        ghostData.Pos = visualObj.position;        // 菴咲ｽｮ
-        ghostData.Rot = visualObj.eulerAngles;     // 隗貞ｺｦ
-        ghostData.WRot = wheelRot.localEulerAngles.y;   // 繧ｿ繧､繝､隗�
+        ghostData.Pos = visualObj.position;        // 位置
+        ghostData.Rot = visualObj.eulerAngles;     // 角度
+        ghostData.WRot = wheelRot.localEulerAngles.y;   // タイヤ角
 
         ghostList.Add(ghostData);
     }
 
     /// <summary>
-    /// 繧ｴ繝ｼ繧ｹ繝亥��逕溷��逅�
+    /// ゴースト再生処理
     /// </summary>
     private void PlayGhost()
     {
-        // 譛ｬ菴謎ｽ咲ｽｮ縺ｮ譖ｴ譁ｰ
+        // 本体位置の更新
         ghostCarObj.transform.DOMove(playGhost[ghostCnt].Pos + ghostCorrection, saveSpeed).SetEase(Ease.Linear).SetUpdate(UpdateType.Fixed, true);
         ghostCarObj.transform.DORotate(playGhost[ghostCnt].Rot, saveSpeed).SetEase(Ease.Linear).SetUpdate(UpdateType.Fixed, true);
 
-        // 繧ｿ繧､繝､隗偵��譖ｴ譁ｰ
+        // タイヤ角の更新
         ghostWheelL.transform.localEulerAngles = new Vector3 (ghostWheelL.transform.localEulerAngles.x,playGhost[ghostCnt].WRot,0);
         ghostWheelR.transform.localEulerAngles = new Vector3(ghostWheelR.transform.localEulerAngles.x, playGhost[ghostCnt].WRot, 0);
 
         ghostCnt++;
 
         if (playGhost.Count - 1 < ghostCnt)
-        {   // 蜀咲函縺吶ｋ繝�ー繧ｿ縺檎┌縺��凾縺ｯ蜀咲函蛛懈ｭ｢
+        {   // 再生するデータが無い時は再生停止
             CancelInvoke("PlayGhost");
             return;
         }
     }
 
     /// <summary>
-    /// 繝｡繝九Η繝ｼ驕ｷ遘ｻ蜃ｦ逅�
+    /// メニュー遷移処理
     /// </summary>
     public void OnBackMenu()
     {
-        // SE蜀咲函
+        // SE再生
         SEManager.Instance.Play(SEPath.TAP_BUTTON);
 
         Initiate.DoneFading();
@@ -395,11 +395,11 @@ public class SoloManager : MonoBehaviour
     }
 
     /// <summary>
-    /// 繧ｹ繝�ー繧ｸ驕ｸ謚樣��遘ｻ蜃ｦ逅�
+    /// ステージ選択遷移処理
     /// </summary>
     public void OnBackSelect()
     {
-        // SE蜀咲函
+        // SE再生
         SEManager.Instance.Play(SEPath.TAP_BUTTON);
 
         Initiate.DoneFading();
@@ -407,11 +407,11 @@ public class SoloManager : MonoBehaviour
     }
 
     /// <summary>
-    /// 繝ｪ繝医Λ繧､驕ｷ遘ｻ蜃ｦ逅�
+    /// リトライ遷移処理
     /// </summary>
     public void OnRetryButton() 
     {
-        // SE蜀咲函
+        // SE再生
         SEManager.Instance.Play(SEPath.TAP_BUTTON);
 
         Initiate.DoneFading();
@@ -419,7 +419,7 @@ public class SoloManager : MonoBehaviour
     }
 
     /// <summary>
-    /// 繝代ロ繝ｫ髢峨§繧句��逅�
+    /// パネル閉じる処理
     /// </summary>
     /// <param name="panel"></param>
     public void OnCloseButton(GameObject panel)
@@ -428,7 +428,7 @@ public class SoloManager : MonoBehaviour
     }
 
     /// <summary>
-    /// 繝｡繝九Η繝ｼ繝懊ち繝ｳ謚ｼ荳区凾
+    /// メニューボタン押下時
     /// </summary>
     /// <param name="menuPanel"></param>
     public void OnMenuButton(GameObject menuPanel)

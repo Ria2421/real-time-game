@@ -1,6 +1,6 @@
 //---------------------------------------------------------------
 //
-// 繧ｻ繝ｼ繝悶ョ繝ｼ繧ｿ繧ｯ繝ｩ繧ｹ [ SaveData.cs ]
+// セーブデータクラス [ SaveData.cs ]
 // Author:Kenta Nakamoto
 // Data:2024/08/26
 // Update:2024/08/26
@@ -13,17 +13,17 @@ using UnityEngine;
 public class SaveData
 {
     /// <summary>
-    /// 繝ｦ繝ｼ繧ｶ繝ｼID
+    /// ユーザーID
     /// </summary>
     public int UserID { get; set; }
 
     /// <summary>
-    /// 繝医��繧ｯ繝ｳ
+    /// トークン
     /// </summary>
     public string Token { get; set; }
 
     /// <summary>
-    /// 繝√Η繝ｼ繝医Μ繧｢繝ｫ繝輔Λ繧ｰ
+    /// チュートリアルフラグ
     /// </summary>
     public bool TutorialFlag { get; set; }
 }

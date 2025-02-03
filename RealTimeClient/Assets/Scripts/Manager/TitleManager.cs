@@ -1,5 +1,5 @@
 //---------------------------------------------------------------
-// 繧ｿ繧､繝医Ν繝槭ロ繝ｼ繧ｸ繝｣繝ｼ [ TitleManager.cs ]
+// タイトルマネージャー [ TitleManager.cs ]
 // Author:Kenta Nakamoto
 // Data:2024/12/05
 // Update:2025/01/30
@@ -18,134 +18,131 @@ using static UnityEngine.GraphicsBuffer;
 public class TitleManager : MonoBehaviour
 {
     //=====================================
-    // 繝輔ぅ繝ｼ繝ｫ繝�
+    // フィールド
 
     /// <summary>
-    /// 繧ｿ繧､繝医Ν逕ｻ蜒�
+    /// タイトル画像
     /// </summary>
     [SerializeField] private GameObject titleImage;
 
     /// <summary>
-    /// 繧ｿ繝��メ逕ｻ蜒�
+    /// タッチ画像
     /// </summary>
     [SerializeField] private GameObject touchImage;
 
     /// <summary>
-    /// 繝ｦ繝ｼ繧ｶ繝ｼ逋ｻ骭ｲ繝代ロ繝ｫ
+    /// ユーザー登録パネル
     /// </summary>
     [SerializeField] private GameObject registPanel;
 
     /// <summary>
-    /// 逋ｻ骭ｲ繝ｦ繝ｼ繧ｶ繝ｼ蜷�
+    /// 登録ユーザー名
     /// </summary>
     [SerializeField] private Text nameText;
 
     /// <summary>
-    /// 逋ｻ骭ｲ繝懊ち繝ｳ
+    /// 登録ボタン
     /// </summary>
     [SerializeField] private Button registButton;
 
     /// <summary>
-    /// 繧ｨ繝ｩ繝ｼ繝懊ち繝ｳ
+    /// エラーボタン
     /// </summary>
     [SerializeField] private GameObject errorButton;
-
-    /// <summary>
-    /// NG繝ｯ繝ｼ繝峨��繧ｿ繝ｳ
-    /// </summary>
+    
     [SerializeField] private GameObject ngWordButton;
 
-    // 繝��ヰ繝��げ逕ｨ *******************************
+    // デバッグ用 *******************************
 
     /// <summary>
-    /// 繝��ヰ繝��げ逕ｨID
+    /// デバッグ用ID
     /// </summary>
     [SerializeField] private Text debugIDText;
 
     /// <summary>
-    /// 繝��ヰ繝��げ逕ｨ繝懊ち繝ｳ
+    /// デバッグ用ボタン
     /// </summary>
     [SerializeField] private Button debugButton;
 
     //=====================================
-    // 繝｡繧ｽ繝��ラ
+    // メソッド
 
     /// <summary>
-    /// 蛻晄悄蜃ｦ逅�
+    /// 初期処理
     /// </summary>
     void Start()
     {
         Application.targetFrameRate = 60;
 
-        // BGM蜀咲函
+        // BGM再生
         BGMManager.Instance.Play(BGMPath.MAIN_BGM,0.75f,0,1,true,true);
 
-        // 繧ｿ繧､繝医Ν逕ｻ蜒上い繝九Γ繝ｼ繧ｷ繝ｧ繝ｳ
+        // タイトル画像アニメーション
         titleImage.transform.DOScale(0.9f, 1.3f).SetEase(Ease.InCubic).SetLoops(-1,LoopType.Yoyo);
         InvokeRepeating("BlinkingImage", 0, 0.8f);
     }
 
     /// <summary>
-    /// 繧ｹ繧ｿ繝ｼ繝医��繧ｿ繝ｳ謚ｼ荳区凾
+    /// スタートボタン押下時
     /// </summary>
     public void OnStartButton()
     {
-        // SE蜀咲函
+        // SE再生
         SEManager.Instance.Play(SEPath.TAP_BUTTON);
 
-        // 繝ｦ繝ｼ繧ｶ繝ｼ繝�ー繧ｿ縺ｮ隱ｭ霎ｼ蜃ｦ逅�・邨先棡繧貞叙蠕�
+        // ユーザーデータの読込処理・結果を取得
         bool isSuccess = UserModel.Instance.LoadUserData();
 
         if (!isSuccess)
         {
-            // 逋ｻ骭ｲ逕ｨ繝代ロ繝ｫ陦ｨ遉ｺ
-            Debug.Log("繝�ー繧ｿ縺ｪ縺�");
+            // 登録用パネル表示
+            Debug.Log("データなし");
             registPanel.SetActive(true);
         }
         else
-        {   // 繧ｷ繝ｼ繝ｳ驕ｷ遘ｻ蜃ｦ逅�
-            Debug.Log("繝�ー繧ｿ縺ゅｊ");
+        {   // シーン遷移処理
+            Debug.Log("データあり");
             Initiate.DoneFading();
             Initiate.Fade("2_MenuScene", Color.white, 2.5f);
         }
     }
 
     /// <summary>
-    /// 逋ｻ骭ｲ繝懊ち繝ｳ謚ｼ荳区凾
+    /// 登録ボタン押下時
     /// </summary>
     public async void OnRegistUser()
     {
         if (nameText.text == "") return;
 
-        // SE蜀咲函
+        // SE再生
         SEManager.Instance.Play(SEPath.MENU_SELECT);
 
-        // 繝懊ち繝ｳ辟｡蜉ｹ
+        // ボタン無効
         registButton.interactable = false;
 
-        // 逋ｻ骭ｲ蜃ｦ逅�
+        // 登録処理
         UserModel.Status statusCode = await UserModel.Instance.RegistUserAsync(nameText.text);
 
         switch (statusCode)
         {
             case UserModel.Status.True:
-                Debug.Log("逋ｻ骭ｲ謌仙粥");
+                Debug.Log("登録成功");
                 Initiate.DoneFading();
                 Initiate.Fade("2_MenuScene", Color.white, 2.5f);
                 break;
 
             case UserModel.Status.False:
-                Debug.Log("騾壻ｿ｡螟ｱ謨�");
+                Debug.Log("通信失敗");
                 registButton.interactable = true;
                 break;
 
             case UserModel.Status.SameName:
-                Debug.Log("蜷榊燕陲ｫ繧�");
+                Debug.Log("名前被り");
                 errorButton.SetActive(true);
                 break;
-
+                
             case UserModel.Status.NGWord:
-                Debug.Log("NG繝ｯ繝ｼ繝�");
+                Debug.Log("NGワード");
                 ngWordButton.SetActive(true);
                 break;
 
@@ -155,7 +152,7 @@ public class TitleManager : MonoBehaviour
     }
 
     /// <summary>
-    /// 逕ｻ蜒冗せ貊�処逅�
+    /// 画像点滅処理
     /// </summary>
     private void BlinkingImage()
     {
@@ -169,10 +166,10 @@ public class TitleManager : MonoBehaviour
         }
     }
 
-    // 繝��ヰ繝��げ逕ｨ ********************
+    // デバッグ用 ********************
 
     /// <summary>
-    /// ID菫晏ｭ伜��逅�
+    /// ID保存処理
     /// </summary>
     public void DebugOnSaveID()
     {
@@ -187,14 +184,13 @@ public class TitleManager : MonoBehaviour
     }
 
     /// <summary>
-    /// 繧ｨ繝ｩ繝ｼ繝懊ち繝ｳ謚ｼ荳区凾
+    /// エラーボタン押下時
     /// </summary>
     public void OnErrorButton(GameObject button)
     {
-        // 陦ｨ遉ｺ豸亥悉
         button.SetActive(false);
 
-        // 逋ｻ骭ｲ繝懊ち繝ｳ縺ｮ譛牙柑蛹�
+        // 登録ボタンの有効化
         registButton.interactable = true;
     }
 }
