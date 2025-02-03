@@ -1,10 +1,6 @@
 //---------------------------------------------------------------
-//
-// アスペクト比対応UIスケーラー [ RectScalerWithViewport.cs ]
-// Author:Kenta Nakamoto
-// Data:2024/07/17
-// Update:2024/07/17
-//
+// 参考元URL (Yamasho 様)
+// https://note.com/yamasho55/n/nfa0041bc0dcb
 //---------------------------------------------------------------
 using UnityEngine;
 

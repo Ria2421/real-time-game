@@ -29,6 +29,7 @@ public class UserModel : BaseModel
         True = 0,   // 成功
         False,      // 失敗
         SameName,   // 名前被り
+        NGWord
     }
 
     /// <summary>
@@ -151,6 +152,11 @@ public class UserModel : BaseModel
             {   // 名前被り
                 return Status.SameName;
             }
+            else if(e.Status.Detail == "NGWord")
+            {
+                // NGワード
+                return Status.NGWord;
+            }
             else
             {   // 通信失敗
                 return Status.False;
@@ -205,6 +211,11 @@ public class UserModel : BaseModel
             if (e.Status.Detail == "SameName")
             {   // 名前被り
                 return Status.SameName;
+            }
+            else if (e.Status.Detail == "NGWord")
+            {
+                // NGワード
+                return Status.NGWord;
             }
             else
             {   // 通信失敗

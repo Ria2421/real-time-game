@@ -1,11 +1,7 @@
-//---------------------------------------------------------------
-//
-// アスペクト比保持 [ AspectKeeper.cs ]
-// Author:Kenta Nakamoto
-// Data:2024/07/17
-// Update:2024/07/17
-//
-//---------------------------------------------------------------
+//--------------------------------------------------------------------------------------
+// 参考元URL (Unity入門の森 様)
+// https://feynman.co.jp/unityforest/game-create-lesson/clicker-game/mobile-adjustment/
+//--------------------------------------------------------------------------------------
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;

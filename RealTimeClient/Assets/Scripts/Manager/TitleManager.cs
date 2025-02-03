@@ -50,6 +50,9 @@ public class TitleManager : MonoBehaviour
     /// </summary>
     [SerializeField] private GameObject errorButton;
     
+    /// <summary>
+    /// NGワードボタン
+    /// </summary>
     [SerializeField] private GameObject ngWordButton;
 
     // デバッグ用 *******************************
@@ -77,7 +80,7 @@ public class TitleManager : MonoBehaviour
         // BGM再生
         BGMManager.Instance.Play(BGMPath.MAIN_BGM,0.75f,0,1,true,true);
 
-        // タイトル画像アニメーション
+        // タイトルアニメーション
         titleImage.transform.DOScale(0.9f, 1.3f).SetEase(Ease.InCubic).SetLoops(-1,LoopType.Yoyo);
         InvokeRepeating("BlinkingImage", 0, 0.8f);
     }

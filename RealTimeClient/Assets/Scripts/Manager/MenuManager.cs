@@ -49,6 +49,7 @@ public class MenuManager : MonoBehaviour
     [SerializeField] private Text rateText;
     [SerializeField] private GameObject errorButton;        // エラー (名前被り)
     [SerializeField] private GameObject netErrorButton;     // エラー (通信エラー)
+    [SerializeField] private GameObject ngWordButton;       // エラー (NGワード)
     [SerializeField] private GameObject nameUpdateButton;   // 名前更新完了
 
     [Header("---- HelpPanel ----")]
@@ -96,10 +97,10 @@ public class MenuManager : MonoBehaviour
     /// <summary>
     /// エラーボタン非表示・更新ボタン復活
     /// </summary>
-    public void OnErrorButton()
+    public void OnErrorButton(GameObject button)
     {
-        errorButton.SetActive(false);
-        netErrorButton.SetActive(false);
+        button.SetActive(false);
+
         updateButton.interactable = true;
     }
 
@@ -236,6 +237,11 @@ public class MenuManager : MonoBehaviour
                 // エラー表示
                 Debug.Log("名前被り");
                 errorButton.SetActive(true);
+                break;
+
+            case UserModel.Status.NGWord:
+                Debug.Log("NGワード");
+                ngWordButton.SetActive(true);
                 break;
 
             default:

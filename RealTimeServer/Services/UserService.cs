@@ -21,7 +21,7 @@ namespace RealTimeServer.Services
         {
             using var context = new GameDbContext();
 
-            var ngWords = context.Ng_Words.ToArray();
+            var ngWords = context.Ng_Words.ToArray();   // NGワード取得
 
             // バリデーションチェック
             if (context.Users.Where(user => user.Name == name).Count() > 0)
@@ -94,11 +94,22 @@ namespace RealTimeServer.Services
         {
             using var context = new GameDbContext();
 
+            var ngWords = context.Ng_Words.ToArray();   // NGワード取得
+
             // バリデーションチェック
             if (context.Users.Where(user => user.Name == name).Count() > 0)
             {
                 // 例外スロー
                 throw new ReturnStatusException(Grpc.Core.StatusCode.InvalidArgument, "SameName");
+            }
+
+            // NGワードチェック
+            foreach (NGWord ng in ngWords)
+            {
+                if (ng.Word == name)
+                {
+                    throw new ReturnStatusException(Grpc.Core.StatusCode.InvalidArgument, "NGWord");
+                }
             }
 
             // ユーザー情報の更新
