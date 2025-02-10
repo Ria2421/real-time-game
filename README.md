@@ -11,20 +11,22 @@
   + ステージはサーバー側で抽選を行い、全3種のステージで遊ぶことが出来ます。
 
 # アピールポイント
-カーレースゲームには欠かせないゴースト機能の実装・マルチ対戦のリアルタイム通信対応
+カーレースゲームには欠かせないゴースト機能の実装・マルチ対戦のリアルタイム通信対応を行いました。
 
 # サーバー構成図
 ![構成図](https://lessoniaasstrage.blob.core.windows.net/images/%E3%82%B7%E3%82%B9%E3%83%86%E3%83%A0%E5%85%A8%E4%BD%93%E6%A7%8B%E6%88%90%E5%9B%B3.png?raw=true)
 
 # フォルダ構成
-<p>├─Admin</p>
-<p>│   └─app          #管理ツールソースフォルダ(Laravel)</p>
-<p>├─Document         #通信フロー図</p>
-<p>├─RealTimeClient   #クライアントフォルダ(Unity)</p>
-<p>│   ├─Assets</p>
-<p>│   │ └─Scripts    #自作スクリプトフォルダ</p>
-<p>│   └─Build        #実行フォルダ</p>
-<p>├─RealTimeServer   #サーバーフォルダ(MagicOnion)</p>
-<p>│   ├─Services     #API処理フォルダ</p>
-<p>│   └─StremingHubs #リアルタイム通信処理フォルダ</p>
-<p>└─Shared           #クライアント&サーバー共有クラス</p>
+<pre>
+├─Admin
+│   └─app          #管理ツールソースフォルダ(Laravel)
+├─Document         #通信フロー図
+├─RealTimeClient   #クライアントフォルダ(Unity)
+│   ├─Assets
+│   │ └─Scripts    #自作スクリプトフォルダ
+│   └─Build        #実行フォルダ
+├─RealTimeServer   #サーバーフォルダ(MagicOnion)
+│   ├─Services     #API処理フォルダ
+│   └─StremingHubs #リアルタイム通信処理フォルダ
+└─Shared           #クライアント&サーバー共有クラス
+</pre>
