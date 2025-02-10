@@ -43,5 +43,5 @@ Azure
 │   ├─Services     #API処理フォルダ
 │   └─StremingHubs #リアルタイム通信処理フォルダ
 │
-└─Shared           #クライアント&サーバー共有クラス
+└─Shared           #クライアント&サーバーインターフェース
 </pre>
