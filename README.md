@@ -21,13 +21,17 @@
 <pre>
 ├─Admin
 │   └─app          #管理ツールソースフォルダ(Laravel)
+│
 ├─Document         #通信フロー図
+│
 ├─RealTimeClient   #クライアントフォルダ(Unity)
 │   ├─Assets
 │   │ └─Scripts    #自作スクリプトフォルダ
 │   └─Build        #実行フォルダ
+│
 ├─RealTimeServer   #サーバーフォルダ(MagicOnion)
 │   ├─Services     #API処理フォルダ
 │   └─StremingHubs #リアルタイム通信処理フォルダ
+│
 └─Shared           #クライアント&サーバー共有クラス
 </pre>
