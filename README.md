@@ -16,13 +16,13 @@
 
 # フォルダ構成
 <p>├─Admin</p>
-<p>│ └─app          #管理ツールソースフォルダ(Laravel)</p>
-<p>├─Document       #通信フロー図</p>
-<p>├─RealTimeClient #クライアントフォルダ(Unity)</p>
-<p>│ ├─Assets</p>
-<p>│ │ └─Scripts    #自作スクリプトフォルダ</p>
-<p>│ └─Build        #実行フォルダ</p>
-<p>├─RealTimeServer #サーバーフォルダ(MagicOnion)</p>
-<p>│ ├─Services     #API処理フォルダ</p>
-<p>│ └─StremingHubs #リアルタイム通信処理フォルダ</p>
-<p>└─Shared         #クライアント&サーバー共有クラス</p>
+<p>│   └─app          #管理ツールソースフォルダ(Laravel)</p>
+<p>├─Document         #通信フロー図</p>
+<p>├─RealTimeClient   #クライアントフォルダ(Unity)</p>
+<p>│   ├─Assets</p>
+<p>│   │ └─Scripts    #自作スクリプトフォルダ</p>
+<p>│   └─Build        #実行フォルダ</p>
+<p>├─RealTimeServer   #サーバーフォルダ(MagicOnion)</p>
+<p>│   ├─Services     #API処理フォルダ</p>
+<p>│   └─StremingHubs #リアルタイム通信処理フォルダ</p>
+<p>└─Shared           #クライアント&サーバー共有クラス</p>
