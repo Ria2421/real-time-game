@@ -14,6 +14,13 @@
 # アピールポイント
 カーレースゲームには欠かせないゴースト機能の実装・マルチ対戦のリアルタイム通信対応を行いました。
 
+# 開発期間
+2024/10～2025/02（5カ月程）
+
+# 使用言語・フレームワーク
++ C# (MagicOnion)
++ PHP (Laravel)
+
 # サーバー構成図
 ![構成図](https://lessoniaasstrage.blob.core.windows.net/images/%E3%82%B7%E3%82%B9%E3%83%86%E3%83%A0%E5%85%A8%E4%BD%93%E6%A7%8B%E6%88%90%E5%9B%B3.png?raw=true)
 
