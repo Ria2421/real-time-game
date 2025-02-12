@@ -215,6 +215,9 @@ public class RoomModel : BaseModel,IRoomHubReceiver
     {
         if (OnJoinedUser == null) return;
         OnJoinedUser(user);
+
+        // 別記 (nullチェック)
+        //OnJoinedUser?.Invoke(user);
     }
 
     // 退出通知

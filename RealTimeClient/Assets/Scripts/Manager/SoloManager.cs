@@ -16,6 +16,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using System.IO.Compression;
 
 public class SoloManager : MonoBehaviour
 {

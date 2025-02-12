@@ -318,6 +318,21 @@ public class GameManager : MonoBehaviour
         Debug.Log("入室");
     }
 
+    private void OnDestroy()
+    {
+        // モデルに登録されている通知処理を解除する
+        roomModel.OnJoinedUser -= OnJoinedUser;
+        roomModel.OnExitedUser -= OnExitedUser;
+        roomModel.OnMovedUser -= OnMovedUser;
+        roomModel.OnInGameUser -= OnInGameUser;
+        roomModel.OnStartGameUser -= OnStartGameUser;
+        roomModel.OnEndGameUser -= OnEndGameUser;
+        roomModel.OnCrushingUser -= OnCrushingUser;
+        roomModel.OnTimeCountUser -= OnTimeCountUser;
+        roomModel.OnTimeUpUser -= OnTimeUpUser;
+        roomModel.OnShotUser -= OnShotUser;
+    }
+
     /// <summary>
     /// 移動データ送信処理
     /// </summary>

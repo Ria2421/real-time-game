@@ -497,7 +497,7 @@ MonoBehaviour:
   m_LightCookieSize: {x: 1, y: 1}
   m_LightCookieOffset: {x: 0, y: 0}
   m_SoftShadowQuality: 0
---- !u!134 &1944737558
+--- !u!134 &1966614470
 PhysicMaterial:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -18125,7 +18125,7 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Material
       value: 
-      objectReference: {fileID: 1944737558}
+      objectReference: {fileID: 1966614470}
     - target: {fileID: 5383173824546873518, guid: 683fce279a92d994b9449d3b29f858f0,
         type: 3}
       propertyPath: m_Name
@@ -18219,17 +18219,17 @@ PrefabInstance:
     - target: {fileID: 6740968277452223485, guid: 683fce279a92d994b9449d3b29f858f0,
         type: 3}
       propertyPath: m_LocalScale.x
-      value: 0.41354167
+      value: 0.42037037
       objectReference: {fileID: 0}
     - target: {fileID: 6740968277452223485, guid: 683fce279a92d994b9449d3b29f858f0,
         type: 3}
       propertyPath: m_LocalScale.y
-      value: 0.41354167
+      value: 0.42037037
       objectReference: {fileID: 0}
     - target: {fileID: 6740968277452223485, guid: 683fce279a92d994b9449d3b29f858f0,
         type: 3}
       propertyPath: m_LocalScale.z
-      value: 0.41354167
+      value: 0.42037037
       objectReference: {fileID: 0}
     - target: {fileID: 7698701966217038670, guid: 683fce279a92d994b9449d3b29f858f0,
         type: 3}
@@ -18253,13 +18253,23 @@ PrefabInstance:
       objectReference: {fileID: 1199066107335740857}
     - target: {fileID: 7811555893709244649, guid: 683fce279a92d994b9449d3b29f858f0,
         type: 3}
+      propertyPath: m_NormalizedViewPortRect.x
+      value: 0.00055006146
+      objectReference: {fileID: 0}
+    - target: {fileID: 7811555893709244649, guid: 683fce279a92d994b9449d3b29f858f0,
+        type: 3}
       propertyPath: m_NormalizedViewPortRect.y
-      value: 0.13270968
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7811555893709244649, guid: 683fce279a92d994b9449d3b29f858f0,
+        type: 3}
+      propertyPath: m_NormalizedViewPortRect.width
+      value: 0.9988999
       objectReference: {fileID: 0}
     - target: {fileID: 7811555893709244649, guid: 683fce279a92d994b9449d3b29f858f0,
         type: 3}
       propertyPath: m_NormalizedViewPortRect.height
-      value: 0.73458064
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

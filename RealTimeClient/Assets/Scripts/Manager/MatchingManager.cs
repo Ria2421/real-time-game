@@ -5,6 +5,7 @@
 // Update:2025/01/30
 //---------------------------------------------------------------
 using KanKikuchi.AudioManager;
+using Shared.Interfaces.StreamingHubs;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -65,6 +66,12 @@ public class MatchingManager : MonoBehaviour
         Invoke("StartMatching",2.0f);
     }
 
+    private void OnDestroy()
+    {
+        // モデルに登録されている通知処理を解除する
+        roomModel.OnMatchingUser -= OnMatchingUser;
+    }
+
     /// <summary>
     /// 定期更新処理
     /// </summary>
@@ -79,7 +86,6 @@ public class MatchingManager : MonoBehaviour
     /// </summary>
     public async void OnCancelButton()
     {
-        // SE再生
         SEManager.Instance.Play(SEPath.TAP_BUTTON);
 
         cancelButton.interactable = false;

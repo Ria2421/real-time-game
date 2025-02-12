@@ -15,6 +15,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using System.IO.Compression;
 
 public class SoloSelectManager : MonoBehaviour
 {
@@ -115,7 +116,7 @@ public class SoloSelectManager : MonoBehaviour
         // ランキング1位のゴーストデータを取得
         UserModel.Instance.GhostData = "";  // リセット
         UserModel.Instance.GhostData = stageRnakings[0][0].GhostData;
-        getGhostData = stageRnakings[0][0].GhostData;
+        getGhostData = UserModel.Instance.GhostData;
 
         // 画面に反映
         for (int i = 0; i < stageRnakings[0].Count; i++)
