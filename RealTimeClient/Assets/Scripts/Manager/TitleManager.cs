@@ -1,8 +1,6 @@
 //---------------------------------------------------------------
 // タイトルマネージャー [ TitleManager.cs ]
 // Author:Kenta Nakamoto
-// Data:2024/12/05
-// Update:2025/01/30
 //---------------------------------------------------------------
 using DG.Tweening;
 using KanKikuchi.AudioManager;

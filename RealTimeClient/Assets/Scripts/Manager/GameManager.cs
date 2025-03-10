@@ -1,8 +1,6 @@
 //---------------------------------------------------------------
 // ゲームマネージャー [ GameManager.cs ]
 // Author:Kenta Nakamoto
-// Data:2024/11/18
-// Update:2025/01/28
 //---------------------------------------------------------------
 using Shared.Interfaces.StreamingHubs;
 using System;

@@ -1,4 +1,8 @@
-﻿using MagicOnion;
+﻿//---------------------------------------------------------------
+// ユーザーデータ操作API [ UserService.cs ]
+// Author:Kenta Nakamoto
+//---------------------------------------------------------------
+using MagicOnion;
 using MagicOnion.Server;
 using MagicOnionServer.Model.Context;
 using Microsoft.EntityFrameworkCore;

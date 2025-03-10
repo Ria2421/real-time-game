@@ -1,4 +1,8 @@
-﻿using MagicOnion.Server.Hubs;
+﻿//---------------------------------------------------------------
+// サーバー用処理実装部 [ RoomHub.cs ]
+// Author:Kenta Nakamoto
+//---------------------------------------------------------------
+using MagicOnion.Server.Hubs;
 using MagicOnionServer.Model.Context;
 using RealTimeServer.Model.Entity;
 using RealTimeServer.StremingHubs;

@@ -1,8 +1,6 @@
 ﻿//---------------------------------------------------------------
-// 移動データ [ MoveData.cs ]
+// 移動データクラス [ MoveData.cs ]
 // Author:Kenta Nakamoto
-// Data:2024/12/06
-// Update:2024/12/06
 //---------------------------------------------------------------
 using MessagePack;
 using RealTimeServer.Model.Entity;

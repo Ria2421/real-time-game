@@ -1,10 +1,6 @@
 //---------------------------------------------------------------
-//
 // セーブデータクラス [ SaveData.cs ]
 // Author:Kenta Nakamoto
-// Data:2024/08/26
-// Update:2024/08/26
-//
 //---------------------------------------------------------------
 using System.Collections;
 using System.Collections.Generic;

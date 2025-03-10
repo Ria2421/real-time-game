@@ -1,8 +1,6 @@
 //---------------------------------------------------------------
 // タイトルオブジェ用スクリプト [ TitleObj.cs ]
 // Author:Kenta Nakamoto
-// Data:2024/12/16
-// Update:2024/12/16
 //---------------------------------------------------------------
 using System.Collections;
 using System.Collections.Generic;

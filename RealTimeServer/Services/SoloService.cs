@@ -1,4 +1,8 @@
-﻿using MagicOnion;
+﻿//---------------------------------------------------------------
+// タイムアタック用API [ SoloService.cs ]
+// Author:Kenta Nakamoto
+//---------------------------------------------------------------
+using MagicOnion;
 using MagicOnion.Server;
 using MagicOnionServer.Model.Context;
 using RealTimeServer.Model.Entity;

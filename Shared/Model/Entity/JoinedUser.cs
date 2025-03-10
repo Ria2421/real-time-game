@@ -1,8 +1,6 @@
 ﻿//---------------------------------------------------------------
 // 参加者データ [ JoinedUser.cs ]
 // Author:Kenta Nakamoto
-// Data:2024/11/18
-// Update:2024/12/06
 //---------------------------------------------------------------
 using MessagePack;
 using RealTimeServer.Model.Entity;

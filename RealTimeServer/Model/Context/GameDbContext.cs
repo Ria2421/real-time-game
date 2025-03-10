@@ -1,4 +1,8 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿//---------------------------------------------------------------
+// DB設定 [ GameDbContext.cs ]
+// Author:Kenta Nakamoto
+//---------------------------------------------------------------
+using Microsoft.EntityFrameworkCore;
 using RealTimeServer.Model.Entity;
 using Shared.Model.Entity;
 

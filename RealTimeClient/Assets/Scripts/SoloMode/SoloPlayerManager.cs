@@ -1,8 +1,6 @@
 //---------------------------------------------------------------
 // ソロプレイヤーマネージャー [ SoloPlayerManager.cs ]
 // Author:Kenta Nakamoto
-// Data:2024/12/18
-// Update:2024/12/18
 //---------------------------------------------------------------
 using System.Collections;
 using System.Collections.Generic;

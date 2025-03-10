@@ -1,8 +1,6 @@
 //---------------------------------------------------------------
 // タイトルマネージャー [ MatchingManager.cs ]
 // Author:Kenta Nakamoto
-// Data:2024/12/10
-// Update:2025/01/30
 //---------------------------------------------------------------
 using KanKikuchi.AudioManager;
 using Shared.Interfaces.StreamingHubs;

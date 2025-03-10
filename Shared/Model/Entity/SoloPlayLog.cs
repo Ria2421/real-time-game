@@ -1,4 +1,8 @@
-﻿using MessagePack;
+﻿//---------------------------------------------------------------
+// タイムアタックログデータ [ SoloPlayLog.cs ]
+// Author:Kenta Nakamoto
+//---------------------------------------------------------------
+using MessagePack;
 using System;
 using System.Collections.Generic;
 using System.Text;

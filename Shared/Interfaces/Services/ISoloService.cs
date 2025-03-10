@@ -1,4 +1,8 @@
-﻿using MagicOnion;
+﻿//---------------------------------------------------------------
+// タイムアタック用APIインターフェース [ ISoloService.cs ]
+// Author:Kenta Nakamoto
+//---------------------------------------------------------------
+using MagicOnion;
 using RealTimeServer.Model.Entity;
 using Shared.Model.Entity;
 using System;

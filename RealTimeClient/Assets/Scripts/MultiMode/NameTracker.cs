@@ -1,8 +1,6 @@
 //---------------------------------------------------------------
 // ユーザー名追従 [ NameTracker.cs ]
 // Author:Kenta Nakamoto
-// Data:2025/01/16
-// Update:2025/01/16
 // 参考URL:https://tech.pjin.jp/blog/2017/07/14/unity_ugui_sync_rendermode/
 //---------------------------------------------------------------
 using DavidJalbert;

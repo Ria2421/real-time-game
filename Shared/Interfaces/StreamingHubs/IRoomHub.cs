@@ -1,4 +1,8 @@
-﻿using MagicOnion;
+﻿//---------------------------------------------------------------
+// サーバー用インターフェース [ IRoomHubReceiver.cs ]
+// Author:Kenta Nakamoto
+//---------------------------------------------------------------
+using MagicOnion;
 using System;
 using System.Threading.Tasks;
 

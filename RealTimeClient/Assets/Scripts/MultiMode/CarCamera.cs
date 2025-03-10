@@ -1,3 +1,7 @@
+//---------------------------------------------------------------
+// 車用カメラ [ UserModel.cs ]
+// Author:Kenta Nakamoto
+//---------------------------------------------------------------
 using UnityEngine;
 
 public class CameraManager : MonoBehaviour

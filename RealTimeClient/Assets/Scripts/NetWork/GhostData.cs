@@ -1,8 +1,6 @@
 //---------------------------------------------------------------
 // ゴーストデータクラス [ GhostData.cs ]
 // Author:Kenta Nakamoto
-// Data:2025/01/21
-// Update:2025/01/21
 //---------------------------------------------------------------
 using System.Collections;
 using System.Collections.Generic;

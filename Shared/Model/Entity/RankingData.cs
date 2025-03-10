@@ -1,4 +1,8 @@
-﻿using MessagePack;
+﻿//---------------------------------------------------------------
+// ランキングデータ [ RankingData.cs ]
+// Author:Kenta Nakamoto
+//---------------------------------------------------------------
+using MessagePack;
 using System;
 using System.Collections.Generic;
 using System.Text;

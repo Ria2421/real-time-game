@@ -1,8 +1,6 @@
 //---------------------------------------------------------------
 // 大砲スクリプト [ Cannon.cs ]
 // Author:Kenta Nakamoto
-// Data:2025/01/27
-// Update:2025/01/28
 //---------------------------------------------------------------
 using DG.Tweening;
 using RealTimeServer.Model.Entity;

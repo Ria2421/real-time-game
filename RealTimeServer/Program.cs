@@ -1,3 +1,7 @@
+//---------------------------------------------------------------
+// MagicOnion [ Program.cs ]
+// Author:Kenta Nakamoto
+//---------------------------------------------------------------
 using Grpc.Net.Client;
 using MagicOnion;
 using MagicOnion.Server;

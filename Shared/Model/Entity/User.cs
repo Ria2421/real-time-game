@@ -1,4 +1,8 @@
-﻿using MessagePack;
+﻿//---------------------------------------------------------------
+// ユーザーデータ [ User.cs ]
+// Author:Kenta Nakamoto
+//---------------------------------------------------------------
+using MessagePack;
 using System;
 
 namespace RealTimeServer.Model.Entity

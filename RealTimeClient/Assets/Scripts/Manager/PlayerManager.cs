@@ -1,8 +1,6 @@
 //---------------------------------------------------------------
 // プレイヤーマネージャー [ PlayerManager.cs ]
 // Author:Kenta Nakamoto
-// Data:2024/12/05
-// Update:2025/01/23
 //---------------------------------------------------------------
 using DavidJalbert;
 using Shared.Interfaces.StreamingHubs;

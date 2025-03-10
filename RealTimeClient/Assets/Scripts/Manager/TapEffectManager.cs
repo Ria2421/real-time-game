@@ -1,8 +1,6 @@
 //---------------------------------------------------------------
 // タップエフェクトマネージャー [ TapEffectManager.cs ]
 // Author:Kenta Nakamoto
-// Data:2024/12/17
-// Update:2024/12/17
 //---------------------------------------------------------------
 using System.Collections;
 using System.Collections.Generic;

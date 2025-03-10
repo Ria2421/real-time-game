@@ -1,8 +1,6 @@
 //---------------------------------------------------------------
 // ルーム情報モデル [ RoomModel.cs ]
 // Author:Kenta Nakamoto
-// Data:2024/11/18
-// Update:2025/01/27
 //---------------------------------------------------------------
 using Cysharp.Net.Http;
 using Cysharp.Threading.Tasks;

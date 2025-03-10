@@ -1,4 +1,8 @@
-﻿using MagicOnion;
+﻿//---------------------------------------------------------------
+// クライアント用インターフェース [ IRoomHubReceiver.cs ]
+// Author:Kenta Nakamoto
+//---------------------------------------------------------------
+using MagicOnion;
 using System;
 using System.Collections.Generic;
 

@@ -1,4 +1,8 @@
-﻿using MagicOnion;
+﻿//---------------------------------------------------------------
+// ユーザーデータ操作APIインターフェース [ IUserService.cs ]
+// Author:Kenta Nakamoto
+//---------------------------------------------------------------
+using MagicOnion;
 using RealTimeServer.Model.Entity;
 using System;
 using System.Collections.Generic;

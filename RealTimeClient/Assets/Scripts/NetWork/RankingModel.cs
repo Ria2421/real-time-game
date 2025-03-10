@@ -1,8 +1,6 @@
 //---------------------------------------------------------------
 // ランキングモデル [ RankingModel.cs ]
 // Author:Kenta Nakamoto
-// Data:2025/01/12
-// Update:2025/01/21
 //---------------------------------------------------------------
 using Cysharp.Net.Http;
 using Cysharp.Threading.Tasks;

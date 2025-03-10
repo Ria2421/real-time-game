@@ -1,4 +1,8 @@
-﻿using MessagePack;
+﻿//---------------------------------------------------------------
+// タイムアタック登録データ [ SoloPlayData.cs ]
+// Author:Kenta Nakamoto
+//---------------------------------------------------------------
+using MessagePack;
 using System;
 using System.Collections.Generic;
 using System.Text;
